@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package edu.cnm.deepdive.appstarter;
+package edu.cnm.deepdive.notes;
 
 import android.app.Application;
 import dagger.hilt.android.HiltAndroidApp;
@@ -24,11 +24,12 @@ import dagger.hilt.android.HiltAndroidApp;
  * {@code AndroidManifest.xml}, or it will not be loaded and used by the Android system.
  */
 @HiltAndroidApp
-public class AppStarterApplication extends Application { // TODO Rename this class as aappropriate.
+public class NotesApplication extends Application { // Done: Rename this class as appropriate.
 
   @Override
   public void onCreate() {
     super.onCreate();
+    // TODO: 2/10/25 Add any app-level initialization here. 
   }
 
 }
