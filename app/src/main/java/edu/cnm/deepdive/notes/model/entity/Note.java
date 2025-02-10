@@ -21,7 +21,7 @@ public class Note {
   private long id;
 
   @NonNull
-  @ColumnInfo(collate = ColumnInfo.NOCASE, index = true)
+  @ColumnInfo(collate = ColumnInfo.NOCASE)
   private String title = "";
 
   @NonNull
