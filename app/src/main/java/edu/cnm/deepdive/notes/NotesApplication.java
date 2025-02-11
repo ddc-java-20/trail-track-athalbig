@@ -31,13 +31,6 @@ public class NotesApplication extends Application { // Done: Rename this class a
   @Override
   public void onCreate() {
     super.onCreate();
-    // TODO: 2/10/25 Add any app-level initialization here. 
-    NotesDatabase.setContext(this);
-    NotesDatabase.getInstance()
-        .getNoteDao()
-        .delete()
-        .subscribeOn(Schedulers.io())
-        .subscribe();
   }
 
 }
