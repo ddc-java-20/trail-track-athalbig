@@ -43,7 +43,7 @@ public class NoteRepository {
     return noteDao.delete(note);
   }
 
-  LiveData<List<Note>> getAll() {
+  public LiveData<List<Note>> getAll() {
     return noteDao.selectByCreatedOnAsc();
   }
 
