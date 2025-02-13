@@ -18,6 +18,24 @@
   <!-- Base application theme. -->
   <style name="AppTheme" parent="Theme.Material3.DayNight">
     <!-- TODO Customize your theme here. -->
+    <item name="toolbarTitleSize">@dimen/toolbar_title_size</item>
   </style>
+
+  <style name="AppTheme.noActionBar">
+    <!--turns off app bar-->
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="AppTheme.Toolbar" parent="Widget.Material3.Toolbar">
+    <item name="android:background">?attr/colorPrimary</item>
+    <item name="titleTextAppearance">@style/ToolbarTitle</item>
+  </style>
+
+  <style name="ToolbarTitle">
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="android:textSize">?attr/toolbarTitleSize</item>
+  </style>
+
 
 </resources>
