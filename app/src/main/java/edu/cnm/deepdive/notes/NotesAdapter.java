@@ -1,39 +1,61 @@
 package edu.cnm.deepdive.notes;
 
-import android.view.View;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import edu.cnm.deepdive.notes.NotesAdapter.Holder;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+import edu.cnm.deepdive.notes.databinding.ItemNoteBinding;
+import edu.cnm.deepdive.notes.model.entity.Note;
+import java.util.List;
 
-public class NotesAdapter extends RecyclerView.Adapter<Holder> {
+public class NotesAdapter extends Adapter<ViewHolder> {
+
+  private final LayoutInflater inflater;
+  private final List<Note> notes;
+
+  public NotesAdapter(Context context, List<Note> notes) {
+    this.notes = notes;
+    inflater = LayoutInflater.from(context);
+  }
 
   @NonNull
   @Override
-  public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    return null; // TODO: 2/13/25 Create and return an instance of Holder.
+  public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    ItemNoteBinding binding = ItemNoteBinding.inflate(inflater, viewGroup, false);
+        return new Holder(binding);
   }
 
   @Override
-  public void onBindViewHolder(@NonNull Holder holder, int position) {
-// TODO: 2/13/25 Invoke holder.bind with the object in 'position'.
+  public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    ((Holder)holder).bind(notes.get(position));
+    // done 2025-02-13 Invoke holder.bind with the object in 'position'.
   }
 
   @Override
   public int getItemCount() {
-    return 0; // TODO: 2/13/25 Return the number of Note instances that can be displayed in this view.
+    return notes.size();
+    // done 2025-02-13 Return the number of Note instances that can be displayed in this view.
   }
 
-  static class Holder extends RecyclerView.ViewHolder {
+  private static class Holder extends ViewHolder {
 
-    public Holder(@NonNull View itemView) {
-      super(itemView);
-      // TODO: 2/13/25 Initialize any fields.
+    private ItemNoteBinding binding;
+
+    public Holder(@NonNull ItemNoteBinding binding) {
+      super(binding.getRoot());
+      this.binding = binding;
+      // TODO: 2025-02-13 Initialize any fields.
     }
 
-    public void bind(Object item){
-      // TODO: 2/13/25 Use data from item to populate widgets in itemView.
+    public void bind(Note note) {
+        binding.title.setText(note.getTitle());
+        binding.modifiedOn.setText(note.getModifiedOn().toString());
+      // 2025-02-13 Use data from item to populate widgets in itemView.
     }
+
   }
 
 }

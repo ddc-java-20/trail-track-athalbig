@@ -9,11 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import dagger.hilt.android.AndroidEntryPoint;
+import edu.cnm.deepdive.notes.NotesAdapter;
 import edu.cnm.deepdive.notes.R;
 import edu.cnm.deepdive.notes.databinding.FragmentHomeBinding;
 import edu.cnm.deepdive.notes.viewmodel.NoteViewModel;
+import javax.inject.Inject;
+import org.jetbrains.annotations.NotNull;
 
-
+@AndroidEntryPoint
 public class HomeFragment extends Fragment {
 
   private FragmentHomeBinding binding;
@@ -35,10 +39,12 @@ public class HomeFragment extends Fragment {
     viewModel
         .getNotes()
         .observe(lifecycleOwner, (notes) -> {
-          // TODO: 2/13/25 If creating a new adapter each time the data changes, create one now, 
+          NotesAdapter adapter = new NotesAdapter(requireContext(), notes);
+          binding.notes.setAdapter(adapter);
+          // TODO: 2025-02-13 If creating a new adapter each time the data changes, create one now;
           //  otherwise, we need to create one earlier, and it will exist by this time.
-          // TODO: 2/13/25 Pass notes to adapter. 
-          // TODO: 2/13/25 Notify adapter of change
+          // TODO: 2025-02-13 Pass notes to adapter.
+          // TODO: 2025-02-13 Notify adapter of change.
         });
   }
 }
