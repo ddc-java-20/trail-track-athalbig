@@ -25,6 +25,7 @@
     <!--turns off app bar-->
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
+    <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
   </style>
 
   <style name="AppTheme.Toolbar" parent="Widget.Material3.Toolbar">
