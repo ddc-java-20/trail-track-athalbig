@@ -6,6 +6,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import com.google.gson.annotations.Expose;
 import java.time.Instant;
 
 @Entity(
@@ -22,9 +23,11 @@ public class Note {
 
   @NonNull
   @ColumnInfo(collate = ColumnInfo.NOCASE)
+  @Expose
   private String title = "";
 
   @NonNull
+  @Expose
   private String content = "";
 
   private Uri image;
