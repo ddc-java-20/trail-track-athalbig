@@ -58,12 +58,7 @@ public class NotesAdapter extends Adapter<ViewHolder> {
       binding.title.setText(note.getTitle());
       binding.modifiedOn.setText(note.getModifiedOn().toString());
       // 2025-02-13 Use data from item to populate widgets in itemView.
-      binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View view) {
-          return listener.onLongClick(view, note, position);
-         }
-      });
+      binding.getRoot().setOnLongClickListener(view -> listener.onLongClick(view, note, position));
     }
 
   }
