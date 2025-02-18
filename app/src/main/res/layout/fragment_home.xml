@@ -23,6 +23,8 @@
     android:layout_height="wrap_content"
     android:contentDescription="@string/new_note_description"
     android:layout_margin="@dimen/half_dynamic_spacing"
+    android:src="@drawable/new_note"
+    android:tooltipText="@string/new_note_description"
     app:useCompatPadding="true"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"/>

@@ -27,6 +27,7 @@ public class EditFragment extends BottomSheetDialogFragment {
   private FragmentEditBinding binding;
   private NoteViewModel viewModel;
   private long noteId;
+  private Note note;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class EditFragment extends BottomSheetDialogFragment {
     // TODO: 2/18/25 Inflate layout and construct & return dialog containing layout.
     return super.onCreateDialog(savedInstanceState);
   }
-
+  
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -49,8 +50,9 @@ public class EditFragment extends BottomSheetDialogFragment {
     // Return root element of layout.
     binding = FragmentEditBinding.inflate(inflater, container, false);
     // TODO: 2/18/25 Attach listeners to UI widgets.
+    binding.cancel.setOnClickListener((v) -> dismiss());
+    binding.save.setOnClickListener((v) -> save());
     return binding.getRoot();
-
   }
 
   @Override
@@ -66,6 +68,7 @@ public class EditFragment extends BottomSheetDialogFragment {
     } else {
       // TODO: 2/18/25 Configure UI for a new note vs. editing an existing note.
       binding.image.setVisibility(View.GONE);
+      note = new Note();
     }
   }
 
@@ -73,6 +76,21 @@ public class EditFragment extends BottomSheetDialogFragment {
   public void onDestroyView() {
     binding = null; // Set binding reference(s) to null.
     super.onDestroyView();
+  }
+
+  /** @noinspection DataFlowIssue*/
+  private void save() {
+    note.setTitle(binding.title
+        .getText()
+        .toString()
+        .strip());
+    note.setContent(binding.content
+        .getText()
+        .toString()
+        .strip());
+    // TODO: 2/18/25 Set/modify the createdOn/modifiedOn.
+    viewModel.saveNote(note);
+    dismiss();
   }
 
   @ColorInt
@@ -83,6 +101,7 @@ public class EditFragment extends BottomSheetDialogFragment {
   }
 
   private void handleNote(Note note) {
+    this.note = note;
     binding.title.setText(note.getTitle());
     binding.content.setText(note.getContent());
     Uri imageURI = note.getImage();

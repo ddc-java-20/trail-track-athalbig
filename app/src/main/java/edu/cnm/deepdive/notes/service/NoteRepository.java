@@ -40,7 +40,9 @@ public class NoteRepository {
   }
 
   public Completable remove(Note note) {
-    return noteDao.delete(note);
+    return noteDao
+        .delete(note)
+        .subscribeOn(scheduler);
   }
 
   public LiveData<List<Note>> getAll() {
