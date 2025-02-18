@@ -19,6 +19,8 @@
   <style name="AppTheme" parent="Theme.Material3.DayNight">
     <!-- TODO Customize your theme here. -->
     <item name="toolbarTitleSize">@dimen/toolbar_title_size</item>
+    <item name="colorCancel">@color/cancel_color</item>
+    <item name="colorSave">@color/save_color</item>
   </style>
 
   <style name="AppTheme.noActionBar">

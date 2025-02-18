@@ -16,6 +16,6 @@
 -->
 <resources>
 
-  <!--TODO Define color resources.   -->
-
+  <color name="cancel_color">#FFFF0000</color>
+  <color name="save_color">#FF008000</color>
 </resources>

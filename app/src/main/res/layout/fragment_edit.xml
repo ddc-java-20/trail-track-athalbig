@@ -62,7 +62,56 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintHorizontal_weight="4"
-    tools:src="@android:drawable/gallery_thumb"/>
+    tools:src="@android:drawable/gallery_thumb"
+    tools:ignore="ContentDescription"/>
 
+  <androidx.constraintlayout.widget.Barrier
+    android:id="@+id/button_barrier"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:barrierDirection="bottom"
+    app:constraint_referenced_ids="content_layout,image"/>
+
+  <ImageButton
+    android:id="@+id/save"
+    android:layout_width="@dimen/image_button_size"
+    android:layout_height="@dimen/image_button_size"
+    android:src="@drawable/save"
+    android:tint="?attr/colorSave"
+    android:tooltipText="@string/save_tooltip"
+    android:contentDescription="@string/save_tooltip"
+    android:layout_margin="@dimen/half_dynamic_spacing"
+    android:background="?selectableItemBackgroundBorderless"
+    app:layout_constraintTop_toBottomOf="@id/button_barrier"
+    app:layout_constraintEnd_toStartOf="@id/cancel"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+  <ImageButton
+    android:id="@+id/cancel"
+    android:layout_width="@dimen/image_button_size"
+    android:layout_height="@dimen/image_button_size"
+    android:src="@drawable/cancel"
+    android:tint="?attr/colorCancel"
+    android:tooltipText="@string/cancel_tooltip"
+    android:contentDescription="@string/cancel_tooltip"
+    android:layout_marginHorizontal="@dimen/half_dynamic_spacing"
+    android:background="?selectableItemBackgroundBorderless"
+    app:layout_constraintStart_toEndOf="@id/save"
+    app:layout_constraintEnd_toStartOf="@id/capture"
+    app:layout_constraintTop_toTopOf="@id/save"/>
+
+  <ImageButton
+    android:id="@+id/capture"
+    android:layout_width="@dimen/image_button_size"
+    android:layout_height="@dimen/image_button_size"
+    android:src="@drawable/photo"
+    android:tooltipText="@string/capture_tooltip"
+    android:contentDescription="@string/capture_tooltip"
+    android:layout_marginHorizontal="@dimen/half_dynamic_spacing"
+    android:background="?selectableItemBackgroundBorderless"
+    app:layout_constraintStart_toEndOf="@id/cancel"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/save"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
