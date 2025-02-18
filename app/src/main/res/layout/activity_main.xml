@@ -18,7 +18,9 @@
   android:id="@+id/nav_host_container"
   android:layout_width="match_parent"
   android:layout_height="0dp"
-  android:name="edu.cnm.deepdive.notes.controller.HomeFragment"
+  android:name="androidx.navigation.fragment.NavHostFragment"
+  app:defaultNavHost="true"
+  app:navGraph="@navigation/nav_graph"
   app:layout_constraintTop_toBottomOf="@+id/toolbar"
   app:layout_constraintBottom_toBottomOf="parent"/>
 

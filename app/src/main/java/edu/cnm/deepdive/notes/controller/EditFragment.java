@@ -31,7 +31,8 @@ public class EditFragment extends BottomSheetDialogFragment {
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    // TODO: 2/18/25 Read any input arguments.
+    noteId = EditFragmentArgs.fromBundle(getArguments()).getNoteId();
+    // Read any input arguments.
   }
 
   @NonNull

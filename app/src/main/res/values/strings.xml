@@ -10,4 +10,5 @@
   <string name="save_tooltip">Save current note</string>
   <string name="cancel_tooltip">Cancel changes</string>
   <string name="capture_tooltip">Capture image from camera or gallery</string>
+  <string name="home_fragment_label">Notes</string>
 </resources>
