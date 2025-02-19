@@ -1,7 +1,5 @@
 <resources>
 
-  <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="new_note_description">Create new note</string>
   <string name="edit_note">Edit</string>
   <string name="delete_note">Delete</string>
@@ -11,4 +9,6 @@
   <string name="cancel_tooltip">Cancel changes</string>
   <string name="capture_tooltip">Capture image from camera or gallery</string>
   <string name="home_fragment_label">Notes</string>
+  <string name="camera_permission_explanation">Granting permission to access the camera allows the app to attach an image to each note.</string>
+  <string name="camera_permission_title">Camera permission</string>
 </resources>
