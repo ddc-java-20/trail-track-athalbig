@@ -1,6 +1,8 @@
 package edu.cnm.deepdive.notes.controller;
 
+import android.Manifest.permission;
 import android.app.Dialog;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -42,7 +45,7 @@ public class EditFragment extends BottomSheetDialogFragment {
     // TODO: 2/18/25 Inflate layout and construct & return dialog containing layout.
     return super.onCreateDialog(savedInstanceState);
   }
-  
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -52,6 +55,7 @@ public class EditFragment extends BottomSheetDialogFragment {
     // TODO: 2/18/25 Attach listeners to UI widgets.
     binding.cancel.setOnClickListener((v) -> dismiss());
     binding.save.setOnClickListener((v) -> save());
+    setCaptureVisibility();
     return binding.getRoot();
   }
 
@@ -78,7 +82,9 @@ public class EditFragment extends BottomSheetDialogFragment {
     super.onDestroyView();
   }
 
-  /** @noinspection DataFlowIssue*/
+  /**
+   * @noinspection DataFlowIssue
+   */
   private void save() {
     note.setTitle(binding.title
         .getText()
@@ -98,6 +104,15 @@ public class EditFragment extends BottomSheetDialogFragment {
     TypedValue typedValue = new TypedValue();
     requireContext().getTheme().resolveAttribute(colorAttr, typedValue, true);
     return typedValue.data;
+  }
+
+  private void setCaptureVisibility() {
+    if (ContextCompat.checkSelfPermission(requireContext(), permission.CAMERA) ==
+        PackageManager.PERMISSION_GRANTED) {
+      binding.capture.setVisibility(View.VISIBLE);
+    } else {
+      binding.capture.setVisibility(View.GONE);
+    }
   }
 
   private void handleNote(Note note) {
