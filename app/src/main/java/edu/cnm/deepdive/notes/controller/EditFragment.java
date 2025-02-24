@@ -9,28 +9,32 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import dagger.hilt.android.AndroidEntryPoint;
-import edu.cnm.deepdive.notes.R;
 import edu.cnm.deepdive.notes.databinding.FragmentEditBinding;
 import edu.cnm.deepdive.notes.model.entity.Note;
+import edu.cnm.deepdive.notes.service.ImageFileProvider;
 import edu.cnm.deepdive.notes.viewmodel.NoteViewModel;
 
 @AndroidEntryPoint
 public class EditFragment extends BottomSheetDialogFragment {
 
   private static final String TAG = EditFragment.class.getSimpleName();
+  private static final String AUTHORITY = ImageFileProvider.class.getName().toLowerCase();
 
   private FragmentEditBinding binding;
   private NoteViewModel viewModel;
   private long noteId;
   private Note note;
+  private ActivityResultLauncher<Uri> captureLauncher;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +78,12 @@ public class EditFragment extends BottomSheetDialogFragment {
       binding.image.setVisibility(View.GONE);
       note = new Note();
     }
+    viewModel
+        .getCaptureUri()
+        .observe(getViewLifecycleOwner(), this::handleCaptureUri);
+
+    captureLauncher = registerForActivityResult(
+        new ActivityResultContracts.TakePicture(), viewModel::confirmCapture);
   }
 
   @Override
@@ -99,11 +109,12 @@ public class EditFragment extends BottomSheetDialogFragment {
     dismiss();
   }
 
-  @ColorInt
-  private int getThemeColor(int colorAttr) {
-    TypedValue typedValue = new TypedValue();
-    requireContext().getTheme().resolveAttribute(colorAttr, typedValue, true);
-    return typedValue.data;
+  private void handleCaptureUri(Uri uri) {
+    if (uri != null) {
+      note.setImage(uri);
+      binding.image.setImageURI(uri);
+      binding.image.setVisibility(View.VISIBLE);
+    }
   }
 
   private void setCaptureVisibility() {
@@ -126,6 +137,22 @@ public class EditFragment extends BottomSheetDialogFragment {
     } else {
       binding.image.setVisibility(View.GONE);
     }
+  }
+
+  @ColorInt
+  private int getThemeColor(int colorAttr) {
+    TypedValue typedValue = new TypedValue();
+    requireContext().getTheme().resolveAttribute(colorAttr, typedValue, true);
+    return typedValue.data;
+  }
+  
+  private void capture() {
+    // TODO: 2/24/25 Using the context, get a reference to the directory where we store captured images.
+    // TODO: 2/24/25 Ensure that the directory exists. 
+    // TODO: 2/24/25 Genetrate a random filename for captured image.
+    // TODO: 2/24/25 Get a URI for the random file, using the provider infrastructure.
+    // TODO: 2/24/25 Store the URI in the viewmodel. 
+    // TODO: 2/24/25 Launch the capture launcher.
   }
 
 }
