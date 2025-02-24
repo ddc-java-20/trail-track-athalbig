@@ -6,7 +6,7 @@ import edu.cnm.deepdive.notes.R;
 public class ImageFileProvider extends FileProvider {
 
   public ImageFileProvider() {
-    super(R.xml.provider_paths)// Initialize with our provider-path mapping
+    super(R.xml.provider_paths); // Initialize with our provider-path mapping
   }
 
 }
