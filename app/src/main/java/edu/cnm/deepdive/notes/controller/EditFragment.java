@@ -2,6 +2,7 @@ package edu.cnm.deepdive.notes.controller;
 
 import android.Manifest.permission;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -160,7 +161,8 @@ public class EditFragment extends BottomSheetDialogFragment {
   }
   
   private void capture() {
-    File captureDir = new File(requireContext().getFilesDir(), getString(R.string.capture_directory)); // Using the context, get a reference to the directory where we store captured images.
+    Context context = requireContext();
+    File captureDir = new File(context.getFilesDir(), getString(R.string.capture_directory)); // Using the context, get a reference to the directory where we store captured images.
     //noinspection ResultOfMethodCallIgnored
     captureDir.mkdir(); // Ensure that the directory exists.
     // TODO: 2/24/25 Genetrate a random filename for captured image.
@@ -168,7 +170,7 @@ public class EditFragment extends BottomSheetDialogFragment {
     do {
       captureFile = new File(captureDir, UUID.randomUUID().toString());
     } while (captureFile.exists());
-    Uri uri = FileProvider.getUriForFile(requireContext(), AUTHORITY, captureFile); // Get a URI for the random file, using the provider infrastructure.
+    Uri uri = FileProvider.getUriForFile(context, AUTHORITY, captureFile); // Get a URI for the random file, using the provider infrastructure.
     viewModel.setPendingCaptureUri(uri); // Store the URI in the viewmodel.
     captureLauncher.launch(uri); // Launch the capture launcher.
   }
