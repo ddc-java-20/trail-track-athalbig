@@ -119,7 +119,7 @@ dependencies {
     implementation(libs.gson)
 
 
-   '' // Google Sign-in library
+   // Google Sign-in library
     implementation(libs.play.auth)
 
     // Retrofit (REST client) with ReactiveX & Gson integration

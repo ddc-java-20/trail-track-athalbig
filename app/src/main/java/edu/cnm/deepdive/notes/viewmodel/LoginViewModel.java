@@ -93,8 +93,8 @@ public class LoginViewModel extends ViewModel implements DefaultLifecycleObserve
     DefaultLifecycleObserver.super.onStop(owner);
   }
 
-  private void postThrowable(Throwable throwable, MutableLiveData<Throwable> refreshThrowable) {
+  private void postThrowable(Throwable throwable, MutableLiveData<Throwable> throwableLiveData) {
     Log.e(TAG, throwable.getMessage(), throwable);
-    refreshThrowable.postValue(throwable);
+    throwableLiveData.postValue(throwable);
   }
 }
