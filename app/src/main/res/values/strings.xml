@@ -14,4 +14,5 @@
   <string name="capture_directory">captured-images</string>
   <string name="sign_in_failure_message">Unable to sign in with provided credentials.</string>
   <string name="login_fragment_label">Sign In</string>
+  <string name="sign_out_title">Sign Out</string>
 </resources>
