@@ -9,43 +9,53 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.notes.R;
 import edu.cnm.deepdive.notes.viewmodel.LoginViewModel;
 
+/** @noinspection deprecation*/
 @AndroidEntryPoint
 public class PreLoginFragment extends Fragment {
 
-  private LoginViewModel viewModel;
+  private View root;
 
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_pre_login, container, false);
+    root = inflater.inflate(R.layout.fragment_pre_login, container, false);
+    return root;
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    viewModel = new ViewModelProvider(requireActivity())
+    LoginViewModel viewModel = new ViewModelProvider(requireActivity())
         .get(LoginViewModel.class);
     LifecycleOwner owner = getViewLifecycleOwner();
     viewModel
         .getAccount()
-        .observe(owner, (account) -> {
-          if (account != null) {
-            // TODO: 2/27/25 navigate to HomeFragment.
-          }
-        });
+        .observe(owner, this::handleAccount);
     viewModel
         .getRefreshThrowable()
-        .observe(owner, (throwable) -> {
-          if (throwable != null) {
-            // TODO: 2/27/25 Navigate to login fragment.
-          }
-        });
+        .observe(owner, this::handleThrowable);
     viewModel.refresh();
+  }
+
+  private void handleAccount(GoogleSignInAccount account) {
+    if (account != null) {
+      Navigation.findNavController(root)
+          .navigate(PreLoginFragmentDirections.navigateToHomeFragment());
+    }
+  }
+
+  private void handleThrowable(Throwable throwable) {
+    if (throwable != null) {
+      Navigation.findNavController(root)
+          .navigate(PreLoginFragmentDirections.navigateToLoginFragment());
+    }
   }
 
 }

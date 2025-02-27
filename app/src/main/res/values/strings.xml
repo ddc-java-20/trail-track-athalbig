@@ -12,4 +12,6 @@
   <string name="camera_permission_explanation">Granting permission to access the camera allows the app to attach an image to each note.</string>
   <string name="camera_permission_title">Camera permission</string>
   <string name="capture_directory">captured-images</string>
+  <string name="sign_in_failure_message">Unable to sign in with provided credentials.</string>
+  <string name="login_fragment_label">Sign In</string>
 </resources>
