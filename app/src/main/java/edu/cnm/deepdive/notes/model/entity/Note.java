@@ -4,6 +4,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
@@ -13,6 +14,10 @@ import java.time.Instant;
     tableName = "note",
     indices = {
         @Index(value = {"title"}, unique = true)
+    },
+    foreignKeys = {
+        @ForeignKey(entity = User.class, parentColumns = "user_id", childColumns = "user_id",
+        onDelete = ForeignKey.CASCADE)
     }
 )
 public class Note {
@@ -20,6 +25,9 @@ public class Note {
   @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "note_id")
   private long id;
+
+  @ColumnInfo(name = "user_id", index = true)
+  private long userId;
 
   @NonNull
   @ColumnInfo(collate = ColumnInfo.NOCASE)
@@ -47,6 +55,14 @@ public class Note {
 
   public void setId(long id) {
     this.id = id;
+  }
+
+  public long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(long userId) {
+    this.userId = userId;
   }
 
   @NonNull
