@@ -11,7 +11,9 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import edu.cnm.deepdive.notes.model.entity.Note;
+import edu.cnm.deepdive.notes.model.entity.User;
 import edu.cnm.deepdive.notes.service.NoteRepository;
+import edu.cnm.deepdive.notes.service.UserRepository;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import java.util.List;
 import javax.inject.Inject;
@@ -20,8 +22,10 @@ import javax.inject.Inject;
 public class NoteViewModel extends ViewModel implements DefaultLifecycleObserver {
 
   private final NoteRepository noteRepository;
+  private final UserRepository userRepository;
   private final MutableLiveData<Long> noteId;
   private final LiveData<Note> note;
+  private final MutableLiveData<User> user;
   private final MutableLiveData<Uri> captureUri;
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
@@ -29,10 +33,12 @@ public class NoteViewModel extends ViewModel implements DefaultLifecycleObserver
   private Uri pendingCaptureUri;
 
   @Inject
-  NoteViewModel(NoteRepository noteRepository) {
+  NoteViewModel(NoteRepository noteRepository, UserRepository userRepository) {
     this.noteRepository = noteRepository;
+    this.userRepository = userRepository;
     noteId = new MutableLiveData<>();
     note = Transformations.switchMap(noteId, noteRepository::get);
+    user = new MutableLiveData<>();
     captureUri = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
@@ -41,13 +47,14 @@ public class NoteViewModel extends ViewModel implements DefaultLifecycleObserver
   public void saveNote(Note note) {
     // 2/12/25 Reset our throwable LiveData.
     throwable.setValue(null); // Will be invoked from controller on UI thread.
-    // 2/12/25 Invoke save method of repository to get the machine for saving.
-    // 2/12/25 Invoke the subscribe method on the machine, to start it and attach consumers.
-    //   There will be 2 consumers: one for a successful result (a Note) and one for an unsuccesful
-    //   result (a Throwable). the first puts the Note into a LiveData bucket; the second invokes
-    //   a helper method.
-    noteRepository
-        .save(note)
+    userRepository
+        .getCurrentUser()
+        .map((user) -> {
+          this.user.postValue(user);
+          note.setUserId(user.getId());
+          return note;
+        })
+        .flatMap(noteRepository::save)
         .ignoreElement()
         .subscribe(
             () -> {
@@ -68,7 +75,8 @@ public class NoteViewModel extends ViewModel implements DefaultLifecycleObserver
     noteRepository
         .remove(note)
         .subscribe(
-            () -> {},
+            () -> {
+            },
             this::postThrowable,
             pending
         );
@@ -92,7 +100,8 @@ public class NoteViewModel extends ViewModel implements DefaultLifecycleObserver
   }
 
   public LiveData<List<Note>> getNotes() {
-    return noteRepository.getAll();
+    fetchCurrentUser();
+    return Transformations.switchMap(user, noteRepository::getAllForUser);
   }
 
   public LiveData<Uri> getCaptureUri() {
@@ -111,6 +120,17 @@ public class NoteViewModel extends ViewModel implements DefaultLifecycleObserver
   public void onStop(@NonNull LifecycleOwner owner) {
     pending.clear();
     DefaultLifecycleObserver.super.onStop(owner);
+  }
+
+  private void fetchCurrentUser() {
+    throwable.setValue(null);
+    userRepository
+        .getCurrentUser()
+        .subscribe(
+            user::postValue,
+            this::postThrowable,
+            pending
+        );
   }
 
   private void postThrowable(Throwable throwable) {

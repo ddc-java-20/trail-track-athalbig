@@ -3,6 +3,7 @@ package edu.cnm.deepdive.notes.service;
 import androidx.lifecycle.LiveData;
 import edu.cnm.deepdive.notes.model.dao.NoteDao;
 import edu.cnm.deepdive.notes.model.entity.Note;
+import edu.cnm.deepdive.notes.model.entity.User;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.core.Single;
@@ -49,4 +50,7 @@ public class NoteRepository {
     return noteDao.selectByCreatedOnAsc();
   }
 
+  public LiveData<List<Note>> getAllForUser(User user) {
+    return noteDao.selectByUserId(user.getId());
+  }
 }
