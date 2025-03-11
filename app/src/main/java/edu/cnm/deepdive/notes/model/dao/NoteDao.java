@@ -7,8 +7,10 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 import edu.cnm.deepdive.notes.model.entity.Note;
+import edu.cnm.deepdive.notes.model.pojo.NoteWithUser;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import java.time.Instant;
@@ -71,8 +73,12 @@ public interface NoteDao {
   @Query("SELECT * FROM note ORDER BY title DESC")
   LiveData<List<Note>> selectByTitleDesc();
 
+  @Transaction
   @Query("SELECT * FROM note WHERE title LIKE :filter ORDER BY title ASC")
-  LiveData<List<Note>> selectWhereTitleLikeByTitleAsc(String filter);
+  LiveData<List<NoteWithUser>> selectWhereTitleLikeByTitleAsc(String filter);
+
+  @Query("SELECT * FROM note WHERE user_id = :userId ORDER BY created_on ASC")
+  LiveData<List<Note>> selectByUserId(long userId);
 
 
 
