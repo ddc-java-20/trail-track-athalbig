@@ -30,6 +30,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "notes"
+rootProject.name = "trail-track"
 
 include(":app")

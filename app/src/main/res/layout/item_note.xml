@@ -14,7 +14,7 @@
     android:layout_height="wrap_content"
     android:layout_weight="8"
     android:layout_margin="@dimen/half_dynamic_spacing"
-    tools:text="This is a very important note"/>
+    tools:text="This is a very important pin"/>
 
   <TextView
     android:id="@+id/modified_on"

@@ -26,7 +26,7 @@ For each type of intended user, include at least 1 _user story_. A user story is
 
 Please avoid writing too much for the user story. In particular, if the way the user story is written makes it difficult to see the _who_, _what_, and _why_, then you probably need to re-write it more directly. (On the other hand, a user story should not simply be a re-statement of the intended user description.)
 
-Here is one (silly) example of an intended user, along with a user story. Please note not only the conceptual structure, but the Markdown syntax used.
+Here is one (silly) example of an intended user, along with a user story. Please pin not only the conceptual structure, but the Markdown syntax used.
 
 * People who like to use randomness in their decision-making.
 
