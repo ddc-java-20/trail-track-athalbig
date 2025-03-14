@@ -7,7 +7,7 @@
 
   <fragment
     android:id="@+id/home_fragment"
-    android:name="edu.cnm.deepdive.trailTrack.controller.HomeFragment"
+    android:name="edu.cnm.deepdive.trailtrack.controller.HomeFragment"
     android:label="@string/home_fragment_label"
     tools:layout="@layout/fragment_home">
 
@@ -16,7 +16,7 @@
       app:destination="@id/edit_fragment">
 
       <argument
-        android:name="note_id"
+        android:name="pin_id"
         app:argType="long"
         android:defaultValue="0L"/>
 
@@ -30,11 +30,11 @@
 
   <dialog
     android:id="@+id/edit_fragment"
-    android:name="edu.cnm.deepdive.trailTrack.controller.EditFragment"
+    android:name="edu.cnm.deepdive.trailtrack.controller.EditFragment"
     tools:layout="@layout/fragment_edit">
 
     <argument
-      android:name="note_id"
+      android:name="pin_id"
       app:argType="long"
       android:defaultValue="0L"/>
 
@@ -42,6 +42,6 @@
 
   <dialog
     android:id="@+id/explanation_fragment"
-    android:name="edu.cnm.deepdive.trailTrack.controller.ExplanationFragment"/>
+    android:name="edu.cnm.deepdive.trailtrack.controller.ExplanationFragment"/>
 
 </navigation>

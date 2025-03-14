@@ -15,16 +15,16 @@
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
-    tools:listitem="@layout/item_note"/>
+    tools:listitem="@layout/item_pin"/>
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/new_note"
+    android:id="@+id/new_pin"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:contentDescription="@string/new_note_description"
+    android:contentDescription="@string/new_pin_description"
     android:layout_margin="@dimen/half_dynamic_spacing"
-    android:src="@drawable/new_note"
-    android:tooltipText="@string/new_note_description"
+    android:src="@drawable/new_pin"
+    android:tooltipText="@string/new_pin_description"
     app:useCompatPadding="true"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"/>

@@ -1,14 +1,14 @@
 <resources>
 
-  <string name="new_note_description">Create new pin</string>
-  <string name="edit_note">Edit</string>
-  <string name="delete_note">Delete</string>
+  <string name="new_pin_description">Create new pin</string>
+  <string name="edit_pin">Edit</string>
+  <string name="delete_pin">Delete</string>
   <string name="title_hint">Title</string>
   <string name="content_hint">Details</string>
   <string name="save_tooltip">Save current pin</string>
   <string name="cancel_tooltip">Cancel changes</string>
   <string name="capture_tooltip">Capture image from camera or gallery</string>
-  <string name="home_fragment_label">Notes</string>
+  <string name="home_fragment_label">Pins</string>
   <string name="camera_permission_explanation">Granting permission to access the camera allows the app to attach an image to each pin.</string>
   <string name="camera_permission_title">Camera permission</string>
   <string name="capture_directory">captured-images</string>

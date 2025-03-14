@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item
+    android:id="@+id/edit_pin"
+    android:title="@string/edit_pin"/>
+
+  <item
+    android:id="@+id/delete_pin"
+    android:title="@string/delete_pin"/>
+
+</menu>
