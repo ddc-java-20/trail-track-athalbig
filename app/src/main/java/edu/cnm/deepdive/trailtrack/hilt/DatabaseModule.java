@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import edu.cnm.deepdive.trailtrack.model.dao.PinDao;
+import edu.cnm.deepdive.trailtrack.model.dao.TrackDao;
 import edu.cnm.deepdive.trailtrack.model.dao.UserDao;
 import edu.cnm.deepdive.trailtrack.service.PinDatabase;
 import edu.cnm.deepdive.trailtrack.service.Preloader;
@@ -22,7 +23,6 @@ public class DatabaseModule {
   PinDatabase provideDatabase(@ApplicationContext Context context, Preloader callback) {
     return Room.databaseBuilder(context,
             PinDatabase.class, PinDatabase.getDatabaseName())
-        // TODO: 2/11/25 Attach callback for database preload.
         .addCallback(callback)
         .build();
   }
@@ -39,7 +39,10 @@ public class DatabaseModule {
     return pinDatabase.getUserDao();
   }
 
-  // TODO: 3/17/25 Add another provide method for TrackDao.
+  @Provides
+  @Singleton
+  TrackDao provideTrackDao(PinDatabase pinDatabase) { return pinDatabase.getTrackDao(); }
+  // Add another provide method for TrackDao.
   
 
 }

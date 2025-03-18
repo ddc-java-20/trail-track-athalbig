@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import edu.cnm.deepdive.trailtrack.model.pojo.Location;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity(
     tableName = "pin",
@@ -27,6 +28,13 @@ public class Pin {
   @ColumnInfo(collate = ColumnInfo.NOCASE)
   @Expose
   private String title = "";
+
+  // TODO: 3/18/25 add annotations?
+  private UUID trackId;
+
+  // TODO: 3/18/25 add annotations?
+  private UUID userId;
+
 
   @NonNull
   @Expose

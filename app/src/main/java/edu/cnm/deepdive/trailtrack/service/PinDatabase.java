@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 import edu.cnm.deepdive.trailtrack.model.dao.PinDao;
+import edu.cnm.deepdive.trailtrack.model.dao.TrackDao;
 import edu.cnm.deepdive.trailtrack.model.dao.UserDao;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
 import edu.cnm.deepdive.trailtrack.model.entity.Track;
@@ -28,7 +29,7 @@ public abstract class PinDatabase extends RoomDatabase {
 
   public abstract UserDao getUserDao();
 
-  // TODO: 3/17/25 Add method for getting TrackDao.
+  public abstract TrackDao getTrackDao();
 
   public static class Converters {
 
