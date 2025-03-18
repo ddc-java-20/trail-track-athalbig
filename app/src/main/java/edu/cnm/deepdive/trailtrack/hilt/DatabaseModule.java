@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import edu.cnm.deepdive.trailtrack.model.dao.PinDao;
+import edu.cnm.deepdive.trailtrack.model.dao.UserDao;
 import edu.cnm.deepdive.trailtrack.service.PinDatabase;
 import edu.cnm.deepdive.trailtrack.service.Preloader;
 import javax.inject.Singleton;
@@ -31,5 +32,14 @@ public class DatabaseModule {
   PinDao providePinDao(PinDatabase database) {
     return database.getPinDao();
   }
+
+  @Provides
+  @Singleton
+  UserDao provideUserDao(PinDatabase pinDatabase) {
+    return pinDatabase.getUserDao();
+  }
+
+  // TODO: 3/17/25 Add another provide method for TrackDao.
+  
 
 }

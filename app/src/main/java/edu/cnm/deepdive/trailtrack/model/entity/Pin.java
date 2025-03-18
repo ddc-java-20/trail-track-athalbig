@@ -3,10 +3,12 @@ package edu.cnm.deepdive.trailtrack.model.entity;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
+import edu.cnm.deepdive.trailtrack.model.pojo.Location;
 import java.time.Instant;
 
 @Entity(
@@ -40,6 +42,9 @@ public class Pin {
   @ColumnInfo(name = "modified_on", index = true)
   private Instant modifiedOn = Instant.now();
 
+  @Embedded
+  @NonNull
+  private Location location;
 
   public long getId() {
     return id;
@@ -91,5 +96,15 @@ public class Pin {
 
   public void setModifiedOn(@NonNull Instant modifiedOn) {
     this.modifiedOn = modifiedOn;
+  }
+
+
+  @NonNull
+  public Location getLocation() {
+    return location;
+  }
+
+  public void setLocation(@NonNull Location location) {
+    this.location = location;
   }
 }

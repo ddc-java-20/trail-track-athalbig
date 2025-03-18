@@ -6,11 +6,14 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 import edu.cnm.deepdive.trailtrack.model.dao.PinDao;
+import edu.cnm.deepdive.trailtrack.model.dao.UserDao;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
+import edu.cnm.deepdive.trailtrack.model.entity.Track;
+import edu.cnm.deepdive.trailtrack.model.entity.User;
 import edu.cnm.deepdive.trailtrack.service.PinDatabase.Converters;
 import java.time.Instant;
 
-@Database(entities = {Pin.class}, version = PinDatabase.VERSION)
+@Database(entities = {Pin.class, Track.class, User.class}, version = PinDatabase.VERSION)
 @TypeConverters(Converters.class)
 public abstract class PinDatabase extends RoomDatabase {
 
@@ -22,6 +25,10 @@ public abstract class PinDatabase extends RoomDatabase {
   }
 
   public abstract PinDao getPinDao();
+
+  public abstract UserDao getUserDao();
+
+  // TODO: 3/17/25 Add method for getting TrackDao.
 
   public static class Converters {
 
