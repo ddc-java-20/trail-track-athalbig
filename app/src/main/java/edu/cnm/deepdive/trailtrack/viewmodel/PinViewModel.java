@@ -11,7 +11,9 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
+import edu.cnm.deepdive.trailtrack.model.entity.User;
 import edu.cnm.deepdive.trailtrack.service.PinRepository;
+import edu.cnm.deepdive.trailtrack.service.UserRepository;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import java.util.List;
 import javax.inject.Inject;
@@ -20,8 +22,10 @@ import javax.inject.Inject;
 public class PinViewModel extends ViewModel implements DefaultLifecycleObserver {
 
   private final PinRepository pinRepository;
+  private final UserRepository userRepository;
   private final MutableLiveData<Long> pinId;
   private final LiveData<Pin> pin;
+  private final MutableLiveData<User> user;
   private final MutableLiveData<Uri> captureUri;
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
@@ -29,10 +33,12 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
   private Uri pendingCaptureUri;
 
   @Inject
-  PinViewModel(PinRepository pinRepository) {
+  PinViewModel(PinRepository pinRepository, UserRepository userRepository) {
     this.pinRepository = pinRepository;
+    this.userRepository = userRepository;
     pinId = new MutableLiveData<>();
     pin = Transformations.switchMap(pinId, pinRepository::get);
+    user = new MutableLiveData<>();
     captureUri = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
@@ -41,13 +47,14 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
   public void savePin(Pin pin) {
     // 2/12/25 Reset our throwable LiveData.
     throwable.setValue(null); // Will be invoked from controller on UI thread.
-    // 2/12/25 Invoke save method of repository to get the machine for saving.
-    // 2/12/25 Invoke the subscribe method on the machine, to start it and attach consumers.
-    //   There will be 2 consumers: one for a successful result (a Pin) and one for an unsuccesful
-    //   result (a Throwable). the first puts the Pin into a LiveData bucket; the second invokes
-    //   a helper method.
-    pinRepository
-        .save(pin)
+    userRepository
+        .getCurrentUser()
+        .map((user) -> {
+          this.user.postValue(user);
+          pin.setUserId(user.getId());
+          return pin;
+        })
+        .flatMap(pinRepository::save)
         .ignoreElement()
         .subscribe(
             () -> {
@@ -57,10 +64,10 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
         );
   }
 
-  public void fetch(long pinId) {
+  public void fetch(long noteId) {
     throwable.setValue(null);
-    // TODO: 2/18/25 Consider this.pin.setValue(null)
-    this.pinId.setValue(pinId);
+    // TODO: 2/18/25 Consider this.note.setValue(null)
+    this.pinId.setValue(noteId);
   }
 
   public void delete(Pin pin) {
@@ -68,7 +75,8 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
     pinRepository
         .remove(pin)
         .subscribe(
-            () -> {},
+            () -> {
+            },
             this::postThrowable,
             pending
         );
@@ -92,7 +100,8 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
   }
 
   public LiveData<List<Pin>> getPins() {
-    return pinRepository.getAll();
+    fetchCurrentUser();
+    return Transformations.switchMap(user, pinRepository::getAllForUser);
   }
 
   public LiveData<Uri> getCaptureUri() {
@@ -113,8 +122,19 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
     DefaultLifecycleObserver.super.onStop(owner);
   }
 
+  private void fetchCurrentUser() {
+    throwable.setValue(null);
+    userRepository
+        .getCurrentUser()
+        .subscribe(
+            user::postValue,
+            this::postThrowable,
+            pending
+        );
+  }
+
   private void postThrowable(Throwable throwable) {
-    Log.e(PinViewModel.class.getSimpleName(), throwable.getMessage(), throwable);
+    Log.e(edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel.class.getSimpleName(), throwable.getMessage(), throwable);
     this.throwable.postValue(throwable);
   }
 

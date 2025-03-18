@@ -8,7 +8,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 import edu.cnm.deepdive.trailtrack.model.entity.User;
-import edu.cnm.deepdive.trailtrack.model.pojo.UserWithPins;
+import edu.cnm.deepdive.trailtrack.model.pojo.UserWithContent;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
@@ -38,7 +38,8 @@ public interface UserDao {
 
   @Transaction
   @Query("SELECT * FROM user WHERE user_id = :id")
-  LiveData<UserWithPins> selectWithNotes(long id);
+    // TODO: 3/18/25 think about order
+  LiveData<UserWithContent> selectWithPins(long id);
 
   @Query("SELECT * FROM user WHERE oauth_key = :oauthkey")
   Maybe<User> select(String oauthkey);

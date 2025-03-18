@@ -3,12 +3,18 @@ package edu.cnm.deepdive.trailtrack.model.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(
     tableName = "track",
-    indices = {},
-    foreignKeys = {}
+    indices = {
+        @Index({"user_id", "name"})
+    },
+    foreignKeys = {
+        @ForeignKey(entity = User.class, parentColumns = "user_id", childColumns = "user_id", onDelete = ForeignKey.CASCADE)
+    }
 )
 public class Track {
 
@@ -17,11 +23,9 @@ public class Track {
   private long id;
 
   @NonNull
-  @ColumnInfo(name = "track_name")
-  private String trackName = "";
+  private String name = "";
 
-  @NonNull
-  @ColumnInfo
+  @ColumnInfo(name = "user_id", index = true)
   private long userId;
 
   public long getId() {
@@ -33,12 +37,12 @@ public class Track {
   }
 
   @NonNull
-  public String getTrackName() {
-    return trackName;
+  public String getName() {
+    return name;
   }
 
-  public void setTrackName(@NonNull String trackName) {
-    this.trackName = trackName;
+  public void setName(@NonNull String name) {
+    this.name = name;
   }
 
   public long getUserId() {

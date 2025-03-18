@@ -42,7 +42,6 @@ public class DatabaseModule {
   @Provides
   @Singleton
   TrackDao provideTrackDao(PinDatabase pinDatabase) { return pinDatabase.getTrackDao(); }
-  // Add another provide method for TrackDao.
-  
+
 
 }

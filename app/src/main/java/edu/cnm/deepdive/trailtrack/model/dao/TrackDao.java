@@ -5,11 +5,14 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 import edu.cnm.deepdive.trailtrack.model.entity.Track;
 import edu.cnm.deepdive.trailtrack.model.entity.User;
+import edu.cnm.deepdive.trailtrack.model.pojo.TrackWithPins;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
+import java.util.List;
 
 @Dao
 public interface TrackDao {
@@ -31,8 +34,9 @@ public interface TrackDao {
   @Delete
   Completable delete(Track track);
 
-  @Query("SELECT * FROM user WHERE user_id = :id")
-  LiveData<Track> select(long id);
+  @Transaction
+  @Query("SELECT * FROM track WHERE user_id = :id ORDER BY name ASC")
+  LiveData<List<TrackWithPins>> select(long id);
 
 
 

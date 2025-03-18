@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
@@ -16,6 +17,10 @@ import java.util.UUID;
     tableName = "pin",
     indices = {
         @Index(value = {"title"}, unique = true)
+    },
+    foreignKeys = {
+        @ForeignKey(entity = User.class, parentColumns = "user_id", childColumns = "user_id", onDelete = ForeignKey.CASCADE),
+        @ForeignKey(entity = Track.class, parentColumns = "track_id", childColumns = "track_id", onDelete = ForeignKey.SET_NULL)
     }
 )
 public class Pin {
@@ -29,11 +34,11 @@ public class Pin {
   @Expose
   private String title = "";
 
-  // TODO: 3/18/25 add annotations?
-  private UUID trackId;
+  @ColumnInfo(name = "track_id", index = true)
+  private Long trackId;
 
-  // TODO: 3/18/25 add annotations?
-  private UUID userId;
+  @ColumnInfo(name = "user_id", index = true)
+  private long userId;
 
 
   @NonNull
@@ -51,7 +56,6 @@ public class Pin {
   private Instant modifiedOn = Instant.now();
 
   @Embedded
-  @NonNull
   private Location location;
 
   public long getId() {
@@ -107,12 +111,28 @@ public class Pin {
   }
 
 
-  @NonNull
-  public Location getLocation() {
+   public Location getLocation() {
     return location;
   }
 
-  public void setLocation(@NonNull Location location) {
+  public void setLocation(Location location) {
     this.location = location;
   }
+
+  public Long getTrackId() {
+    return trackId;
+  }
+
+  public void setTrackId(Long trackId) {
+    this.trackId = trackId;
+  }
+
+  public long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(long userId) {
+    this.userId = userId;
+  }
+
 }

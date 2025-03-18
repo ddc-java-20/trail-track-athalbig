@@ -54,11 +54,14 @@ public interface PinDao {
   @Query("SELECT * FROM pin WHERE pin_id = :id")
   LiveData<Pin> selectById(long id);
 
-  @Query("SELECT * FROM pin ORDER BY created_on ASC")
-  LiveData<List<Pin>> selectByCreatedOnAsc();
+  @Query("SELECT * FROM pin WHERE user_id = :userId ORDER BY created_on ASC")
+  LiveData<List<Pin>> selectByCreatedOnAsc(long userId);
 
   @Query("SELECT * FROM pin ORDER BY created_on DESC")
   LiveData<List<Pin>> selectByCreatedOnDesc();
+
+  @Query("SELECT * FROM pin WHERE track_id = :trackId ORDER BY created_on ASC")
+  LiveData<List<Pin>> selectByTrackId(long trackId);
 
   @Query("SELECT * FROM pin WHERE created_on >= :rangeStart AND created_on < :rangeEnd  ORDER BY created_on ASC")
   LiveData<List<Pin>> selectWhereCreatedOnInRangeByCreatedOnAsc(Instant rangeStart, Instant rangeEnd);
@@ -72,6 +75,8 @@ public interface PinDao {
   @Query("SELECT * FROM pin WHERE title LIKE :filter ORDER BY title ASC")
   LiveData<List<Pin>> selectWhereTitleLikeByTitleAsc(String filter);
 
+  @Query("SELECT * FROM pin WHERE user_id = :userId ORDER BY created_on ASC")
+  LiveData<List<Pin>> selectByUserId(long userId);
 
 
 }
