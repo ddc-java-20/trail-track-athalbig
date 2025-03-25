@@ -3,16 +3,21 @@ package edu.cnm.deepdive.trailtrack.controller;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.lifecycle.Lifecycle.State;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.trailtrack.R;
 import edu.cnm.deepdive.trailtrack.adapter.PinsAdapter;
@@ -22,10 +27,12 @@ import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.util.List;
 
 @AndroidEntryPoint
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements MenuProvider {
 
   private static final String TAG = HomeFragment.class.getSimpleName();
+
   private FragmentHomeBinding binding;
+  private LoginViewModel loginViewModel;
   private PinViewModel viewModel;
 
   @Override
@@ -78,5 +85,21 @@ binding.newPin.setOnClickListener((v) -> Navigation.findNavController(binding.ge
       return true;
     });
     binding.pins.setAdapter(adapter);
+  }
+
+  @Override
+  public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+    menuInflater.inflate(R.menu.note_actions, menu);
+  }
+
+  @Override
+  public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+    boolean handled = true;
+    if (menuItem.getItemId() == R.id.sign_out) {
+      loginViewModel.signOut();
+    } else {
+      handled = false;
+    }
+    return handled;
   }
 }

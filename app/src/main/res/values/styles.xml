@@ -33,6 +33,7 @@
   <style name="AppTheme.Toolbar" parent="Widget.Material3.Toolbar">
     <item name="android:background">?attr/colorPrimary</item>
     <item name="titleTextAppearance">@style/ToolbarTitle</item>
+    <item name="colorControlNormal">?attr/colorOnPrimary</item>
   </style>
 
   <style name="ToolbarTitle">
