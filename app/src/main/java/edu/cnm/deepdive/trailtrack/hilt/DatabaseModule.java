@@ -23,7 +23,7 @@ public class DatabaseModule {
   PinDatabase provideDatabase(@ApplicationContext Context context, Preloader callback) {
     return Room.databaseBuilder(context,
             PinDatabase.class, PinDatabase.getDatabaseName())
-        .addCallback(callback)
+//        .addCallback(callback)
         .build();
   }
 

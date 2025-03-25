@@ -64,10 +64,10 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
         );
   }
 
-  public void fetch(long noteId) {
+  public void fetch(long pinId) {
     throwable.setValue(null);
-    // TODO: 2/18/25 Consider this.note.setValue(null)
-    this.pinId.setValue(noteId);
+    // TODO: 2/18/25 Consider this.pin.setValue(null)
+    this.pinId.setValue(pinId);
   }
 
   public void delete(Pin pin) {

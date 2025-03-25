@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.notes.controller;
+package edu.cnm.deepdive.trailtrack.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.snackbar.Snackbar;
-import edu.cnm.deepdive.notes.R;
-import edu.cnm.deepdive.notes.databinding.FragmentLoginBinding;
-import edu.cnm.deepdive.notes.viewmodel.LoginViewModel;
+import edu.cnm.deepdive.trailtrack.viewmodel.LoginViewModel;
+import edu.cnm.deepdive.trailtrack.R;
+import edu.cnm.deepdive.trailtrack.databinding.FragmentLoginBinding;
+
 
 /** @noinspection deprecation*/
 public class LoginFragment extends Fragment {

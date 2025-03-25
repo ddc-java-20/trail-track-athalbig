@@ -2,27 +2,27 @@ package edu.cnm.deepdive.trailtrack.controller;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import androidx.lifecycle.Lifecycle.State;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.trailtrack.R;
 import edu.cnm.deepdive.trailtrack.adapter.PinsAdapter;
 import edu.cnm.deepdive.trailtrack.databinding.FragmentHomeBinding;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
+import edu.cnm.deepdive.trailtrack.viewmodel.LoginViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class HomeFragment extends Fragment implements MenuProvider {
 
   private FragmentHomeBinding binding;
   private LoginViewModel loginViewModel;
-  private PinViewModel viewModel;
+  private PinViewModel pinViewModel;
 
   @Override
   public View onCreateView(
@@ -48,10 +48,20 @@ binding.newPin.setOnClickListener((v) -> Navigation.findNavController(binding.ge
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     LifecycleOwner lifecycleOwner = getViewLifecycleOwner();
-    viewModel = new ViewModelProvider(requireActivity()).get(PinViewModel.class);
-    viewModel
+    pinViewModel = new ViewModelProvider(requireActivity()).get(PinViewModel.class);
+    pinViewModel
         .getPins()
         .observe(lifecycleOwner, this::handlePins);
+    loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+    loginViewModel
+        .getAccount()
+        .observe(lifecycleOwner, (account) -> {
+          if (account == null) {
+            Navigation.findNavController(binding.getRoot())
+                .navigate(HomeFragmentDirections.navigateToPreLoginFragment());
+          }
+        });
+    requireActivity().addMenuProvider(this, getViewLifecycleOwner(), State.RESUMED);
   }
 
   @Override
@@ -77,7 +87,7 @@ binding.newPin.setOnClickListener((v) -> Navigation.findNavController(binding.ge
           .findItem(R.id.delete_pin)
           .setOnMenuItemClickListener((item) -> {
             Log.d(TAG, String.format("onMenuItemClick: item=%s", item));
-            viewModel.delete(pin);
+            pinViewModel.delete(pin);
 //            adapter.notifyItemRemoved(position);
             return true;
           });
@@ -89,7 +99,7 @@ binding.newPin.setOnClickListener((v) -> Navigation.findNavController(binding.ge
 
   @Override
   public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-    menuInflater.inflate(R.menu.note_actions, menu);
+    menuInflater.inflate(R.menu.pin_actions, menu);
   }
 
   @Override

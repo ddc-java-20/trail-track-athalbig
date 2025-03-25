@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.notes.viewmodel;
+package edu.cnm.deepdive.trailtrack.viewmodel;
 
 import android.content.Intent;
 import android.util.Log;
@@ -12,7 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import edu.cnm.deepdive.notes.service.GoogleSignInService;
+import edu.cnm.deepdive.trailtrack.service.GoogleSignInService;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import javax.inject.Inject;
 

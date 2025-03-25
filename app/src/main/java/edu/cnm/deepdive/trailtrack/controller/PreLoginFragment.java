@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.notes.controller;
+package edu.cnm.deepdive.trailtrack.controller;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import dagger.hilt.android.AndroidEntryPoint;
-import edu.cnm.deepdive.notes.R;
-import edu.cnm.deepdive.notes.viewmodel.LoginViewModel;
+import edu.cnm.deepdive.trailtrack.R;
+import edu.cnm.deepdive.trailtrack.viewmodel.LoginViewModel;
 
 /** @noinspection deprecation*/
 @AndroidEntryPoint

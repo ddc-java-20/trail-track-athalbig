@@ -7,7 +7,7 @@
 
   <fragment
     android:id="@+id/pre_login_fragment"
-    android:name="edu.cnm.deepdive.notes.controller.PreLoginFragment"
+    android:name="edu.cnm.deepdive.trailtrack.controller.PreLoginFragment"
     tools:layout="@layout/fragment_pre_login">
 
     <action
@@ -24,7 +24,7 @@
 
   <fragment
     android:id="@+id/login_fragment"
-    android:name="edu.cnm.deepdive.notes.controller.LoginFragment"
+    android:name="edu.cnm.deepdive.trailtrack.controller.LoginFragment"
     android:label="@string/login_fragment_label"
     tools:layout="@layout/fragment_login">
 
