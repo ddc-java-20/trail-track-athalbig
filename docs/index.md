@@ -49,7 +49,8 @@ For example, this starter app already includes the necessary data model elements
     
 ## Device/external services
 
-If the client component will need to access special services of the device (e.g., sensors, contacts, messaging), list them here using a bullet list. Also, if the client component will need to access already-existing external services (e.g., real-time weather data, Open Movie Database, Open Trivia Database), those should also be listed here; any such references to external services should include links to the main page or API description page for the service.
+- Location
+- Google Maps
 
 ## Stretch goals and possible enhancements 
 
