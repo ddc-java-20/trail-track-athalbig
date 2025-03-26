@@ -7,26 +7,14 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   tools:context=".controller.HomeFragment">
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/pins"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:orientation="vertical"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    tools:listitem="@layout/item_pin"/>
+  <androidx.fragment.app.FragmentContainerView
+    android:layout_width=""
+    android:layout_height=""
 
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/new_pin"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:contentDescription="@string/new_pin_description"
-    android:layout_margin="@dimen/half_dynamic_spacing"
-    android:src="@drawable/new_pin"
-    android:tooltipText="@string/new_pin_description"
-    app:useCompatPadding="true"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+  <com.google.android.material.bottomnavigation.BottomNavigationView
+    android:layout_width=""
+    android:layout_height=""
 
 </androidx.constraintlayout.widget.ConstraintLayout>

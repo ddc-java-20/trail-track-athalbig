@@ -99,7 +99,7 @@ binding.newPin.setOnClickListener((v) -> Navigation.findNavController(binding.ge
 
   @Override
   public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-    menuInflater.inflate(R.menu.pin_actions, menu);
+    menuInflater.inflate(R.menu.main_actions, menu);
   }
 
   @Override

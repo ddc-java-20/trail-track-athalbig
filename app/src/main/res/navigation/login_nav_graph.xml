@@ -41,6 +41,8 @@
     android:label="@string/home_fragment_label"
     tools:layout="@layout/fragment_home">
 
+<!--   todo Add these to the menu resource with SAME ids-->
+
     <action
       android:id="@+id/navigate_to_pre_login_fragment"
       app:destination="@id/pre_login_fragment"
