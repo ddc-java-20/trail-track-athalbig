@@ -78,6 +78,23 @@ public class MainActivity extends AppCompatActivity implements OnDismissListener
     }
   }
 
+  private void getLocationPermission() {
+    /*
+     * Request location permission, so that we can get the location of the
+     * device. The result of the permission request is handled by a callback,
+     * onRequestPermissionsResult.
+     */
+    if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+        android.Manifest.permission.ACCESS_FINE_LOCATION)
+        == PackageManager.PERMISSION_GRANTED) {
+      locationPermissionGranted = true;
+    } else {
+      ActivityCompat.requestPermissions(this,
+          new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+          PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+    }
+  }
+
   private boolean shouldRequestCameraPermission() {
     return ContextCompat.checkSelfPermission(this, CAMERA)
         != PackageManager.PERMISSION_GRANTED;
