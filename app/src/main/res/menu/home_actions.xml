@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item
+    android:id="@+id/view_map"
+    android:title="@string/view_map_title"
+    android:icon="@drawable/map"
+    app:showAsAction="ifRoom"/>
+
+  <item
+ android:id="@+id/view_pins"
+    android:title="@string/view_pins_title"
+    android:icon="@drawable/pin"
+    app:showAsAction="ifRoom"/>
+
+</menu>

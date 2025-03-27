@@ -39,10 +39,13 @@ public class HomeFragment extends Fragment implements MenuProvider {
   public View onCreateView(
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentHomeBinding.inflate(inflater, container, false);
-binding.newPin.setOnClickListener((v) -> Navigation.findNavController(binding.getRoot())
-    .navigate(HomeFragmentDirections.openEditFragment()));
+    binding.newPin.setOnClickListener((v) -> Navigation.findNavController(binding.getRoot())
+        .navigate(HomeFragmentDirections.openEditFragment()));
+    // TODO: 3/27/25 Fix this binding issue. New pin is now in the bottom fragment.
     return binding.getRoot();
   }
+
+
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
