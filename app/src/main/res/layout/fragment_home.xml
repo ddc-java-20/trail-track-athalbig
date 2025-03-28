@@ -8,12 +8,14 @@
   tools:context=".controller.HomeFragment">
 
   <androidx.fragment.app.FragmentContainerView
-    android:id="@+id/home_fragment"
+    android:id="@+id/maps_pins_fragment_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-  </androidx.fragment.app.FragmentContainerView>
-
+    android:layout_height="0dp"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/maps_pins_nav_graph"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/bottom_navigation"/>
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/bottom_navigation"
@@ -21,10 +23,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="start"
     app:layout_constraintBottom_toBottomOf="parent"
-    android:layout_margin="@dimen/half_dynamic_spacing"
     app:menu="@menu/home_actions"/>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

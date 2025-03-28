@@ -59,9 +59,6 @@
 
     </action>
 
-    <action
-      android:id="@+id/open_explanation_fragment"
-      app:destination="@id/explanation_fragment"/>
 
   </fragment>
 
@@ -76,9 +73,5 @@
       android:defaultValue="0L"/>
 
   </dialog>
-
-  <dialog
-    android:id="@+id/explanation_fragment"
-    android:name="edu.cnm.deepdive.trailtrack.controller.ExplanationFragment"/>
 
 </navigation>

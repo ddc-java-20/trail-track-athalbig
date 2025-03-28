@@ -19,5 +19,5 @@ plugins {
     alias(libs.plugins.navigation.safeargs).apply(false)
     alias(libs.plugins.schema.parser).apply(false)
     alias(libs.plugins.junit).apply(false)
-    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin) apply false
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin).apply(false)
 }

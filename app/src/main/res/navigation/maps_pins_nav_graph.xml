@@ -2,10 +2,35 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/maps_pins_nav_graph">
+  android:id="@+id/maps_pins_nav_graph"
+  app:startDestination="@id/map_fragment">
+
+  <action
+    android:id="@+id/open_explanation_fragment"
+    app:destination="@id/explanation_fragment">
+
+    <argument
+      android:name="permissions_to_explain"
+      app:argType="string[]"/>
 
 
+  </action>
 
+  <fragment
+    android:id="@+id/map_fragment"
+    android:name="edu.cnm.deepdive.trailtrack.controller.MapFragment"
+    android:label="@string/map_fragment_title"
+    tools:layout="@layout/fragment_map"/>
+
+  <dialog
+    android:id="@+id/explanation_fragment"
+    android:name="edu.cnm.deepdive.trailtrack.controller.ExplanationFragment">
+
+    <argument
+      android:name="permissions_to_explain"
+      app:argType="string[]"/>
+
+  </dialog>
 
 
 </navigation>

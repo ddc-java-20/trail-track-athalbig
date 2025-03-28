@@ -32,8 +32,8 @@ public class MapFragment extends Fragment {
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-      googleMap.setMyLocationEnabled(true);
-      googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//      googleMap.setMyLocationEnabled(true);
+//      googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
   };
 
@@ -48,10 +48,10 @@ public class MapFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    SupportMapFragment mapFragment =
-        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-    if (mapFragment != null) {
-      mapFragment.getMapAsync(callback);
-    }
+//    SupportMapFragment mapFragment =
+//        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+//    if (mapFragment != null) {
+//      mapFragment.getMapAsync(callback);
+//    }
   }
 }
