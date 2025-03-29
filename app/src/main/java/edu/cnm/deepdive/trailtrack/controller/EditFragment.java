@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.trailtrack.controller;
 
+import android.Manifest;
 import android.Manifest.permission;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -25,6 +27,7 @@ import edu.cnm.deepdive.trailtrack.R;
 import edu.cnm.deepdive.trailtrack.databinding.FragmentEditBinding;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
 import edu.cnm.deepdive.trailtrack.service.ImageFileProvider;
+import edu.cnm.deepdive.trailtrack.viewmodel.PermissionsViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.io.File;
 import java.util.UUID;
@@ -36,7 +39,8 @@ public class EditFragment extends BottomSheetDialogFragment {
   private static final String AUTHORITY = ImageFileProvider.class.getName().toLowerCase();
 
   private FragmentEditBinding binding;
-  private PinViewModel viewModel;
+  private PinViewModel pinViewModel;
+  private PermissionsViewModel permissionsViewModel;
   private long pinId;
   private Pin pin;
   private ActivityResultLauncher<Uri> captureLauncher;
@@ -66,7 +70,6 @@ public class EditFragment extends BottomSheetDialogFragment {
     binding.cancel.setOnClickListener((v) -> dismiss());
     binding.save.setOnClickListener((v) -> save());
     binding.capture.setOnClickListener((v) -> capture());
-    setCaptureVisibility();
     return binding.getRoot();
   }
 
@@ -74,11 +77,13 @@ public class EditFragment extends BottomSheetDialogFragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     // Connect to viewmodel(s) and observe LiveData.
-    viewModel = new ViewModelProvider(requireActivity()).get(PinViewModel.class);
+    FragmentActivity activity = requireActivity();
+    ViewModelProvider provider = new ViewModelProvider(activity);
+    pinViewModel = provider.get(PinViewModel.class);
     LifecycleOwner owner = getViewLifecycleOwner();
     if (pinId != 0) {
-      viewModel.fetch(pinId);
-      viewModel
+      pinViewModel.fetch(pinId);
+      pinViewModel
           .getPin()
           .observe(owner, this::handlePin);
     } else {
@@ -86,14 +91,20 @@ public class EditFragment extends BottomSheetDialogFragment {
       binding.image.setVisibility(View.GONE);
       pin = new Pin();
       uri = null;
-      viewModel.clearCaptureUri();
+      pinViewModel.clearCaptureUri();
     }
-    viewModel
+    pinViewModel
         .getCaptureUri()
         .observe(owner, this::handleCaptureUri);
-
+    permissionsViewModel = provider.get(PermissionsViewModel.class);
+    permissionsViewModel
+        .getPermissionsStatus()
+        .observe(owner, (permissions) -> {
+          //noinspection DataFlowIssue
+          binding.capture.setVisibility(permissions.getOrDefault(permission.CAMERA, false) ? View.VISIBLE : View.GONE);
+        });
     captureLauncher = registerForActivityResult(
-        new ActivityResultContracts.TakePicture(), viewModel::confirmCapture);
+        new ActivityResultContracts.TakePicture(), pinViewModel::confirmCapture);
   }
 
   @Override
@@ -116,7 +127,7 @@ public class EditFragment extends BottomSheetDialogFragment {
         .strip());
     pin.setImage(uri);
     // TODO: 2/18/25 Set/modify the createdOn/modifiedOn.
-    viewModel.savePin(pin);
+    pinViewModel.savePin(pin);
     dismiss();
   }
 
@@ -126,15 +137,6 @@ public class EditFragment extends BottomSheetDialogFragment {
       pin.setImage(uri);
       binding.image.setImageURI(uri);
       binding.image.setVisibility(View.VISIBLE);
-    }
-  }
-
-  private void setCaptureVisibility() {
-    if (ContextCompat.checkSelfPermission(requireContext(), permission.CAMERA) ==
-        PackageManager.PERMISSION_GRANTED) {
-      binding.capture.setVisibility(View.VISIBLE);
-    } else {
-      binding.capture.setVisibility(View.GONE);
     }
   }
 
@@ -170,7 +172,7 @@ public class EditFragment extends BottomSheetDialogFragment {
       captureFile = new File(captureDir, UUID.randomUUID().toString());
     } while (captureFile.exists());
     Uri uri = FileProvider.getUriForFile(context, AUTHORITY, captureFile); // Get a URI for the random file, using the provider infrastructure.
-    viewModel.setPendingCaptureUri(uri); // Store the URI in the viewmodel.
+    pinViewModel.setPendingCaptureUri(uri); // Store the URI in the viewmodel.
     captureLauncher.launch(uri); // Launch the capture launcher.
   }
 

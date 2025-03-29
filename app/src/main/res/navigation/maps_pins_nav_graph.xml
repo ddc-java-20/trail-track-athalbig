@@ -6,13 +6,13 @@
   app:startDestination="@id/map_fragment">
 
   <action
-    android:id="@+id/open_explanation_fragment"
-    app:destination="@id/explanation_fragment">
+    android:id="@+id/edit_pin"
+    app:destination="@id/edit_fragment">
 
     <argument
-      android:name="permissions_to_explain"
-      app:argType="string[]"/>
-
+      android:name="pin_id"
+      app:argType="long"
+      android:defaultValue="0L"/>
 
   </action>
 
@@ -22,15 +22,24 @@
     android:label="@string/map_fragment_title"
     tools:layout="@layout/fragment_map"/>
 
+ <fragment
+   android:id="@+id/pins_fragment"
+   android:name="edu.cnm.deepdive.trailtrack.controller.PinsFragment"
+   android:label="@string/pins_fragment_title"
+   tools:layout="@layout/fragment_pins"/>
+
   <dialog
-    android:id="@+id/explanation_fragment"
-    android:name="edu.cnm.deepdive.trailtrack.controller.ExplanationFragment">
+    android:id="@+id/edit_fragment"
+    android:name="edu.cnm.deepdive.trailtrack.controller.EditFragment"
+    tools:layout="@layout/fragment_edit">
 
     <argument
-      android:name="permissions_to_explain"
-      app:argType="string[]"/>
+      android:name="pin_id"
+      app:argType="long"
+      android:defaultValue="0L"/>
 
   </dialog>
+
 
 
 </navigation>

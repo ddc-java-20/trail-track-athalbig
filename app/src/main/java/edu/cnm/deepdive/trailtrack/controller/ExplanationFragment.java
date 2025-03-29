@@ -1,11 +1,15 @@
 package edu.cnm.deepdive.trailtrack.controller;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import edu.cnm.deepdive.trailtrack.R;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -30,12 +34,27 @@ public class ExplanationFragment extends DialogFragment {
   @NonNull
   @Override
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    Resources resources = getResources();
+    String packageName = requireActivity().getPackageName();
+    @SuppressLint("DiscouragedApi") String message = Arrays.stream(permissionsToExplain)
+        .map(permission -> permission.substring(permission.lastIndexOf('.') + 1))
+        .map(String::toLowerCase)
+        .map(permission -> permission.replace('.', '_'))
+        .map(permission -> permission + "_explanation")
+        .mapToInt(permission -> resources.getIdentifier(permission, "string", packageName))
+        .mapToObj(resources::getString)
+        .filter(string -> !string.isEmpty())
+        .collect(Collectors.joining("\n"));
+
+    OnDismissListener listener =
+        (OnDismissListener) getParentFragment().getParentFragment();
+
     return new AlertDialog.Builder(requireContext())
         .setTitle(R.string.permissions_explanation_title)
         .setIcon(android.R.drawable.ic_dialog_info)
-        .setMessage(Arrays.stream(permissionsToExplain).collect(Collectors.joining("\n")))
+        .setMessage(message)
         .setNeutralButton(android.R.string.ok, (dialog, which) -> {
-          ((OnDismissListener) requireActivity()).onDismiss(); // Tell activity we are done
+          listener.onDismiss(); // Tell activity we are done
         })
         .create();
   }

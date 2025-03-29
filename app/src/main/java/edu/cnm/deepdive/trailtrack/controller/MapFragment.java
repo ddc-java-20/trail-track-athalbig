@@ -15,9 +15,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.trailtrack.R;
 
+@AndroidEntryPoint
 public class MapFragment extends Fragment {
+
 
   private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -30,12 +33,20 @@ public class MapFragment extends Fragment {
      * install it inside the SupportMapFragment. This method will only be triggered once the
      * user has installed Google Play services and returned to the app.
      */
+    public void getMapAsync(OnMapReadyCallback callback) {
+
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
-//      googleMap.setMyLocationEnabled(true);
-//      googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+      if () {
+        googleMap.setMyLocationEnabled(true);
+      }
+      googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
   };
+
+
 
   @Nullable
   @Override
@@ -48,10 +59,10 @@ public class MapFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-//    SupportMapFragment mapFragment =
-//        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-//    if (mapFragment != null) {
-//      mapFragment.getMapAsync(callback);
-//    }
+    SupportMapFragment mapFragment =
+        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+    if (mapFragment != null) {
+      mapFragment.getMapAsync(callback);
+    }
   }
 }

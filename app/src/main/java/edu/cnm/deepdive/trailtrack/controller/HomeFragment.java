@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle.State;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,11 +30,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import dagger.hilt.android.AndroidEntryPoint;
-import edu.cnm.deepdive.trailtrack.MapsPinsNavGraphDirections;
 import edu.cnm.deepdive.trailtrack.R;
 import edu.cnm.deepdive.trailtrack.controller.ExplanationFragment.OnDismissListener;
 import edu.cnm.deepdive.trailtrack.databinding.FragmentHomeBinding;
 import edu.cnm.deepdive.trailtrack.viewmodel.LoginViewModel;
+import edu.cnm.deepdive.trailtrack.viewmodel.PermissionsViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.util.Arrays;
 import java.util.Map;
@@ -52,11 +53,15 @@ public class HomeFragment extends Fragment implements MenuProvider, OnDismissLis
   private FragmentHomeBinding binding;
   private LoginViewModel loginViewModel;
   private PinViewModel pinViewModel;
+  private PermissionsViewModel permissionsViewModel;
   private String[] permissionsToRequest;
-  private Map<String, Boolean> permissionsStatus;
-  /** @noinspection FieldCanBeLocal*/
-  private ActivityResultLauncher<String[]> requestPermissionsLauncher;
-  private NavController navController;
+  /**
+   * @noinspection FieldCanBeLocal
+   */
+  private ActivityResultLauncher<String[]> requestPermissionsLauncher = registerForActivityResult(
+      new ActivityResultContracts.RequestMultiplePermissions(), this::handleGrantResults);
+  private NavController childNavController;
+  private NavController parentNavController;
 
   @Override
   public View onCreateView(
@@ -70,16 +75,18 @@ public class HomeFragment extends Fragment implements MenuProvider, OnDismissLis
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     LifecycleOwner lifecycleOwner = getViewLifecycleOwner();
-    loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+    FragmentActivity activity = requireActivity();
+    ViewModelProvider provider = new ViewModelProvider(activity);
+    loginViewModel = provider.get(LoginViewModel.class);
     loginViewModel
         .getAccount()
         .observe(lifecycleOwner, (account) -> {
           if (account == null) {
-            navController.navigate(HomeFragmentDirections.navigateToPreLoginFragment());
+            parentNavController.navigate(HomeFragmentDirections.navigateToPreLoginFragment());
           }
         });
-    requireActivity().addMenuProvider(this, getViewLifecycleOwner(), State.RESUMED);
-    setupPermissions();
+    permissionsViewModel = provider.get(PermissionsViewModel.class);
+    activity.addMenuProvider(this, getViewLifecycleOwner(), State.RESUMED);
   }
 
   @Override
@@ -87,9 +94,11 @@ public class HomeFragment extends Fragment implements MenuProvider, OnDismissLis
     super.onResume();
     // TOD 3/28/25 Setup navigation connection. Connect the nav controller to the appbar and use
     //  the nav UI class to use bottom button with NavController
-    navController =
+    childNavController =
         ((NavHostFragment) binding.mapsPinsFragmentContainer.getFragment()).getNavController();
-    NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
+    parentNavController = Navigation.findNavController(binding.getRoot());
+    NavigationUI.setupWithNavController(binding.bottomNavigation, childNavController);
+    setupPermissions();
   }
 
   @Override
@@ -118,15 +127,16 @@ public class HomeFragment extends Fragment implements MenuProvider, OnDismissLis
     permissionsToRequest = Arrays.stream(permissionsNeeded)
         .filter(this::shouldRequestPermission)
         .toArray(String[]::new);
-    permissionsStatus = Arrays.stream(permissionsNeeded)
+    Map<String, Boolean> permissionsStatus = Arrays.stream(permissionsNeeded)
         .filter(Predicate.not(this::shouldRequestPermission))
         .collect(Collectors.toMap(Function.identity(), (permission) -> true));
+    permissionsViewModel.updatePermissionsStatus(permissionsStatus);
     String[] permissionsToExplain = Arrays.stream(permissionsToRequest)
         .filter(this::shouldExplainPermission)
         .toArray(String[]::new);
     if (permissionsToExplain.length > 0) {
-      navController.navigate(
-          MapsPinsNavGraphDirections.openExplanationFragment(permissionsToExplain));
+      parentNavController.navigate(
+          LoginFragmentDirections.openExplanationFragment(permissionsToExplain));
     } else {
       onDismiss();
     }
@@ -134,14 +144,12 @@ public class HomeFragment extends Fragment implements MenuProvider, OnDismissLis
 
   public void handleGrantResults(@NonNull Map<String, Boolean> grantResults) {
     Log.d(TAG, grantResults.toString());
-    permissionsStatus.putAll(grantResults);
+    permissionsViewModel.updatePermissionsStatus(grantResults);
 
   }
 
   @Override
   public void onDismiss() {
-    requestPermissionsLauncher = registerForActivityResult(
-        new ActivityResultContracts.RequestMultiplePermissions(), this::handleGrantResults);
     requestPermissionsLauncher.launch(permissionsToRequest);
   }
 

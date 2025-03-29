@@ -5,6 +5,16 @@
   android:id="@+id/nav_graph"
   app:startDestination="@id/pre_login_fragment">
 
+  <action
+    android:id="@+id/open_explanation_fragment"
+    app:destination="@id/explanation_fragment">
+
+    <argument
+      android:name="permissions_to_explain"
+      app:argType="string[]"/>
+
+  </action>
+
   <fragment
     android:id="@+id/pre_login_fragment"
     android:name="edu.cnm.deepdive.trailtrack.controller.PreLoginFragment"
@@ -63,15 +73,14 @@
   </fragment>
 
   <dialog
-    android:id="@+id/edit_fragment"
-    android:name="edu.cnm.deepdive.trailtrack.controller.EditFragment"
-    tools:layout="@layout/fragment_edit">
+    android:id="@+id/explanation_fragment"
+    android:name="edu.cnm.deepdive.trailtrack.controller.ExplanationFragment">
 
     <argument
-      android:name="pin_id"
-      app:argType="long"
-      android:defaultValue="0L"/>
+      android:name="permissions_to_explain"
+      app:argType="string[]"/>
 
   </dialog>
+
 
 </navigation>

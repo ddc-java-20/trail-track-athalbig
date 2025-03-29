@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import edu.cnm.deepdive.trailtrack.MapsPinsNavGraphDirections;
 import edu.cnm.deepdive.trailtrack.R;
 import edu.cnm.deepdive.trailtrack.adapter.PinsAdapter;
 import edu.cnm.deepdive.trailtrack.databinding.FragmentPinsBinding;
@@ -31,7 +32,7 @@ public class PinsFragment extends Fragment {
       Bundle savedInstanceState) {
     binding = FragmentPinsBinding.inflate(inflater, container, false);
     binding.newPin.setOnClickListener((v) -> Navigation.findNavController(binding.getRoot())
-        .navigate(HomeFragmentDirections.openEditFragment()));
+        .navigate(MapsPinsNavGraphDirections.editPin()));
     // TODO: 3/27/25 Fix this binding issue. New pin is now in the bottom fragment.
     return binding.getRoot();
   }
@@ -56,7 +57,7 @@ public class PinsFragment extends Fragment {
       menu.findItem(R.id.edit_pin).setOnMenuItemClickListener(item -> {
         Log.d(TAG, String.format("onMenuItemClick: item=%s", item));
         Navigation.findNavController(binding.getRoot())
-            .navigate(HomeFragmentDirections.openEditFragment().setPinId(pin.getId()));
+            .navigate(MapsPinsNavGraphDirections.editPin().setPinId(pin.getId()));
         return true;
       });
       menu
