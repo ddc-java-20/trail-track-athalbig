@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.trailtrack.controller;
 
+import android.Manifest.permission;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,10 +21,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.trailtrack.R;
+import edu.cnm.deepdive.trailtrack.viewmodel.PermissionsViewModel;
 
 @AndroidEntryPoint
 public class MapFragment extends Fragment {
 
+  private PermissionsViewModel permissionsViewModel;
 
   private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -33,36 +39,46 @@ public class MapFragment extends Fragment {
      * install it inside the SupportMapFragment. This method will only be triggered once the
      * user has installed Google Play services and returned to the app.
      */
-    public void getMapAsync(OnMapReadyCallback callback) {
-
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-      if () {
-        googleMap.setMyLocationEnabled(true);
+
+            googleMap.setMyLocationEnabled(true);
+
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+          }
+    };
+
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+        @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
+      return inflater.inflate(R.layout.fragment_map, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+      super.onViewCreated(view, savedInstanceState);
+
+//      FragmentActivity activity = requireActivity();
+//      ViewModelProvider provider = new ViewModelProvider(activity);
+//      LifecycleOwner owner = getViewLifecycleOwner();
+//
+//      permissionsViewModel = provider.get(PermissionsViewModel.class);
+//      permissionsViewModel
+//          .getPermissionsStatus()
+//          .observe(owner, (permissions) -> {
+//                //noinspection DataFlowIssue
+//                binding.capture.setVisibility(
+//                    permissions.getOrDefault(permission.CAMERA, false) ? View.VISIBLE : View.GONE);
+//              });
+//
+      SupportMapFragment mapFragment =
+          (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+      if (mapFragment != null) {
+        mapFragment.getMapAsync(callback);
       }
-      googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
-  };
-
-
-
-  @Nullable
-  @Override
-  public View onCreateView(@NonNull LayoutInflater inflater,
-      @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_map, container, false);
-  }
-
-  @Override
-  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    SupportMapFragment mapFragment =
-        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-    if (mapFragment != null) {
-      mapFragment.getMapAsync(callback);
     }
   }
-}
