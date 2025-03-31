@@ -1,0 +1,9 @@
+edu.cnm.deepdive.trailtrack
+edu.cnm.deepdive.trailtrack.adapter
+edu.cnm.deepdive.trailtrack.controller
+edu.cnm.deepdive.trailtrack.hilt
+edu.cnm.deepdive.trailtrack.model.dao
+edu.cnm.deepdive.trailtrack.model.entity
+edu.cnm.deepdive.trailtrack.model.pojo
+edu.cnm.deepdive.trailtrack.service
+edu.cnm.deepdive.trailtrack.viewmodel
