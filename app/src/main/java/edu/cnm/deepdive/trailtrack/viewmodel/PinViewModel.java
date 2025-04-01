@@ -11,11 +11,13 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
+import edu.cnm.deepdive.trailtrack.model.entity.Track;
 import edu.cnm.deepdive.trailtrack.model.entity.User;
 import edu.cnm.deepdive.trailtrack.service.PinRepository;
 import edu.cnm.deepdive.trailtrack.service.UserRepository;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 
 @HiltViewModel
@@ -24,6 +26,7 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
   private final PinRepository pinRepository;
   private final UserRepository userRepository;
   private final MutableLiveData<Long> pinId;
+  private final MutableLiveData<Track> track;
   private final LiveData<Pin> pin;
   private final MutableLiveData<User> user;
   private final MutableLiveData<Uri> captureUri;
@@ -38,6 +41,7 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
     this.userRepository = userRepository;
     pinId = new MutableLiveData<>();
     pin = Transformations.switchMap(pinId, pinRepository::get);
+    track = new MutableLiveData<>();
     user = new MutableLiveData<>();
     captureUri = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
@@ -99,9 +103,21 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
     return pin;
   }
 
+  public LiveData<Track> getTrack() {
+    return track;
+  }
+
+  public void setTrack(Track track) {
+    if (!Objects.equals(this.track.getValue(), track)) {
+      this.track.setValue(track);
+    }
+  }
+
   public LiveData<List<Pin>> getPins() {
-    fetchCurrentUser();
-    return Transformations.switchMap(user, pinRepository::getAllForUser);
+    return Transformations.switchMap(track, pinRepository::getAllForTrack);
+  }
+  public LiveData<List<Track>> getTracks() {
+    return pinRepository.getAllTracks();
   }
 
   public LiveData<Uri> getCaptureUri() {

@@ -3,6 +3,9 @@ package edu.cnm.deepdive.trailtrack.controller;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
@@ -13,19 +16,23 @@ import android.view.ViewGroup;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.trailtrack.MapsPinsNavGraphDirections;
 import edu.cnm.deepdive.trailtrack.R;
 import edu.cnm.deepdive.trailtrack.adapter.PinsAdapter;
 import edu.cnm.deepdive.trailtrack.databinding.FragmentPinsBinding;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
+import edu.cnm.deepdive.trailtrack.model.entity.Track;
 import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.util.List;
 
-public class PinsFragment extends Fragment {
+@AndroidEntryPoint
+public class PinsFragment extends Fragment implements OnItemSelectedListener {
 
   private FragmentPinsBinding binding;
   private PinViewModel pinViewModel;
   private static final String TAG = PinsFragment.class.getSimpleName();
+  private List<Track> tracks;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +40,7 @@ public class PinsFragment extends Fragment {
     binding = FragmentPinsBinding.inflate(inflater, container, false);
     binding.newPin.setOnClickListener((v) -> Navigation.findNavController(binding.getRoot())
         .navigate(MapsPinsNavGraphDirections.editPin()));
-    // TODO: 3/27/25 Fix this binding issue. New pin is now in the bottom fragment.
+    binding.tracks.setOnItemSelectedListener(this);
     return binding.getRoot();
   }
 
@@ -42,6 +49,18 @@ public class PinsFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     LifecycleOwner lifecycleOwner = getViewLifecycleOwner();
     pinViewModel = new ViewModelProvider(requireActivity()).get(PinViewModel.class);
+    pinViewModel
+        .getTracks()
+        .observe(lifecycleOwner, (tracks) -> {
+          this.tracks = tracks;
+          ArrayAdapter<Track> adapter =
+              new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, tracks);
+          binding.tracks.setAdapter(adapter);
+        });
+    pinViewModel.getTrack().observe(lifecycleOwner, (track) -> {
+      int position = tracks.indexOf(track);
+      binding.tracks.setSelection(position);
+    });
     pinViewModel
         .getPins()
         .observe(lifecycleOwner, this::handlePins);
@@ -74,5 +93,13 @@ public class PinsFragment extends Fragment {
     binding.pins.setAdapter(adapter);
   }
 
+  @Override
+  public void onItemSelected(AdapterView<?> adapterView, View view, int position, long generatedId) {
+    pinViewModel.setTrack((Track) adapterView.getItemAtPosition(position));
+  }
 
+  @Override
+  public void onNothingSelected(AdapterView<?> adapterView) {
+//No action needed, this doesn't happen
+  }
 }

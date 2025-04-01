@@ -101,6 +101,7 @@ public class EditFragment extends BottomSheetDialogFragment {
         .observe(owner, location -> {
           Log.d(TAG, "Location: " + location);
           // TODO: 3/31/25 Do something with the location. Probably store it in the location embedded field.
+
         });
     permissionsViewModel = provider.get(PermissionsViewModel.class);
     permissionsViewModel

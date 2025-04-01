@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,17 +24,23 @@ import com.google.android.gms.maps.model.LatLng;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.trailtrack.R;
 import edu.cnm.deepdive.trailtrack.databinding.FragmentMapBinding;
+import edu.cnm.deepdive.trailtrack.model.entity.Pin;
+import edu.cnm.deepdive.trailtrack.model.entity.Track;
 import edu.cnm.deepdive.trailtrack.viewmodel.LocationViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PermissionsViewModel;
+import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
+import java.util.List;
 
 @AndroidEntryPoint
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemSelectedListener {
 
   private PermissionsViewModel permissionsViewModel;
   private LocationViewModel locationViewModel;
+  private PinViewModel pinViewModel;
   private FragmentMapBinding binding;
   private boolean currentLocationEnabled;
   private GoogleMap map;
+  private List<Track> tracks;
 
   @Nullable
   @Override
@@ -41,6 +50,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     binding = FragmentMapBinding.inflate(inflater, container, false);
     binding.mainMap.onCreate(savedInstanceState);
     binding.mainMap.getMapAsync(this);
+    binding.tracks.setOnItemSelectedListener(this);
     // TODO: 3/31/25 Attach listeners to UI widgets
     return binding.getRoot();
   }
@@ -71,6 +81,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             currentLocationEnabled = false;
           }
         });
+    pinViewModel = new ViewModelProvider(requireActivity()).get(PinViewModel.class);
+    pinViewModel
+        .getTracks()
+        .observe(owner, (tracks) -> {
+          this.tracks = tracks;
+          ArrayAdapter<Track> adapter =
+              new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, tracks);
+          binding.tracks.setAdapter(adapter);
+        });
+    pinViewModel.getTrack().observe(owner, (track) -> {
+      int position = tracks.indexOf(track);
+      binding.tracks.setSelection(position);
+    });
+    pinViewModel
+        .getPins()
+        .observe(owner, pins ->
+            handlePins(pins));
+  }
+
+  private void handlePins(List<Pin> pins) {
+    // TODO: 4/1/25 Iterate over pins, create marker for each, and add it to map (googleMap Map field)
   }
 
   @Override
@@ -134,4 +165,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //    googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
   }
 
+  @Override
+  public void onItemSelected(AdapterView<?> adapterView, View view, int position, long generatedId) {
+    pinViewModel.setTrack((Track) adapterView.getItemAtPosition(position));
+  }
+
+  @Override
+  public void onNothingSelected(AdapterView<?> adapterView) {
+//No action needed, this doesn't happen
+  }
 }

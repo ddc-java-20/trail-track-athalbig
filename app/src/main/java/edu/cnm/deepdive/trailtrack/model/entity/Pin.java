@@ -16,7 +16,7 @@ import java.util.UUID;
 @Entity(
     tableName = "pin",
     indices = {
-        @Index(value = {"title"}, unique = true)
+        @Index(value = {"track_id","title"}, unique = true)
     },
     foreignKeys = {
         @ForeignKey(entity = User.class, parentColumns = "user_id", childColumns = "user_id", onDelete = ForeignKey.CASCADE),

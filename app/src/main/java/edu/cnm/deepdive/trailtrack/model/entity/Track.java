@@ -1,6 +1,7 @@
 package edu.cnm.deepdive.trailtrack.model.entity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -53,4 +54,27 @@ public class Track {
     this.userId = userId;
   }
 
+  @NonNull
+  @Override
+  public String toString() {
+    return name;
+  }
+
+  @Override
+  public int hashCode() {
+    return Long.hashCode(id);
+  }
+
+  @Override
+  public boolean equals(@Nullable Object obj) {
+    boolean result;
+    if (this == obj) {
+      result = true;
+    } else if (obj instanceof Track other) {
+      result = id !=0 && id == other.id;
+    } else {
+      result = false;
+    }
+    return result;
+  }
 }

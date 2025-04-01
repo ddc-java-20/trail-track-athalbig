@@ -17,13 +17,14 @@ import javax.inject.Singleton;
 @Module
 @InstallIn(SingletonComponent.class)
 public class DatabaseModule {
-//Telling hilt how to get an instance of the database
+
+  //Telling hilt how to get an instance of the database
   @Provides
   @Singleton
   PinDatabase provideDatabase(@ApplicationContext Context context, Preloader callback) {
     return Room.databaseBuilder(context,
             PinDatabase.class, PinDatabase.getDatabaseName())
-//        .addCallback(callback)
+        .addCallback(callback)
         .build();
   }
 
@@ -41,7 +42,9 @@ public class DatabaseModule {
 
   @Provides
   @Singleton
-  TrackDao provideTrackDao(PinDatabase pinDatabase) { return pinDatabase.getTrackDao(); }
+  TrackDao provideTrackDao(PinDatabase pinDatabase) {
+    return pinDatabase.getTrackDao();
+  }
 
 
 }

@@ -83,6 +83,9 @@ public class HomeFragment extends Fragment implements MenuProvider, OnDismissLis
         .observe(lifecycleOwner, (account) -> {
           if (account == null) {
             parentNavController.navigate(HomeFragmentDirections.navigateToPreLoginFragment());
+          } else {
+            Log.d(TAG,"displayname = " + account.getDisplayName());
+            Log.d(TAG,"OAuth key = " + account.getId());
           }
         });
     permissionsViewModel = provider.get(PermissionsViewModel.class);

@@ -2,7 +2,9 @@ package edu.cnm.deepdive.trailtrack.service;
 
 import androidx.lifecycle.LiveData;
 import edu.cnm.deepdive.trailtrack.model.dao.PinDao;
+import edu.cnm.deepdive.trailtrack.model.dao.TrackDao;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
+import edu.cnm.deepdive.trailtrack.model.entity.Track;
 import edu.cnm.deepdive.trailtrack.model.entity.User;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Scheduler;
@@ -17,12 +19,14 @@ import javax.inject.Singleton;
 public class PinRepository {
 
   private final PinDao pinDao;
+  private final TrackDao trackDao;
   private final Scheduler scheduler;
   private final GoogleSignInService googleSignInService;
 
   @Inject
-  PinRepository(PinDao pinDao, GoogleSignInService googleSignInService) {
+  PinRepository(PinDao pinDao, TrackDao trackDao, GoogleSignInService googleSignInService) {
     this.pinDao = pinDao;
+    this.trackDao = trackDao;
     this.googleSignInService = googleSignInService;
     scheduler = Schedulers.io();
   }
@@ -54,6 +58,14 @@ public class PinRepository {
 
   public LiveData<List<Pin>> getAllForUser(User user) {
     return pinDao.selectByUserId(user.getId());
+  }
+
+  public LiveData<List<Pin>> getAllForTrack(Track track) {
+    return pinDao.selectByTrackId(track.getId());
+  }
+
+  public LiveData<List<Track>> getAllTracks(){
+    return trackDao.selectAll();
   }
 
 }
