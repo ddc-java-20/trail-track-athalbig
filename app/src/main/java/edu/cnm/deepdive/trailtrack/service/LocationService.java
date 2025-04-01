@@ -11,6 +11,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,6 +42,9 @@ public class LocationService {
         .setMaxUpdates(1)
         .setMinUpdateDistanceMeters(10)
         .build();
+    locationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, null)
+            .addOnSuccessListener(value ->
+                this.location.postValue(value));
     locationClient.requestLocationUpdates(request, executorService, locationCallback);
   }
 

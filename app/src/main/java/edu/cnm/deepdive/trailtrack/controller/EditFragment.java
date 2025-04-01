@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import edu.cnm.deepdive.trailtrack.R;
 import edu.cnm.deepdive.trailtrack.databinding.FragmentEditBinding;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
 import edu.cnm.deepdive.trailtrack.service.ImageFileProvider;
+import edu.cnm.deepdive.trailtrack.viewmodel.LocationViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PermissionsViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.io.File;
@@ -38,6 +40,7 @@ public class EditFragment extends BottomSheetDialogFragment {
   private FragmentEditBinding binding;
   private PinViewModel pinViewModel;
   private PermissionsViewModel permissionsViewModel;
+  private LocationViewModel locationViewModel;
   private long pinId;
   private Pin pin;
   private ActivityResultLauncher<Uri> captureLauncher;
@@ -84,7 +87,6 @@ public class EditFragment extends BottomSheetDialogFragment {
           .getPin()
           .observe(owner, this::handlePin);
     } else {
-      // TODO: 2/18/25 Configure UI for a new pin vs. editing an existing pin.
       binding.image.setVisibility(View.GONE);
       pin = new Pin();
       uri = null;
@@ -93,12 +95,22 @@ public class EditFragment extends BottomSheetDialogFragment {
     pinViewModel
         .getCaptureUri()
         .observe(owner, this::handleCaptureUri);
+    locationViewModel = provider.get(LocationViewModel.class);
+    getLifecycle().addObserver(locationViewModel);
+    locationViewModel.getLocation()
+        .observe(owner, location -> {
+          Log.d(TAG, "Location: " + location);
+          // TODO: 3/31/25 Do something with the location. Probably store it in the location embedded field.
+        });
     permissionsViewModel = provider.get(PermissionsViewModel.class);
     permissionsViewModel
         .getPermissionsStatus()
         .observe(owner, (permissions) -> {
           //noinspection DataFlowIssue
           binding.capture.setVisibility(permissions.getOrDefault(permission.CAMERA, false) ? View.VISIBLE : View.GONE);
+          if (Boolean.TRUE.equals(permissions.getOrDefault(permission.ACCESS_FINE_LOCATION, false))) {
+            locationViewModel.startService();
+          }
         });
     captureLauncher = registerForActivityResult(
         new ActivityResultContracts.TakePicture(), pinViewModel::confirmCapture);

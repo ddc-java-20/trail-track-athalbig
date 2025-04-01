@@ -1,32 +1,41 @@
 package edu.cnm.deepdive.trailtrack.viewmodel;
 
 
+import android.location.Location;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import edu.cnm.deepdive.trailtrack.service.LocationService;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import javax.inject.Inject;
 
 @HiltViewModel
 public class LocationViewModel extends ViewModel implements DefaultLifecycleObserver {
 
   private final LocationService locationService;
-  // TODO: 3/31/25 Add location, somehow.
-  private final MutableLiveData<Throwable> throwable;
-  private final CompositeDisposable pending;
-
 
   @Inject
-  LocationViewModel(LocationService locationService, MutableLiveData<Throwable> throwable) {
+  LocationViewModel(LocationService locationService) {
     this.locationService = locationService;
-    this.throwable = throwable;
-    this.pending = new CompositeDisposable();
   }
 
-  public LocationService getLocationService() {
+  public LiveData<Location> getLocation() {
     return locationService.getLocation();
   }
 
+  public void startService() {
+    locationService.startService();
+  }
+
+  public void stopService() {
+    locationService.stopService();
+  }
+
+  @Override
+  public void onStop(@NonNull LifecycleOwner owner) {
+    stopService();
+    DefaultLifecycleObserver.super.onStop(owner);
+  }
 }
