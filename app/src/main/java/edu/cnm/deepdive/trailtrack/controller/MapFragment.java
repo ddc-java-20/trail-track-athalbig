@@ -15,17 +15,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import dagger.hilt.android.AndroidEntryPoint;
-import edu.cnm.deepdive.trailtrack.R;
+import edu.cnm.deepdive.trailtrack.MapsPinsNavGraphDirections;
 import edu.cnm.deepdive.trailtrack.databinding.FragmentMapBinding;
+import edu.cnm.deepdive.trailtrack.databinding.FragmentPinsBinding;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
 import edu.cnm.deepdive.trailtrack.model.entity.Track;
+import edu.cnm.deepdive.trailtrack.model.pojo.Location;
 import edu.cnm.deepdive.trailtrack.viewmodel.LocationViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PermissionsViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
@@ -37,7 +40,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
   private PermissionsViewModel permissionsViewModel;
   private LocationViewModel locationViewModel;
   private PinViewModel pinViewModel;
-  private FragmentMapBinding binding;
+  private FragmentMapBinding mapBinding;
   private boolean currentLocationEnabled;
   private GoogleMap map;
   private List<Track> tracks;
@@ -47,12 +50,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
   public View onCreateView(@NonNull LayoutInflater inflater,
       @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    binding = FragmentMapBinding.inflate(inflater, container, false);
-    binding.mainMap.onCreate(savedInstanceState);
-    binding.mainMap.getMapAsync(this);
-    binding.tracks.setOnItemSelectedListener(this);
+    mapBinding = FragmentMapBinding.inflate(inflater, container, false);
+    mapBinding.mainMap.onCreate(savedInstanceState);
+    mapBinding.mainMap.getMapAsync(this);
+    mapBinding.tracks.setOnItemSelectedListener(this);
+    mapBinding.newPin.setOnClickListener((v) -> Navigation.findNavController(mapBinding.getRoot())
+        .navigate(MapsPinsNavGraphDirections.editPin()));
     // TODO: 3/31/25 Attach listeners to UI widgets
-    return binding.getRoot();
+    return mapBinding.getRoot();
   }
 
   @Override
@@ -66,7 +71,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
     locationViewModel = provider.get(LocationViewModel.class);
     locationViewModel.getLocation()
         .observe(owner, location -> {
-          CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+          CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(
+              new LatLng(location.getLatitude(), location.getLongitude()));
           map.moveCamera(cameraUpdate);
         });
     getLifecycle().addObserver(locationViewModel);
@@ -74,7 +80,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
     permissionsViewModel
         .getPermissionsStatus()
         .observe(owner, (permissions) -> {
-          if (Boolean.TRUE.equals(permissions.getOrDefault(permission.ACCESS_FINE_LOCATION, false))) {
+          if (Boolean.TRUE.equals(
+              permissions.getOrDefault(permission.ACCESS_FINE_LOCATION, false))) {
             locationViewModel.startService();
             currentLocationEnabled = true;
           } else {
@@ -88,61 +95,70 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
           this.tracks = tracks;
           ArrayAdapter<Track> adapter =
               new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, tracks);
-          binding.tracks.setAdapter(adapter);
+          mapBinding.tracks.setAdapter(adapter);
         });
     pinViewModel.getTrack().observe(owner, (track) -> {
       int position = tracks.indexOf(track);
-      binding.tracks.setSelection(position);
+      mapBinding.tracks.setSelection(position);
     });
     pinViewModel
         .getPins()
-        .observe(owner, pins ->
-            handlePins(pins));
+        .observe(owner, this::handlePins);
   }
 
   private void handlePins(List<Pin> pins) {
-    // TODO: 4/1/25 Iterate over pins, create marker for each, and add it to map (googleMap Map field)
+    map.clear();
+    pins.forEach((pin) -> {
+      Location location = pin.getLocation();
+      if (location != null) {
+        MarkerOptions options = new MarkerOptions()
+            .title(pin.getTitle())
+            .position(new LatLng(location.latitude(), location.longitude()));
+        map.addMarker(options);
+      }
+    });
+    // TOD 4/1/25 Iterate over pins, create marker for each, and add it to map (googleMap Map field)
   }
 
   @Override
   public void onStart() {
     super.onStart();
-    binding.mainMap.onStart();
+    mapBinding.mainMap.onStart();
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    binding.mainMap.onResume();
+    mapBinding.mainMap.onResume();
   }
 
   @Override
   public void onPause() {
-    binding.mainMap.onPause();
+    mapBinding.mainMap.onPause();
     super.onPause();
   }
 
   @Override
   public void onStop() {
-    binding.mainMap.onStop();
+    mapBinding.mainMap.onStop();
     super.onStop();
   }
 
   @Override
   public void onDestroyView() {
-    binding.mainMap.onDestroy();
+    mapBinding.mainMap.onDestroy();
     super.onDestroyView();
   }
 
   @Override
   public void onSaveInstanceState(@NonNull Bundle outState) {
-    binding.mainMap.onSaveInstanceState(outState);
+    mapBinding.mainMap.onSaveInstanceState(outState);
     super.onSaveInstanceState(outState);
   }
 
   @Override
   public void onLowMemory() {
-    binding.mainMap.onLowMemory();
+    mapBinding.mainMap.onLowMemory();
     super.onLowMemory();
   }
 
@@ -166,7 +182,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
   }
 
   @Override
-  public void onItemSelected(AdapterView<?> adapterView, View view, int position, long generatedId) {
+  public void onItemSelected(AdapterView<?> adapterView, View view, int position,
+      long generatedId) {
     pinViewModel.setTrack((Track) adapterView.getItemAtPosition(position));
   }
 

@@ -56,6 +56,8 @@ public class PinViewModel extends ViewModel implements DefaultLifecycleObserver 
         .map((user) -> {
           this.user.postValue(user);
           pin.setUserId(user.getId());
+          //noinspection DataFlowIssue
+          pin.setTrackId(track.getValue().getId());
           return pin;
         })
         .flatMap(pinRepository::save)

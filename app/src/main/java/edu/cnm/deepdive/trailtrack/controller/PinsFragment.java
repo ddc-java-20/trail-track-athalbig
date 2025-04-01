@@ -23,6 +23,7 @@ import edu.cnm.deepdive.trailtrack.adapter.PinsAdapter;
 import edu.cnm.deepdive.trailtrack.databinding.FragmentPinsBinding;
 import edu.cnm.deepdive.trailtrack.model.entity.Pin;
 import edu.cnm.deepdive.trailtrack.model.entity.Track;
+import edu.cnm.deepdive.trailtrack.viewmodel.LocationViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class PinsFragment extends Fragment implements OnItemSelectedListener {
   private PinViewModel pinViewModel;
   private static final String TAG = PinsFragment.class.getSimpleName();
   private List<Track> tracks;
+  private Track track;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,14 +58,22 @@ public class PinsFragment extends Fragment implements OnItemSelectedListener {
           ArrayAdapter<Track> adapter =
               new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, tracks);
           binding.tracks.setAdapter(adapter);
+          selectCurrentTrack();
         });
     pinViewModel.getTrack().observe(lifecycleOwner, (track) -> {
-      int position = tracks.indexOf(track);
-      binding.tracks.setSelection(position);
+      this.track = track;
+      selectCurrentTrack();
     });
     pinViewModel
         .getPins()
         .observe(lifecycleOwner, this::handlePins);
+  }
+
+  private void selectCurrentTrack() {
+    if (track != null && tracks != null) {
+      int position = tracks.indexOf(track);
+      binding.tracks.setSelection(position);
+    }
   }
 
   private void handlePins(List<Pin> pins) {

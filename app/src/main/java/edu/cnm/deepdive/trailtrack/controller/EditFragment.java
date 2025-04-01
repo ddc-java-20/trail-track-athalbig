@@ -3,6 +3,7 @@ package edu.cnm.deepdive.trailtrack.controller;
 import android.Manifest.permission;
 import android.app.Dialog;
 import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,6 +46,7 @@ public class EditFragment extends BottomSheetDialogFragment {
   private Pin pin;
   private ActivityResultLauncher<Uri> captureLauncher;
   private Uri uri;
+  private Location location;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +101,7 @@ public class EditFragment extends BottomSheetDialogFragment {
     getLifecycle().addObserver(locationViewModel);
     locationViewModel.getLocation()
         .observe(owner, location -> {
+          this.location = location;
           Log.d(TAG, "Location: " + location);
           // TODO: 3/31/25 Do something with the location. Probably store it in the location embedded field.
 
@@ -136,6 +139,10 @@ public class EditFragment extends BottomSheetDialogFragment {
         .toString()
         .strip());
     pin.setImage(uri);
+    if (location != null) {
+      pin.setLocation(new edu.cnm.deepdive.trailtrack.model.pojo.Location(
+          location.getLatitude(), location.getLongitude()));
+    }
     // TODO: 2/18/25 Set/modify the createdOn/modifiedOn.
     pinViewModel.savePin(pin);
     dismiss();
