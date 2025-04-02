@@ -25,35 +25,44 @@
 <span class="source-line-no">012</span><span id="line-12">import edu.cnm.deepdive.trailtrack.model.pojo.TrackWithPins;</span>
 <span class="source-line-no">013</span><span id="line-13">import io.reactivex.rxjava3.core.Completable;</span>
 <span class="source-line-no">014</span><span id="line-14">import io.reactivex.rxjava3.core.Single;</span>
-<span class="source-line-no">015</span><span id="line-15">import java.util.List;</span>
-<span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">@Dao</span>
-<span class="source-line-no">018</span><span id="line-18">public interface TrackDao {</span>
-<span class="source-line-no">019</span><span id="line-19"></span>
-<span class="source-line-no">020</span><span id="line-20">  @Insert</span>
-<span class="source-line-no">021</span><span id="line-21">  Single&lt;Long&gt; insert(Track track);</span>
-<span class="source-line-no">022</span><span id="line-22"></span>
-<span class="source-line-no">023</span><span id="line-23">  default Single&lt;Track&gt; insertAndReturnTrack(Track track) {</span>
-<span class="source-line-no">024</span><span id="line-24">    return insert(track)</span>
-<span class="source-line-no">025</span><span id="line-25">        .map((id) -&gt; {</span>
-<span class="source-line-no">026</span><span id="line-26">          track.setId(id);</span>
-<span class="source-line-no">027</span><span id="line-27">          return track;</span>
-<span class="source-line-no">028</span><span id="line-28">        });</span>
-<span class="source-line-no">029</span><span id="line-29">  }</span>
-<span class="source-line-no">030</span><span id="line-30"></span>
-<span class="source-line-no">031</span><span id="line-31">  @Update</span>
-<span class="source-line-no">032</span><span id="line-32">  Completable update(Track track);</span>
-<span class="source-line-no">033</span><span id="line-33"></span>
-<span class="source-line-no">034</span><span id="line-34">  @Delete</span>
-<span class="source-line-no">035</span><span id="line-35">  Completable delete(Track track);</span>
-<span class="source-line-no">036</span><span id="line-36"></span>
-<span class="source-line-no">037</span><span id="line-37">  @Transaction</span>
-<span class="source-line-no">038</span><span id="line-38">  @Query("SELECT * FROM track WHERE user_id = :id ORDER BY name ASC")</span>
-<span class="source-line-no">039</span><span id="line-39">  LiveData&lt;List&lt;TrackWithPins&gt;&gt; select(long id);</span>
+<span class="source-line-no">015</span><span id="line-15">import java.util.Collection;</span>
+<span class="source-line-no">016</span><span id="line-16">import java.util.List;</span>
+<span class="source-line-no">017</span><span id="line-17"></span>
+<span class="source-line-no">018</span><span id="line-18">@Dao</span>
+<span class="source-line-no">019</span><span id="line-19">public interface TrackDao {</span>
+<span class="source-line-no">020</span><span id="line-20"></span>
+<span class="source-line-no">021</span><span id="line-21">  @Insert</span>
+<span class="source-line-no">022</span><span id="line-22">  Single&lt;Long&gt; insert(Track track);</span>
+<span class="source-line-no">023</span><span id="line-23"></span>
+<span class="source-line-no">024</span><span id="line-24">  default Single&lt;Track&gt; insertAndReturnTrack(Track track) {</span>
+<span class="source-line-no">025</span><span id="line-25">    return insert(track)</span>
+<span class="source-line-no">026</span><span id="line-26">        .map((id) -&gt; {</span>
+<span class="source-line-no">027</span><span id="line-27">          track.setId(id);</span>
+<span class="source-line-no">028</span><span id="line-28">          return track;</span>
+<span class="source-line-no">029</span><span id="line-29">        });</span>
+<span class="source-line-no">030</span><span id="line-30">  }</span>
+<span class="source-line-no">031</span><span id="line-31"></span>
+<span class="source-line-no">032</span><span id="line-32">  @Insert</span>
+<span class="source-line-no">033</span><span id="line-33">  Single&lt;List&lt;Long&gt;&gt; insert(Collection&lt;?extends Track&gt; tracks);</span>
+<span class="source-line-no">034</span><span id="line-34"></span>
+<span class="source-line-no">035</span><span id="line-35">  @Insert</span>
+<span class="source-line-no">036</span><span id="line-36">  Single&lt;List&lt;Long&gt;&gt; insert(Track... tracks);</span>
+<span class="source-line-no">037</span><span id="line-37"></span>
+<span class="source-line-no">038</span><span id="line-38">  @Update</span>
+<span class="source-line-no">039</span><span id="line-39">  Completable update(Track track);</span>
 <span class="source-line-no">040</span><span id="line-40"></span>
-<span class="source-line-no">041</span><span id="line-41"></span>
-<span class="source-line-no">042</span><span id="line-42"></span>
-<span class="source-line-no">043</span><span id="line-43">}</span>
+<span class="source-line-no">041</span><span id="line-41">  @Delete</span>
+<span class="source-line-no">042</span><span id="line-42">  Completable delete(Track track);</span>
+<span class="source-line-no">043</span><span id="line-43"></span>
+<span class="source-line-no">044</span><span id="line-44">  @Transaction</span>
+<span class="source-line-no">045</span><span id="line-45">  @Query("SELECT * FROM track WHERE user_id = :id ORDER BY name ASC")</span>
+<span class="source-line-no">046</span><span id="line-46">  LiveData&lt;List&lt;TrackWithPins&gt;&gt; selectByUser(long id);</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">  @Transaction</span>
+<span class="source-line-no">049</span><span id="line-49">  @Query("SELECT * FROM track ORDER BY name ASC")</span>
+<span class="source-line-no">050</span><span id="line-50">  LiveData&lt;List&lt;Track&gt;&gt; selectAll();</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">}</span>
 
 
 

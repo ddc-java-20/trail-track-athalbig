@@ -16,79 +16,142 @@
 <span class="source-line-no">003</span><span id="line-3">import android.os.Bundle;</span>
 <span class="source-line-no">004</span><span id="line-4">import android.util.Log;</span>
 <span class="source-line-no">005</span><span id="line-5">import android.view.Menu;</span>
-<span class="source-line-no">006</span><span id="line-6">import androidx.annotation.NonNull;</span>
-<span class="source-line-no">007</span><span id="line-7">import androidx.annotation.Nullable;</span>
-<span class="source-line-no">008</span><span id="line-8">import androidx.appcompat.widget.PopupMenu;</span>
-<span class="source-line-no">009</span><span id="line-9">import androidx.fragment.app.Fragment;</span>
-<span class="source-line-no">010</span><span id="line-10">import android.view.LayoutInflater;</span>
-<span class="source-line-no">011</span><span id="line-11">import android.view.View;</span>
-<span class="source-line-no">012</span><span id="line-12">import android.view.ViewGroup;</span>
-<span class="source-line-no">013</span><span id="line-13">import androidx.lifecycle.LifecycleOwner;</span>
-<span class="source-line-no">014</span><span id="line-14">import androidx.lifecycle.ViewModelProvider;</span>
-<span class="source-line-no">015</span><span id="line-15">import androidx.navigation.Navigation;</span>
-<span class="source-line-no">016</span><span id="line-16">import edu.cnm.deepdive.trailtrack.MapsPinsNavGraphDirections;</span>
-<span class="source-line-no">017</span><span id="line-17">import edu.cnm.deepdive.trailtrack.R;</span>
-<span class="source-line-no">018</span><span id="line-18">import edu.cnm.deepdive.trailtrack.adapter.PinsAdapter;</span>
-<span class="source-line-no">019</span><span id="line-19">import edu.cnm.deepdive.trailtrack.databinding.FragmentPinsBinding;</span>
-<span class="source-line-no">020</span><span id="line-20">import edu.cnm.deepdive.trailtrack.model.entity.Pin;</span>
-<span class="source-line-no">021</span><span id="line-21">import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;</span>
-<span class="source-line-no">022</span><span id="line-22">import java.util.List;</span>
-<span class="source-line-no">023</span><span id="line-23"></span>
-<span class="source-line-no">024</span><span id="line-24">public class PinsFragment extends Fragment {</span>
-<span class="source-line-no">025</span><span id="line-25"></span>
-<span class="source-line-no">026</span><span id="line-26">  private FragmentPinsBinding binding;</span>
-<span class="source-line-no">027</span><span id="line-27">  private PinViewModel pinViewModel;</span>
-<span class="source-line-no">028</span><span id="line-28">  private static final String TAG = PinsFragment.class.getSimpleName();</span>
+<span class="source-line-no">006</span><span id="line-6">import android.widget.AdapterView;</span>
+<span class="source-line-no">007</span><span id="line-7">import android.widget.AdapterView.OnItemSelectedListener;</span>
+<span class="source-line-no">008</span><span id="line-8">import android.widget.ArrayAdapter;</span>
+<span class="source-line-no">009</span><span id="line-9">import androidx.annotation.NonNull;</span>
+<span class="source-line-no">010</span><span id="line-10">import androidx.annotation.Nullable;</span>
+<span class="source-line-no">011</span><span id="line-11">import androidx.appcompat.widget.PopupMenu;</span>
+<span class="source-line-no">012</span><span id="line-12">import androidx.fragment.app.Fragment;</span>
+<span class="source-line-no">013</span><span id="line-13">import android.view.LayoutInflater;</span>
+<span class="source-line-no">014</span><span id="line-14">import android.view.View;</span>
+<span class="source-line-no">015</span><span id="line-15">import android.view.ViewGroup;</span>
+<span class="source-line-no">016</span><span id="line-16">import androidx.lifecycle.LifecycleOwner;</span>
+<span class="source-line-no">017</span><span id="line-17">import androidx.lifecycle.ViewModelProvider;</span>
+<span class="source-line-no">018</span><span id="line-18">import androidx.navigation.Navigation;</span>
+<span class="source-line-no">019</span><span id="line-19">import dagger.hilt.android.AndroidEntryPoint;</span>
+<span class="source-line-no">020</span><span id="line-20">import edu.cnm.deepdive.trailtrack.MapsPinsNavGraphDirections;</span>
+<span class="source-line-no">021</span><span id="line-21">import edu.cnm.deepdive.trailtrack.R;</span>
+<span class="source-line-no">022</span><span id="line-22">import edu.cnm.deepdive.trailtrack.adapter.PinsAdapter;</span>
+<span class="source-line-no">023</span><span id="line-23">import edu.cnm.deepdive.trailtrack.databinding.FragmentPinsBinding;</span>
+<span class="source-line-no">024</span><span id="line-24">import edu.cnm.deepdive.trailtrack.model.entity.Pin;</span>
+<span class="source-line-no">025</span><span id="line-25">import edu.cnm.deepdive.trailtrack.model.entity.Track;</span>
+<span class="source-line-no">026</span><span id="line-26">import edu.cnm.deepdive.trailtrack.viewmodel.LocationViewModel;</span>
+<span class="source-line-no">027</span><span id="line-27">import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;</span>
+<span class="source-line-no">028</span><span id="line-28">import java.util.List;</span>
 <span class="source-line-no">029</span><span id="line-29"></span>
-<span class="source-line-no">030</span><span id="line-30">  @Override</span>
-<span class="source-line-no">031</span><span id="line-31">  public View onCreateView(LayoutInflater inflater, ViewGroup container,</span>
-<span class="source-line-no">032</span><span id="line-32">      Bundle savedInstanceState) {</span>
-<span class="source-line-no">033</span><span id="line-33">    binding = FragmentPinsBinding.inflate(inflater, container, false);</span>
-<span class="source-line-no">034</span><span id="line-34">    binding.newPin.setOnClickListener((v) -&gt; Navigation.findNavController(binding.getRoot())</span>
-<span class="source-line-no">035</span><span id="line-35">        .navigate(MapsPinsNavGraphDirections.editPin()));</span>
-<span class="source-line-no">036</span><span id="line-36">    // TODO: 3/27/25 Fix this binding issue. New pin is now in the bottom fragment.</span>
-<span class="source-line-no">037</span><span id="line-37">    return binding.getRoot();</span>
-<span class="source-line-no">038</span><span id="line-38">  }</span>
-<span class="source-line-no">039</span><span id="line-39"></span>
-<span class="source-line-no">040</span><span id="line-40">  @Override</span>
-<span class="source-line-no">041</span><span id="line-41">  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {</span>
-<span class="source-line-no">042</span><span id="line-42">    super.onViewCreated(view, savedInstanceState);</span>
-<span class="source-line-no">043</span><span id="line-43">    LifecycleOwner lifecycleOwner = getViewLifecycleOwner();</span>
-<span class="source-line-no">044</span><span id="line-44">    pinViewModel = new ViewModelProvider(requireActivity()).get(PinViewModel.class);</span>
-<span class="source-line-no">045</span><span id="line-45">    pinViewModel</span>
-<span class="source-line-no">046</span><span id="line-46">        .getPins()</span>
-<span class="source-line-no">047</span><span id="line-47">        .observe(lifecycleOwner, this::handlePins);</span>
-<span class="source-line-no">048</span><span id="line-48">  }</span>
-<span class="source-line-no">049</span><span id="line-49"></span>
-<span class="source-line-no">050</span><span id="line-50">  private void handlePins(List&lt;Pin&gt; pins) {</span>
-<span class="source-line-no">051</span><span id="line-51">    PinsAdapter adapter;</span>
-<span class="source-line-no">052</span><span id="line-52">    adapter = new PinsAdapter(requireContext(), pins, (v, pin, position) -&gt; {</span>
-<span class="source-line-no">053</span><span id="line-53"></span>
-<span class="source-line-no">054</span><span id="line-54">      PopupMenu popup = new PopupMenu(requireContext(), v);</span>
-<span class="source-line-no">055</span><span id="line-55">      Menu menu = popup.getMenu();</span>
-<span class="source-line-no">056</span><span id="line-56">      popup.getMenuInflater().inflate(R.menu.pin_options, menu);</span>
-<span class="source-line-no">057</span><span id="line-57">      menu.findItem(R.id.edit_pin).setOnMenuItemClickListener(item -&gt; {</span>
-<span class="source-line-no">058</span><span id="line-58">        Log.d(TAG, String.format("onMenuItemClick: item=%s", item));</span>
-<span class="source-line-no">059</span><span id="line-59">        Navigation.findNavController(binding.getRoot())</span>
-<span class="source-line-no">060</span><span id="line-60">            .navigate(MapsPinsNavGraphDirections.editPin().setPinId(pin.getId()));</span>
-<span class="source-line-no">061</span><span id="line-61">        return true;</span>
-<span class="source-line-no">062</span><span id="line-62">      });</span>
-<span class="source-line-no">063</span><span id="line-63">      menu</span>
-<span class="source-line-no">064</span><span id="line-64">          .findItem(R.id.delete_pin)</span>
-<span class="source-line-no">065</span><span id="line-65">          .setOnMenuItemClickListener((item) -&gt; {</span>
-<span class="source-line-no">066</span><span id="line-66">            Log.d(TAG, String.format("onMenuItemClick: item=%s", item));</span>
-<span class="source-line-no">067</span><span id="line-67">            pinViewModel.delete(pin);</span>
-<span class="source-line-no">068</span><span id="line-68">//            adapter.notifyItemRemoved(position);</span>
-<span class="source-line-no">069</span><span id="line-69">            return true;</span>
-<span class="source-line-no">070</span><span id="line-70">          });</span>
-<span class="source-line-no">071</span><span id="line-71">      popup.show();</span>
-<span class="source-line-no">072</span><span id="line-72">      return true;</span>
-<span class="source-line-no">073</span><span id="line-73">    });</span>
-<span class="source-line-no">074</span><span id="line-74">    binding.pins.setAdapter(adapter);</span>
-<span class="source-line-no">075</span><span id="line-75">  }</span>
-<span class="source-line-no">076</span><span id="line-76"></span>
-<span class="source-line-no">077</span><span id="line-77"></span>
-<span class="source-line-no">078</span><span id="line-78">}</span>
+<span class="source-line-no">030</span><span id="line-30">/**</span>
+<span class="source-line-no">031</span><span id="line-31"> * The PinsFragment class represents a fragment for displaying and managing pins within an Android application.</span>
+<span class="source-line-no">032</span><span id="line-32"> * It is responsible for:</span>
+<span class="source-line-no">033</span><span id="line-33"> * - Displaying a list of pins associated with a selected track.</span>
+<span class="source-line-no">034</span><span id="line-34"> * - Handling user interactions with options to add, edit, or delete pins.</span>
+<span class="source-line-no">035</span><span id="line-35"> * - Managing UI updates and interactions through ViewModels and LiveData.</span>
+<span class="source-line-no">036</span><span id="line-36"> *</span>
+<span class="source-line-no">037</span><span id="line-37"> * This class interacts with {@link PinViewModel} to observe and update relevant data, including tracks and pins.</span>
+<span class="source-line-no">038</span><span id="line-38"> * It uses the Android Jetpack Navigation component to navigate between screens.</span>
+<span class="source-line-no">039</span><span id="line-39"> *</span>
+<span class="source-line-no">040</span><span id="line-40"> * PinsFragment implements the {@link AdapterView.OnItemSelectedListener} interface to respond to track selection changes.</span>
+<span class="source-line-no">041</span><span id="line-41"> */</span>
+<span class="source-line-no">042</span><span id="line-42">@AndroidEntryPoint</span>
+<span class="source-line-no">043</span><span id="line-43">public class PinsFragment extends Fragment implements OnItemSelectedListener {</span>
+<span class="source-line-no">044</span><span id="line-44"></span>
+<span class="source-line-no">045</span><span id="line-45">  private FragmentPinsBinding binding;</span>
+<span class="source-line-no">046</span><span id="line-46">  private PinViewModel pinViewModel;</span>
+<span class="source-line-no">047</span><span id="line-47">  private static final String TAG = PinsFragment.class.getSimpleName();</span>
+<span class="source-line-no">048</span><span id="line-48">  private List&lt;Track&gt; tracks;</span>
+<span class="source-line-no">049</span><span id="line-49">  private Track track;</span>
+<span class="source-line-no">050</span><span id="line-50"></span>
+<span class="source-line-no">051</span><span id="line-51">  @Override</span>
+<span class="source-line-no">052</span><span id="line-52">  public View onCreateView(LayoutInflater inflater, ViewGroup container,</span>
+<span class="source-line-no">053</span><span id="line-53">      Bundle savedInstanceState) {</span>
+<span class="source-line-no">054</span><span id="line-54">    binding = FragmentPinsBinding.inflate(inflater, container, false);</span>
+<span class="source-line-no">055</span><span id="line-55">    binding.newPin.setOnClickListener((v) -&gt; Navigation.findNavController(binding.getRoot())</span>
+<span class="source-line-no">056</span><span id="line-56">        .navigate(MapsPinsNavGraphDirections.editPin()));</span>
+<span class="source-line-no">057</span><span id="line-57">    binding.tracks.setOnItemSelectedListener(this);</span>
+<span class="source-line-no">058</span><span id="line-58">    return binding.getRoot();</span>
+<span class="source-line-no">059</span><span id="line-59">  }</span>
+<span class="source-line-no">060</span><span id="line-60"></span>
+<span class="source-line-no">061</span><span id="line-61">  @Override</span>
+<span class="source-line-no">062</span><span id="line-62">  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {</span>
+<span class="source-line-no">063</span><span id="line-63">    super.onViewCreated(view, savedInstanceState);</span>
+<span class="source-line-no">064</span><span id="line-64">    LifecycleOwner lifecycleOwner = getViewLifecycleOwner();</span>
+<span class="source-line-no">065</span><span id="line-65">    pinViewModel = new ViewModelProvider(requireActivity()).get(PinViewModel.class);</span>
+<span class="source-line-no">066</span><span id="line-66">    pinViewModel</span>
+<span class="source-line-no">067</span><span id="line-67">        .getTracks()</span>
+<span class="source-line-no">068</span><span id="line-68">        .observe(lifecycleOwner, (tracks) -&gt; {</span>
+<span class="source-line-no">069</span><span id="line-69">          this.tracks = tracks;</span>
+<span class="source-line-no">070</span><span id="line-70">          ArrayAdapter&lt;Track&gt; adapter =</span>
+<span class="source-line-no">071</span><span id="line-71">              new ArrayAdapter&lt;&gt;(requireContext(), android.R.layout.simple_list_item_1, tracks);</span>
+<span class="source-line-no">072</span><span id="line-72">          binding.tracks.setAdapter(adapter);</span>
+<span class="source-line-no">073</span><span id="line-73">          selectCurrentTrack();</span>
+<span class="source-line-no">074</span><span id="line-74">        });</span>
+<span class="source-line-no">075</span><span id="line-75">    pinViewModel.getTrack().observe(lifecycleOwner, (track) -&gt; {</span>
+<span class="source-line-no">076</span><span id="line-76">      this.track = track;</span>
+<span class="source-line-no">077</span><span id="line-77">      selectCurrentTrack();</span>
+<span class="source-line-no">078</span><span id="line-78">    });</span>
+<span class="source-line-no">079</span><span id="line-79">    pinViewModel</span>
+<span class="source-line-no">080</span><span id="line-80">        .getPins()</span>
+<span class="source-line-no">081</span><span id="line-81">        .observe(lifecycleOwner, this::handlePins);</span>
+<span class="source-line-no">082</span><span id="line-82">  }</span>
+<span class="source-line-no">083</span><span id="line-83"></span>
+<span class="source-line-no">084</span><span id="line-84">  /**</span>
+<span class="source-line-no">085</span><span id="line-85">   * Updates the selection in the track selection UI component to highlight the current track.</span>
+<span class="source-line-no">086</span><span id="line-86">   * &lt;ul&gt;</span>
+<span class="source-line-no">087</span><span id="line-87">   *   &lt;li&gt;If the current track exists and the list of tracks is not null, the method determines the</span>
+<span class="source-line-no">088</span><span id="line-88">   *       index of the current track in the list.&lt;/li&gt;</span>
+<span class="source-line-no">089</span><span id="line-89">   *   &lt;li&gt;It then sets the selection in the UI component bound to the track list to this index.&lt;/li&gt;</span>
+<span class="source-line-no">090</span><span id="line-90">   * &lt;/ul&gt;</span>
+<span class="source-line-no">091</span><span id="line-91">   */</span>
+<span class="source-line-no">092</span><span id="line-92">  private void selectCurrentTrack() {</span>
+<span class="source-line-no">093</span><span id="line-93">    if (track != null &amp;&amp; tracks != null) {</span>
+<span class="source-line-no">094</span><span id="line-94">      int position = tracks.indexOf(track);</span>
+<span class="source-line-no">095</span><span id="line-95">      binding.tracks.setSelection(position);</span>
+<span class="source-line-no">096</span><span id="line-96">    }</span>
+<span class="source-line-no">097</span><span id="line-97">  }</span>
+<span class="source-line-no">098</span><span id="line-98"></span>
+<span class="source-line-no">099</span><span id="line-99">  /**</span>
+<span class="source-line-no">100</span><span id="line-100">   * Handles the display and management of a list of pins. Sets up the PinsAdapter for the RecyclerView,</span>
+<span class="source-line-no">101</span><span id="line-101">   * providing a way to handle long-click interactions on individual pins.</span>
+<span class="source-line-no">102</span><span id="line-102">   *</span>
+<span class="source-line-no">103</span><span id="line-103">   * @param pins A list of {@link Pin} objects to be displayed and managed.</span>
+<span class="source-line-no">104</span><span id="line-104">   */</span>
+<span class="source-line-no">105</span><span id="line-105">  private void handlePins(List&lt;Pin&gt; pins) {</span>
+<span class="source-line-no">106</span><span id="line-106">    PinsAdapter adapter;</span>
+<span class="source-line-no">107</span><span id="line-107">    adapter = new PinsAdapter(requireContext(), pins, (v, pin, position) -&gt; {</span>
+<span class="source-line-no">108</span><span id="line-108"></span>
+<span class="source-line-no">109</span><span id="line-109">      PopupMenu popup = new PopupMenu(requireContext(), v);</span>
+<span class="source-line-no">110</span><span id="line-110">      Menu menu = popup.getMenu();</span>
+<span class="source-line-no">111</span><span id="line-111">      popup.getMenuInflater().inflate(R.menu.pin_options, menu);</span>
+<span class="source-line-no">112</span><span id="line-112">      menu.findItem(R.id.edit_pin).setOnMenuItemClickListener(item -&gt; {</span>
+<span class="source-line-no">113</span><span id="line-113">        Log.d(TAG, String.format("onMenuItemClick: item=%s", item));</span>
+<span class="source-line-no">114</span><span id="line-114">        Navigation.findNavController(binding.getRoot())</span>
+<span class="source-line-no">115</span><span id="line-115">            .navigate(MapsPinsNavGraphDirections.editPin().setPinId(pin.getId()));</span>
+<span class="source-line-no">116</span><span id="line-116">        return true;</span>
+<span class="source-line-no">117</span><span id="line-117">      });</span>
+<span class="source-line-no">118</span><span id="line-118">      menu</span>
+<span class="source-line-no">119</span><span id="line-119">          .findItem(R.id.delete_pin)</span>
+<span class="source-line-no">120</span><span id="line-120">          .setOnMenuItemClickListener((item) -&gt; {</span>
+<span class="source-line-no">121</span><span id="line-121">            Log.d(TAG, String.format("onMenuItemClick: item=%s", item));</span>
+<span class="source-line-no">122</span><span id="line-122">            pinViewModel.delete(pin);</span>
+<span class="source-line-no">123</span><span id="line-123">//            adapter.notifyItemRemoved(position);</span>
+<span class="source-line-no">124</span><span id="line-124">            return true;</span>
+<span class="source-line-no">125</span><span id="line-125">          });</span>
+<span class="source-line-no">126</span><span id="line-126">      popup.show();</span>
+<span class="source-line-no">127</span><span id="line-127">      return true;</span>
+<span class="source-line-no">128</span><span id="line-128">    });</span>
+<span class="source-line-no">129</span><span id="line-129">    binding.pins.setAdapter(adapter);</span>
+<span class="source-line-no">130</span><span id="line-130">  }</span>
+<span class="source-line-no">131</span><span id="line-131"></span>
+<span class="source-line-no">132</span><span id="line-132">  @Override</span>
+<span class="source-line-no">133</span><span id="line-133">  public void onItemSelected(AdapterView&lt;?&gt; adapterView, View view, int position, long generatedId) {</span>
+<span class="source-line-no">134</span><span id="line-134">    pinViewModel.setTrack((Track) adapterView.getItemAtPosition(position));</span>
+<span class="source-line-no">135</span><span id="line-135">  }</span>
+<span class="source-line-no">136</span><span id="line-136"></span>
+<span class="source-line-no">137</span><span id="line-137">  @Override</span>
+<span class="source-line-no">138</span><span id="line-138">  public void onNothingSelected(AdapterView&lt;?&gt; adapterView) {</span>
+<span class="source-line-no">139</span><span id="line-139">//No action needed, this doesn't happen</span>
+<span class="source-line-no">140</span><span id="line-140">  }</span>
+<span class="source-line-no">141</span><span id="line-141">}</span>
 
 
 

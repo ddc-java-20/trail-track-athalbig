@@ -27,57 +27,84 @@
 <span class="source-line-no">014</span><span id="line-14">import java.util.Arrays;</span>
 <span class="source-line-no">015</span><span id="line-15">import java.util.stream.Collectors;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">public class ExplanationFragment extends DialogFragment {</span>
-<span class="source-line-no">018</span><span id="line-18"></span>
-<span class="source-line-no">019</span><span id="line-19">  private String[] permissionsToExplain;</span>
-<span class="source-line-no">020</span><span id="line-20"></span>
-<span class="source-line-no">021</span><span id="line-21">  @Override</span>
-<span class="source-line-no">022</span><span id="line-22">  public void onCreate(@Nullable Bundle savedInstanceState) {</span>
-<span class="source-line-no">023</span><span id="line-23">    super.onCreate(savedInstanceState);</span>
-<span class="source-line-no">024</span><span id="line-24">    ExplanationFragmentArgs args = ExplanationFragmentArgs.fromBundle(getArguments());</span>
-<span class="source-line-no">025</span><span id="line-25">    permissionsToExplain = args.getPermissionsToExplain();</span>
-<span class="source-line-no">026</span><span id="line-26">  }</span>
-<span class="source-line-no">027</span><span id="line-27"></span>
-<span class="source-line-no">028</span><span id="line-28">  // TODO: 3/28/25 figure out how to convert strings into permissions to explain</span>
-<span class="source-line-no">029</span><span id="line-29">  //  into the names of string resources, so I can look those up and provide regular text.</span>
-<span class="source-line-no">030</span><span id="line-30"></span>
-<span class="source-line-no">031</span><span id="line-31">  // TODO: 3/28/25 Can try getIdentifier in Resources class. 3 params context (requirecontexT) and ...</span>
-<span class="source-line-no">032</span><span id="line-32">  //  name of resource, type of resource, package of the resource context.getpackagename</span>
-<span class="source-line-no">033</span><span id="line-33"></span>
-<span class="source-line-no">034</span><span id="line-34">  @NonNull</span>
-<span class="source-line-no">035</span><span id="line-35">  @Override</span>
-<span class="source-line-no">036</span><span id="line-36">  public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {</span>
-<span class="source-line-no">037</span><span id="line-37">    Resources resources = getResources();</span>
-<span class="source-line-no">038</span><span id="line-38">    String packageName = requireActivity().getPackageName();</span>
-<span class="source-line-no">039</span><span id="line-39">    @SuppressLint("DiscouragedApi") String message = Arrays.stream(permissionsToExplain)</span>
-<span class="source-line-no">040</span><span id="line-40">        .map(permission -&gt; permission.substring(permission.lastIndexOf('.') + 1))</span>
-<span class="source-line-no">041</span><span id="line-41">        .map(String::toLowerCase)</span>
-<span class="source-line-no">042</span><span id="line-42">        .map(permission -&gt; permission.replace('.', '_'))</span>
-<span class="source-line-no">043</span><span id="line-43">        .map(permission -&gt; permission + "_explanation")</span>
-<span class="source-line-no">044</span><span id="line-44">        .mapToInt(permission -&gt; resources.getIdentifier(permission, "string", packageName))</span>
-<span class="source-line-no">045</span><span id="line-45">        .mapToObj(resources::getString)</span>
-<span class="source-line-no">046</span><span id="line-46">        .filter(string -&gt; !string.isEmpty())</span>
-<span class="source-line-no">047</span><span id="line-47">        .collect(Collectors.joining("\n"));</span>
-<span class="source-line-no">048</span><span id="line-48"></span>
-<span class="source-line-no">049</span><span id="line-49">    OnDismissListener listener =</span>
-<span class="source-line-no">050</span><span id="line-50">        (OnDismissListener) getParentFragment().getParentFragment();</span>
-<span class="source-line-no">051</span><span id="line-51"></span>
-<span class="source-line-no">052</span><span id="line-52">    return new AlertDialog.Builder(requireContext())</span>
-<span class="source-line-no">053</span><span id="line-53">        .setTitle(R.string.permissions_explanation_title)</span>
-<span class="source-line-no">054</span><span id="line-54">        .setIcon(android.R.drawable.ic_dialog_info)</span>
-<span class="source-line-no">055</span><span id="line-55">        .setMessage(message)</span>
-<span class="source-line-no">056</span><span id="line-56">        .setNeutralButton(android.R.string.ok, (dialog, which) -&gt; {</span>
-<span class="source-line-no">057</span><span id="line-57">          listener.onDismiss(); // Tell activity we are done</span>
-<span class="source-line-no">058</span><span id="line-58">        })</span>
-<span class="source-line-no">059</span><span id="line-59">        .create();</span>
-<span class="source-line-no">060</span><span id="line-60">  }</span>
-<span class="source-line-no">061</span><span id="line-61"></span>
-<span class="source-line-no">062</span><span id="line-62">  public interface OnDismissListener {</span>
-<span class="source-line-no">063</span><span id="line-63"></span>
-<span class="source-line-no">064</span><span id="line-64">    void onDismiss();</span>
-<span class="source-line-no">065</span><span id="line-65"></span>
-<span class="source-line-no">066</span><span id="line-66">  }</span>
-<span class="source-line-no">067</span><span id="line-67">}</span>
+<span class="source-line-no">017</span><span id="line-17">/**</span>
+<span class="source-line-no">018</span><span id="line-18"> * ExplanationFragment is a subclass of DialogFragment that displays an alert dialog</span>
+<span class="source-line-no">019</span><span id="line-19"> * explaining the reason for requesting specific permissions. The message is dynamically</span>
+<span class="source-line-no">020</span><span id="line-20"> * constructed based on the permissions passed to the fragment.</span>
+<span class="source-line-no">021</span><span id="line-21"> *</span>
+<span class="source-line-no">022</span><span id="line-22"> * The permissions to be explained are provided as arguments to this fragment and are</span>
+<span class="source-line-no">023</span><span id="line-23"> * extracted during initialization. These permissions are then converted to corresponding</span>
+<span class="source-line-no">024</span><span id="line-24"> * string resource names, and the associated text resources are fetched and compiled</span>
+<span class="source-line-no">025</span><span id="line-25"> * into a readable explanation message for the user.</span>
+<span class="source-line-no">026</span><span id="line-26"> *</span>
+<span class="source-line-no">027</span><span id="line-27"> * A parent fragment must implement the OnDismissListener interface to handle the dismissal</span>
+<span class="source-line-no">028</span><span id="line-28"> * of the dialog. This callback ensures that the parent fragment is notified when the dialog</span>
+<span class="source-line-no">029</span><span id="line-29"> * is dismissed.</span>
+<span class="source-line-no">030</span><span id="line-30"> *</span>
+<span class="source-line-no">031</span><span id="line-31"> * Key Features:</span>
+<span class="source-line-no">032</span><span id="line-32"> * - Dynamically generates explanatory messages for permissions.</span>
+<span class="source-line-no">033</span><span id="line-33"> * - Provides an AlertDialog to present the explanation.</span>
+<span class="source-line-no">034</span><span id="line-34"> * - Notifies the parent fragment when the dialog is dismissed via a callback interface.</span>
+<span class="source-line-no">035</span><span id="line-35"> *</span>
+<span class="source-line-no">036</span><span id="line-36"> * The fragment requires the parent context to provide permission explanation string resources</span>
+<span class="source-line-no">037</span><span id="line-37"> * in the format `&lt;permission_name&gt;_explanation`.</span>
+<span class="source-line-no">038</span><span id="line-38"> */</span>
+<span class="source-line-no">039</span><span id="line-39">public class ExplanationFragment extends DialogFragment {</span>
+<span class="source-line-no">040</span><span id="line-40"></span>
+<span class="source-line-no">041</span><span id="line-41">  private String[] permissionsToExplain;</span>
+<span class="source-line-no">042</span><span id="line-42"></span>
+<span class="source-line-no">043</span><span id="line-43">  @Override</span>
+<span class="source-line-no">044</span><span id="line-44">  public void onCreate(@Nullable Bundle savedInstanceState) {</span>
+<span class="source-line-no">045</span><span id="line-45">    super.onCreate(savedInstanceState);</span>
+<span class="source-line-no">046</span><span id="line-46">    ExplanationFragmentArgs args = ExplanationFragmentArgs.fromBundle(getArguments());</span>
+<span class="source-line-no">047</span><span id="line-47">    permissionsToExplain = args.getPermissionsToExplain();</span>
+<span class="source-line-no">048</span><span id="line-48">  }</span>
+<span class="source-line-no">049</span><span id="line-49"></span>
+<span class="source-line-no">050</span><span id="line-50">  // TODO: 3/28/25 figure out how to convert strings into permissions to explain</span>
+<span class="source-line-no">051</span><span id="line-51">  //  into the names of string resources, so I can look those up and provide regular text.</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">  // TODO: 3/28/25 Can try getIdentifier in Resources class. 3 params context (requirecontexT) and ...</span>
+<span class="source-line-no">054</span><span id="line-54">  //  name of resource, type of resource, package of the resource context.getpackagename</span>
+<span class="source-line-no">055</span><span id="line-55"></span>
+<span class="source-line-no">056</span><span id="line-56">  @NonNull</span>
+<span class="source-line-no">057</span><span id="line-57">  @Override</span>
+<span class="source-line-no">058</span><span id="line-58">  public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {</span>
+<span class="source-line-no">059</span><span id="line-59">    Resources resources = getResources();</span>
+<span class="source-line-no">060</span><span id="line-60">    String packageName = requireActivity().getPackageName();</span>
+<span class="source-line-no">061</span><span id="line-61">    @SuppressLint("DiscouragedApi") String message = Arrays.stream(permissionsToExplain)</span>
+<span class="source-line-no">062</span><span id="line-62">        .map(permission -&gt; permission.substring(permission.lastIndexOf('.') + 1))</span>
+<span class="source-line-no">063</span><span id="line-63">        .map(String::toLowerCase)</span>
+<span class="source-line-no">064</span><span id="line-64">        .map(permission -&gt; permission.replace('.', '_'))</span>
+<span class="source-line-no">065</span><span id="line-65">        .map(permission -&gt; permission + "_explanation")</span>
+<span class="source-line-no">066</span><span id="line-66">        .mapToInt(permission -&gt; resources.getIdentifier(permission, "string", packageName))</span>
+<span class="source-line-no">067</span><span id="line-67">        .mapToObj(resources::getString)</span>
+<span class="source-line-no">068</span><span id="line-68">        .filter(string -&gt; !string.isEmpty())</span>
+<span class="source-line-no">069</span><span id="line-69">        .collect(Collectors.joining("\n"));</span>
+<span class="source-line-no">070</span><span id="line-70"></span>
+<span class="source-line-no">071</span><span id="line-71">    OnDismissListener listener =</span>
+<span class="source-line-no">072</span><span id="line-72">        (OnDismissListener) getParentFragment().getParentFragment();</span>
+<span class="source-line-no">073</span><span id="line-73"></span>
+<span class="source-line-no">074</span><span id="line-74">    return new AlertDialog.Builder(requireContext())</span>
+<span class="source-line-no">075</span><span id="line-75">        .setTitle(R.string.permissions_explanation_title)</span>
+<span class="source-line-no">076</span><span id="line-76">        .setIcon(android.R.drawable.ic_dialog_info)</span>
+<span class="source-line-no">077</span><span id="line-77">        .setMessage(message)</span>
+<span class="source-line-no">078</span><span id="line-78">        .setNeutralButton(android.R.string.ok, (dialog, which) -&gt; {</span>
+<span class="source-line-no">079</span><span id="line-79">          listener.onDismiss(); // Tell activity we are done</span>
+<span class="source-line-no">080</span><span id="line-80">        })</span>
+<span class="source-line-no">081</span><span id="line-81">        .create();</span>
+<span class="source-line-no">082</span><span id="line-82">  }</span>
+<span class="source-line-no">083</span><span id="line-83"></span>
+<span class="source-line-no">084</span><span id="line-84">  /**</span>
+<span class="source-line-no">085</span><span id="line-85">   * Interface definition for a callback to be invoked when a dismiss event occurs.</span>
+<span class="source-line-no">086</span><span id="line-86">   *</span>
+<span class="source-line-no">087</span><span id="line-87">   * Implement this interface to handle the dismissal of a dialog or similar component.</span>
+<span class="source-line-no">088</span><span id="line-88">   */</span>
+<span class="source-line-no">089</span><span id="line-89">  public interface OnDismissListener {</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">    void onDismiss();</span>
+<span class="source-line-no">092</span><span id="line-92"></span>
+<span class="source-line-no">093</span><span id="line-93">  }</span>
+<span class="source-line-no">094</span><span id="line-94">}</span>
 
 
 

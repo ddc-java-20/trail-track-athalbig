@@ -93,8 +93,22 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../pojo/UserWithContent.html" title="class in edu.cnm.deepdive.trailtrack.model.pojo">UserWithContent</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-10">User</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-26">User</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">The <code>User</code> class represents a user entity in the application's database.
+ It is annotated with <code>@Entity</code> to map this class to the "user" table
+ in the SQLite database. The table includes an index on the "oauth_key" column,
+ ensuring unique values for that key.
+
+ The class defines the following main fields:
+ - <code>id</code>: A unique identifier for each user, auto-generated when a user record is created.
+ - <code>displayName</code>: The display name of the user, stored as a case-insensitive value.
+ - <code>oauthKey</code>: A unique identifier for OAuth authentication, stored as a case-insensitive value.
+ - <code>created</code>: A timestamp indicating when the user entity was created.
+
+ Getters and setters are provided for accessing and modifying each of these fields.
+
+ This class is designed to work seamlessly with Room for database management.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -166,7 +180,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>User</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-16">User</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-32">User</a></span>()</div>
 </section>
 </li>
 </ul>
@@ -180,26 +194,26 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getId()">
 <h3>getId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-33">getId</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-74">getId</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setId(long)">
 <h3>setId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-37">setId</a></span><wbr><span class="parameters">(long&nbsp;id)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-79">setId</a></span><wbr><span class="parameters">(long&nbsp;id)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getDisplayName()">
 <h3>getDisplayName</h3>
 <div class="member-signature"><span class="annotations"><a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-41">getDisplayName</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-83">getDisplayName</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setDisplayName(java.lang.String)">
 <h3>setDisplayName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-46">setDisplayName</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-88">setDisplayName</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</span></div>
 </section>
 </li>
@@ -207,13 +221,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getOauthKey()">
 <h3>getOauthKey</h3>
 <div class="member-signature"><span class="annotations"><a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-50">getOauthKey</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-92">getOauthKey</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setOauthKey(java.lang.String)">
 <h3>setOauthKey</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-55">setOauthKey</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-97">setOauthKey</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;oauthKey)</span></div>
 </section>
 </li>
@@ -221,13 +235,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getCreated()">
 <h3>getCreated</h3>
 <div class="member-signature"><span class="annotations"><a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-59">getCreated</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-101">getCreated</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setCreated(java.time.Instant)">
 <h3>setCreated</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-64">setCreated</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/User.html#line-106">setCreated</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a>&nbsp;created)</span></div>
 </section>
 </li>

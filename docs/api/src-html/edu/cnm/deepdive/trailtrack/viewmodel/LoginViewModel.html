@@ -29,90 +29,182 @@
 <span class="source-line-no">016</span><span id="line-16">import io.reactivex.rxjava3.disposables.CompositeDisposable;</span>
 <span class="source-line-no">017</span><span id="line-17">import javax.inject.Inject;</span>
 <span class="source-line-no">018</span><span id="line-18"></span>
-<span class="source-line-no">019</span><span id="line-19">/** @noinspection deprecation*/</span>
-<span class="source-line-no">020</span><span id="line-20">@HiltViewModel</span>
-<span class="source-line-no">021</span><span id="line-21">public class LoginViewModel extends ViewModel implements DefaultLifecycleObserver {</span>
-<span class="source-line-no">022</span><span id="line-22"></span>
-<span class="source-line-no">023</span><span id="line-23">  private static final String TAG = LoginViewModel.class.getSimpleName();</span>
-<span class="source-line-no">024</span><span id="line-24"></span>
-<span class="source-line-no">025</span><span id="line-25">  private final GoogleSignInService signInService;</span>
-<span class="source-line-no">026</span><span id="line-26">  private final MutableLiveData&lt;GoogleSignInAccount&gt; account;</span>
-<span class="source-line-no">027</span><span id="line-27">  private final MutableLiveData&lt;Throwable&gt; refreshThrowable;</span>
-<span class="source-line-no">028</span><span id="line-28">  private final MutableLiveData&lt;Throwable&gt; signInThrowable;</span>
-<span class="source-line-no">029</span><span id="line-29">  private final CompositeDisposable pending;</span>
-<span class="source-line-no">030</span><span id="line-30"></span>
-<span class="source-line-no">031</span><span id="line-31">  @Inject</span>
-<span class="source-line-no">032</span><span id="line-32">  LoginViewModel(GoogleSignInService signInService) {</span>
-<span class="source-line-no">033</span><span id="line-33">    this.signInService = signInService;</span>
-<span class="source-line-no">034</span><span id="line-34">    account = new MutableLiveData&lt;&gt;();</span>
-<span class="source-line-no">035</span><span id="line-35">    refreshThrowable = new MutableLiveData&lt;&gt;();</span>
-<span class="source-line-no">036</span><span id="line-36">    signInThrowable = new MutableLiveData&lt;&gt;();</span>
-<span class="source-line-no">037</span><span id="line-37">    pending = new CompositeDisposable();</span>
-<span class="source-line-no">038</span><span id="line-38">  }</span>
-<span class="source-line-no">039</span><span id="line-39"></span>
-<span class="source-line-no">040</span><span id="line-40">  public LiveData&lt;GoogleSignInAccount&gt; getAccount() {</span>
-<span class="source-line-no">041</span><span id="line-41">    return account;</span>
-<span class="source-line-no">042</span><span id="line-42">  }</span>
+<span class="source-line-no">019</span><span id="line-19">/**</span>
+<span class="source-line-no">020</span><span id="line-20"> * ViewModel for managing user authentication through Google Sign-In.</span>
+<span class="source-line-no">021</span><span id="line-21"> * Responsible for coordinating between the UI and the {@link GoogleSignInService},</span>
+<span class="source-line-no">022</span><span id="line-22"> * handling sign-in, sign-out, and account refresh operations. This class also</span>
+<span class="source-line-no">023</span><span id="line-23"> * manages the lifecycle of ongoing operations and provides LiveData objects</span>
+<span class="source-line-no">024</span><span id="line-24"> * for observing authentication-related events.</span>
+<span class="source-line-no">025</span><span id="line-25"> *</span>
+<span class="source-line-no">026</span><span id="line-26"> * This ViewModel integrates with the Android lifecycle, clearing ongoing operations</span>
+<span class="source-line-no">027</span><span id="line-27"> * automatically on lifecycle changes. It uses RxJava for asynchronous operations and</span>
+<span class="source-line-no">028</span><span id="line-28"> * provides error handling through LiveData objects to propagate exceptions to the UI layer.</span>
+<span class="source-line-no">029</span><span id="line-29"> *</span>
+<span class="source-line-no">030</span><span id="line-30"> * Features:</span>
+<span class="source-line-no">031</span><span id="line-31"> * - Supports silent sign-in to retrieve the last authenticated Google account.</span>
+<span class="source-line-no">032</span><span id="line-32"> * - Initiates and completes Google Sign-In flows.</span>
+<span class="source-line-no">033</span><span id="line-33"> * - Handles sign-out functionality.</span>
+<span class="source-line-no">034</span><span id="line-34"> * - Exposes LiveData for observing the authenticated account and any errors encountered during operations.</span>
+<span class="source-line-no">035</span><span id="line-35"> * - Ensures proper cleanup of disposables upon lifecycle transitions.</span>
+<span class="source-line-no">036</span><span id="line-36"> *</span>
+<span class="source-line-no">037</span><span id="line-37"> * Constructor:</span>
+<span class="source-line-no">038</span><span id="line-38"> * The ViewModel is instantiated via dependency injection using Hilt, injecting</span>
+<span class="source-line-no">039</span><span id="line-39"> * an instance of the {@link GoogleSignInService} for managing Google Sign-In flows.</span>
+<span class="source-line-no">040</span><span id="line-40"> */</span>
+<span class="source-line-no">041</span><span id="line-41">@HiltViewModel</span>
+<span class="source-line-no">042</span><span id="line-42">public class LoginViewModel extends ViewModel implements DefaultLifecycleObserver {</span>
 <span class="source-line-no">043</span><span id="line-43"></span>
-<span class="source-line-no">044</span><span id="line-44">  public LiveData&lt;Throwable&gt; getRefreshThrowable() {</span>
-<span class="source-line-no">045</span><span id="line-45">    return refreshThrowable;</span>
-<span class="source-line-no">046</span><span id="line-46">  }</span>
-<span class="source-line-no">047</span><span id="line-47"></span>
-<span class="source-line-no">048</span><span id="line-48">  public LiveData&lt;Throwable&gt; getSignInThrowable() {</span>
-<span class="source-line-no">049</span><span id="line-49">    return signInThrowable;</span>
-<span class="source-line-no">050</span><span id="line-50">  }</span>
+<span class="source-line-no">044</span><span id="line-44">  private static final String TAG = LoginViewModel.class.getSimpleName();</span>
+<span class="source-line-no">045</span><span id="line-45"></span>
+<span class="source-line-no">046</span><span id="line-46">  private final GoogleSignInService signInService;</span>
+<span class="source-line-no">047</span><span id="line-47">  private final MutableLiveData&lt;GoogleSignInAccount&gt; account;</span>
+<span class="source-line-no">048</span><span id="line-48">  private final MutableLiveData&lt;Throwable&gt; refreshThrowable;</span>
+<span class="source-line-no">049</span><span id="line-49">  private final MutableLiveData&lt;Throwable&gt; signInThrowable;</span>
+<span class="source-line-no">050</span><span id="line-50">  private final CompositeDisposable pending;</span>
 <span class="source-line-no">051</span><span id="line-51"></span>
-<span class="source-line-no">052</span><span id="line-52">  public void refresh() {</span>
-<span class="source-line-no">053</span><span id="line-53">    refreshThrowable.setValue(null);</span>
-<span class="source-line-no">054</span><span id="line-54">    signInThrowable.setValue(null);</span>
-<span class="source-line-no">055</span><span id="line-55">    signInService</span>
-<span class="source-line-no">056</span><span id="line-56">        .refresh()</span>
-<span class="source-line-no">057</span><span id="line-57">        .subscribe(</span>
-<span class="source-line-no">058</span><span id="line-58">            account::postValue,</span>
-<span class="source-line-no">059</span><span id="line-59">            (throwable) -&gt; postThrowable(throwable, refreshThrowable),</span>
-<span class="source-line-no">060</span><span id="line-60">            pending</span>
-<span class="source-line-no">061</span><span id="line-61">        );</span>
-<span class="source-line-no">062</span><span id="line-62">  }</span>
-<span class="source-line-no">063</span><span id="line-63"></span>
-<span class="source-line-no">064</span><span id="line-64">  public void startSignIn(ActivityResultLauncher&lt;Intent&gt; launcher) {</span>
-<span class="source-line-no">065</span><span id="line-65">    refreshThrowable.setValue(null);</span>
-<span class="source-line-no">066</span><span id="line-66">    signInThrowable.setValue(null);</span>
-<span class="source-line-no">067</span><span id="line-67">    signInService.startSignIn(launcher);</span>
-<span class="source-line-no">068</span><span id="line-68">  }</span>
-<span class="source-line-no">069</span><span id="line-69"></span>
-<span class="source-line-no">070</span><span id="line-70">  public void completeSignIn(ActivityResult result) {</span>
-<span class="source-line-no">071</span><span id="line-71">    refreshThrowable.setValue(null);</span>
-<span class="source-line-no">072</span><span id="line-72">    signInThrowable.setValue(null);</span>
-<span class="source-line-no">073</span><span id="line-73">    signInService</span>
-<span class="source-line-no">074</span><span id="line-74">        .completeSignIn(result)</span>
-<span class="source-line-no">075</span><span id="line-75">        .subscribe(</span>
-<span class="source-line-no">076</span><span id="line-76">            account::postValue,</span>
-<span class="source-line-no">077</span><span id="line-77">            (throwable) -&gt; postThrowable(throwable, signInThrowable),</span>
-<span class="source-line-no">078</span><span id="line-78">            pending</span>
-<span class="source-line-no">079</span><span id="line-79">        );</span>
-<span class="source-line-no">080</span><span id="line-80">  }</span>
-<span class="source-line-no">081</span><span id="line-81"></span>
-<span class="source-line-no">082</span><span id="line-82">  public void signOut() {</span>
-<span class="source-line-no">083</span><span id="line-83">    refreshThrowable.setValue(null);</span>
-<span class="source-line-no">084</span><span id="line-84">    signInThrowable.setValue(null);</span>
-<span class="source-line-no">085</span><span id="line-85">    signInService</span>
-<span class="source-line-no">086</span><span id="line-86">        .signOut()</span>
-<span class="source-line-no">087</span><span id="line-87">        .doFinally(() -&gt; account.postValue(null))</span>
-<span class="source-line-no">088</span><span id="line-88">        .subscribe();</span>
-<span class="source-line-no">089</span><span id="line-89">  }</span>
-<span class="source-line-no">090</span><span id="line-90"></span>
-<span class="source-line-no">091</span><span id="line-91">  @Override</span>
-<span class="source-line-no">092</span><span id="line-92">  public void onStop(@NonNull LifecycleOwner owner) {</span>
-<span class="source-line-no">093</span><span id="line-93">    pending.clear();</span>
-<span class="source-line-no">094</span><span id="line-94">    DefaultLifecycleObserver.super.onStop(owner);</span>
+<span class="source-line-no">052</span><span id="line-52">  @Inject</span>
+<span class="source-line-no">053</span><span id="line-53">  LoginViewModel(GoogleSignInService signInService) {</span>
+<span class="source-line-no">054</span><span id="line-54">    this.signInService = signInService;</span>
+<span class="source-line-no">055</span><span id="line-55">    account = new MutableLiveData&lt;&gt;();</span>
+<span class="source-line-no">056</span><span id="line-56">    refreshThrowable = new MutableLiveData&lt;&gt;();</span>
+<span class="source-line-no">057</span><span id="line-57">    signInThrowable = new MutableLiveData&lt;&gt;();</span>
+<span class="source-line-no">058</span><span id="line-58">    pending = new CompositeDisposable();</span>
+<span class="source-line-no">059</span><span id="line-59">  }</span>
+<span class="source-line-no">060</span><span id="line-60"></span>
+<span class="source-line-no">061</span><span id="line-61">  /**</span>
+<span class="source-line-no">062</span><span id="line-62">   * Retrieves the currently signed-in Google account as observable {@link LiveData}.</span>
+<span class="source-line-no">063</span><span id="line-63">   * This method provides access to the user's account information, allowing the UI</span>
+<span class="source-line-no">064</span><span id="line-64">   * and other observers to react to changes in the user's sign-in status.</span>
+<span class="source-line-no">065</span><span id="line-65">   *</span>
+<span class="source-line-no">066</span><span id="line-66">   * @return a {@code LiveData&lt;GoogleSignInAccount&gt;} instance representing the signed-in</span>
+<span class="source-line-no">067</span><span id="line-67">   * Google account, or {@code null} if no account is currently signed in.</span>
+<span class="source-line-no">068</span><span id="line-68">   */</span>
+<span class="source-line-no">069</span><span id="line-69">  public LiveData&lt;GoogleSignInAccount&gt; getAccount() {</span>
+<span class="source-line-no">070</span><span id="line-70">    return account;</span>
+<span class="source-line-no">071</span><span id="line-71">  }</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">  /**</span>
+<span class="source-line-no">074</span><span id="line-74">   * Retrieves the {@link LiveData} instance containing any {@link Throwable} encountered during the</span>
+<span class="source-line-no">075</span><span id="line-75">   * refresh operation. Observers can subscribe to this {@link LiveData} to receive updates whenever</span>
+<span class="source-line-no">076</span><span id="line-76">   * a refresh-related error occurs.</span>
+<span class="source-line-no">077</span><span id="line-77">   *</span>
+<span class="source-line-no">078</span><span id="line-78">   * @return a {@code LiveData&lt;Throwable&gt;} instance representing the throwable encountered during</span>
+<span class="source-line-no">079</span><span id="line-79">   * the refresh operation, or {@code null} if no throwable is currently reported.</span>
+<span class="source-line-no">080</span><span id="line-80">   */</span>
+<span class="source-line-no">081</span><span id="line-81">  public LiveData&lt;Throwable&gt; getRefreshThrowable() {</span>
+<span class="source-line-no">082</span><span id="line-82">    return refreshThrowable;</span>
+<span class="source-line-no">083</span><span id="line-83">  }</span>
+<span class="source-line-no">084</span><span id="line-84"></span>
+<span class="source-line-no">085</span><span id="line-85">  /**</span>
+<span class="source-line-no">086</span><span id="line-86">   * Retrieves the {@link LiveData} instance containing any {@link Throwable} encountered during</span>
+<span class="source-line-no">087</span><span id="line-87">   * the sign-in operation. Observers can subscribe to this {@link LiveData} to receive updates</span>
+<span class="source-line-no">088</span><span id="line-88">   * whenever a sign-in-related error occurs.</span>
+<span class="source-line-no">089</span><span id="line-89">   *</span>
+<span class="source-line-no">090</span><span id="line-90">   * @return a {@code LiveData&lt;Throwable&gt;} instance representing the throwable encountered during</span>
+<span class="source-line-no">091</span><span id="line-91">   * the sign-in operation, or {@code null} if no throwable is currently reported.</span>
+<span class="source-line-no">092</span><span id="line-92">   */</span>
+<span class="source-line-no">093</span><span id="line-93">  public LiveData&lt;Throwable&gt; getSignInThrowable() {</span>
+<span class="source-line-no">094</span><span id="line-94">    return signInThrowable;</span>
 <span class="source-line-no">095</span><span id="line-95">  }</span>
 <span class="source-line-no">096</span><span id="line-96"></span>
-<span class="source-line-no">097</span><span id="line-97">  private void postThrowable(Throwable throwable, MutableLiveData&lt;Throwable&gt; throwableLiveData) {</span>
-<span class="source-line-no">098</span><span id="line-98">    Log.e(TAG, throwable.getMessage(), throwable);</span>
-<span class="source-line-no">099</span><span id="line-99">    throwableLiveData.postValue(throwable);</span>
-<span class="source-line-no">100</span><span id="line-100">  }</span>
-<span class="source-line-no">101</span><span id="line-101"></span>
-<span class="source-line-no">102</span><span id="line-102">}</span>
+<span class="source-line-no">097</span><span id="line-97">  /**</span>
+<span class="source-line-no">098</span><span id="line-98">   * Attempts to refresh the currently signed-in Google account information by initiating a silent</span>
+<span class="source-line-no">099</span><span id="line-99">   * sign-in process through the {@code GoogleSignInService}. If successful, the updated account</span>
+<span class="source-line-no">100</span><span id="line-100">   * information is posted to the associated {@code LiveData}. If an error occurs during the refresh</span>
+<span class="source-line-no">101</span><span id="line-101">   * operation, the corresponding throwable is posted to the {@code refreshThrowable} {@code LiveData}.</span>
+<span class="source-line-no">102</span><span id="line-102">   * Other observers may monitor these {@code LiveData} instances to track success or failures.</span>
+<span class="source-line-no">103</span><span id="line-103">   *</span>
+<span class="source-line-no">104</span><span id="line-104">   * Additionally, this method resets any previously reported throwable values for both the</span>
+<span class="source-line-no">105</span><span id="line-105">   * refresh and sign-in operations, ensuring a clean state before initiating the new refresh request.</span>
+<span class="source-line-no">106</span><span id="line-106">   */</span>
+<span class="source-line-no">107</span><span id="line-107">  public void refresh() {</span>
+<span class="source-line-no">108</span><span id="line-108">    refreshThrowable.setValue(null);</span>
+<span class="source-line-no">109</span><span id="line-109">    signInThrowable.setValue(null);</span>
+<span class="source-line-no">110</span><span id="line-110">    signInService</span>
+<span class="source-line-no">111</span><span id="line-111">        .refresh()</span>
+<span class="source-line-no">112</span><span id="line-112">        .subscribe(</span>
+<span class="source-line-no">113</span><span id="line-113">            account::postValue,</span>
+<span class="source-line-no">114</span><span id="line-114">            (throwable) -&gt; postThrowable(throwable, refreshThrowable),</span>
+<span class="source-line-no">115</span><span id="line-115">            pending</span>
+<span class="source-line-no">116</span><span id="line-116">        );</span>
+<span class="source-line-no">117</span><span id="line-117">  }</span>
+<span class="source-line-no">118</span><span id="line-118"></span>
+<span class="source-line-no">119</span><span id="line-119">  /**</span>
+<span class="source-line-no">120</span><span id="line-120">   * Initiates the sign-in process for the user. This method resets any previously reported</span>
+<span class="source-line-no">121</span><span id="line-121">   * throwable values for both the refresh and sign-in operations, ensuring a clean state before</span>
+<span class="source-line-no">122</span><span id="line-122">   * starting the sign-in workflow. The actual sign-in process is delegated to the</span>
+<span class="source-line-no">123</span><span id="line-123">   * {@code GoogleSignInService} using the provided {@link ActivityResultLauncher}.</span>
+<span class="source-line-no">124</span><span id="line-124">   *</span>
+<span class="source-line-no">125</span><span id="line-125">   * @param launcher An {@link ActivityResultLauncher} used to manage the result of the Google</span>
+<span class="source-line-no">126</span><span id="line-126">   *                 Sign-In activity, handling the user's interaction and receiving their</span>
+<span class="source-line-no">127</span><span id="line-127">   *                 authentication information.</span>
+<span class="source-line-no">128</span><span id="line-128">   */</span>
+<span class="source-line-no">129</span><span id="line-129">  public void startSignIn(ActivityResultLauncher&lt;Intent&gt; launcher) {</span>
+<span class="source-line-no">130</span><span id="line-130">    refreshThrowable.setValue(null);</span>
+<span class="source-line-no">131</span><span id="line-131">    signInThrowable.setValue(null);</span>
+<span class="source-line-no">132</span><span id="line-132">    signInService.startSignIn(launcher);</span>
+<span class="source-line-no">133</span><span id="line-133">  }</span>
+<span class="source-line-no">134</span><span id="line-134"></span>
+<span class="source-line-no">135</span><span id="line-135">  /**</span>
+<span class="source-line-no">136</span><span id="line-136">   * Completes the sign-in process using the result of a previously initiated sign-in activity.</span>
+<span class="source-line-no">137</span><span id="line-137">   * This method clears any previously reported throwable values related to refresh and sign-in</span>
+<span class="source-line-no">138</span><span id="line-138">   * operations, ensuring a clean state before updating the active Google account or posting</span>
+<span class="source-line-no">139</span><span id="line-139">   * errors encountered during the sign-in process.</span>
+<span class="source-line-no">140</span><span id="line-140">   *</span>
+<span class="source-line-no">141</span><span id="line-141">   * @param result The {@link ActivityResult} containing the result data of a sign-in activity.</span>
+<span class="source-line-no">142</span><span id="line-142">   *               This result is processed to extract and update the signed-in account</span>
+<span class="source-line-no">143</span><span id="line-143">   *               information or to handle any errors encountered during the process.</span>
+<span class="source-line-no">144</span><span id="line-144">   */</span>
+<span class="source-line-no">145</span><span id="line-145">  public void completeSignIn(ActivityResult result) {</span>
+<span class="source-line-no">146</span><span id="line-146">    refreshThrowable.setValue(null);</span>
+<span class="source-line-no">147</span><span id="line-147">    signInThrowable.setValue(null);</span>
+<span class="source-line-no">148</span><span id="line-148">    signInService</span>
+<span class="source-line-no">149</span><span id="line-149">        .completeSignIn(result)</span>
+<span class="source-line-no">150</span><span id="line-150">        .subscribe(</span>
+<span class="source-line-no">151</span><span id="line-151">            account::postValue,</span>
+<span class="source-line-no">152</span><span id="line-152">            (throwable) -&gt; postThrowable(throwable, signInThrowable),</span>
+<span class="source-line-no">153</span><span id="line-153">            pending</span>
+<span class="source-line-no">154</span><span id="line-154">        );</span>
+<span class="source-line-no">155</span><span id="line-155">  }</span>
+<span class="source-line-no">156</span><span id="line-156"></span>
+<span class="source-line-no">157</span><span id="line-157">  /**</span>
+<span class="source-line-no">158</span><span id="line-158">   * Signs out the currently authenticated user and clears relevant state in the {@code LoginViewModel}.</span>
+<span class="source-line-no">159</span><span id="line-159">   *</span>
+<span class="source-line-no">160</span><span id="line-160">   * This method performs the following actions:</span>
+<span class="source-line-no">161</span><span id="line-161">   * - Resets any previously reported errors for both refresh and sign-in operations by setting</span>
+<span class="source-line-no">162</span><span id="line-162">   *   {@code refreshThrowable} and {@code signInThrowable} to {@code null}.</span>
+<span class="source-line-no">163</span><span id="line-163">   * - Initiates the sign-out operation via the {@code signInService}.</span>
+<span class="source-line-no">164</span><span id="line-164">   * - Updates the user account information to {@code null} asynchronously when the sign-out</span>
+<span class="source-line-no">165</span><span id="line-165">   *   operation is completed.</span>
+<span class="source-line-no">166</span><span id="line-166">   */</span>
+<span class="source-line-no">167</span><span id="line-167">  public void signOut() {</span>
+<span class="source-line-no">168</span><span id="line-168">    refreshThrowable.setValue(null);</span>
+<span class="source-line-no">169</span><span id="line-169">    signInThrowable.setValue(null);</span>
+<span class="source-line-no">170</span><span id="line-170">    signInService</span>
+<span class="source-line-no">171</span><span id="line-171">        .signOut()</span>
+<span class="source-line-no">172</span><span id="line-172">        .doFinally(() -&gt; account.postValue(null))</span>
+<span class="source-line-no">173</span><span id="line-173">        .subscribe();</span>
+<span class="source-line-no">174</span><span id="line-174">  }</span>
+<span class="source-line-no">175</span><span id="line-175"></span>
+<span class="source-line-no">176</span><span id="line-176">  @Override</span>
+<span class="source-line-no">177</span><span id="line-177">  public void onStop(@NonNull LifecycleOwner owner) {</span>
+<span class="source-line-no">178</span><span id="line-178">    pending.clear();</span>
+<span class="source-line-no">179</span><span id="line-179">    DefaultLifecycleObserver.super.onStop(owner);</span>
+<span class="source-line-no">180</span><span id="line-180">  }</span>
+<span class="source-line-no">181</span><span id="line-181"></span>
+<span class="source-line-no">182</span><span id="line-182">  /**</span>
+<span class="source-line-no">183</span><span id="line-183">   * Posts the specified {@link Throwable} to the provided {@link MutableLiveData}. Logs the throwable</span>
+<span class="source-line-no">184</span><span id="line-184">   * details for debugging purposes before posting.</span>
+<span class="source-line-no">185</span><span id="line-185">   *</span>
+<span class="source-line-no">186</span><span id="line-186">   * @param throwable The {@link Throwable} to be logged and posted to the given {@link MutableLiveData}.</span>
+<span class="source-line-no">187</span><span id="line-187">   * @param throwableLiveData The {@link MutableLiveData} instance to which the throwable is posted.</span>
+<span class="source-line-no">188</span><span id="line-188">   */</span>
+<span class="source-line-no">189</span><span id="line-189">  private void postThrowable(Throwable throwable, MutableLiveData&lt;Throwable&gt; throwableLiveData) {</span>
+<span class="source-line-no">190</span><span id="line-190">    Log.e(TAG, throwable.getMessage(), throwable);</span>
+<span class="source-line-no">191</span><span id="line-191">    throwableLiveData.postValue(throwable);</span>
+<span class="source-line-no">192</span><span id="line-192">  }</span>
+<span class="source-line-no">193</span><span id="line-193"></span>
+<span class="source-line-no">194</span><span id="line-194">}</span>
 
 
 

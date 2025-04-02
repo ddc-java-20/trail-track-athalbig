@@ -95,9 +95,17 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="https://developer.android.com/reference/androidx/lifecycle/DefaultLifecycleObserver.html" title="class or interface in androidx.lifecycle" class="external-link">DefaultLifecycleObserver</a></code>, <code><a href="https://developer.android.com/reference/androidx/lifecycle/LifecycleObserver.html" title="class or interface in androidx.lifecycle" class="external-link">LifecycleObserver</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-21">PinViewModel</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-33">PinViewModel</a></span>
 <span class="extends-implements">extends <a href="https://developer.android.com/reference/androidx/lifecycle/ViewModel.html" title="class or interface in androidx.lifecycle" class="external-link">ViewModel</a>
 implements <a href="https://developer.android.com/reference/androidx/lifecycle/DefaultLifecycleObserver.html" title="class or interface in androidx.lifecycle" class="external-link">DefaultLifecycleObserver</a></span></div>
+<div class="block">PinViewModel serves as the ViewModel for managing UI-related data for pins and tracks in a
+ lifecycle-aware manner. It facilitates interaction between the UI and the repositories, primarily
+ <code>PinRepository</code> and <code>UserRepository</code>, to handle operations such as saving, fetching,
+ and deleting pins and their related data. Additionally, it handles image capture URIs and manages
+ asynchronous operations with composite disposables.
+ <p>
+ This ViewModel is constructed using dependency injection (Hilt) and extends <code>ViewModel</code>,
+ implementing <code>DefaultLifecycleObserver</code> to cleanly manage lifecycle-related tasks.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -114,40 +122,67 @@ implements <a href="https://developer.android.com/reference/androidx/lifecycle/D
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearCaptureUri()" class="member-name-link">clearCaptureUri</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Clears the current capture URI by setting its value to null.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#confirmCapture(boolean)" class="member-name-link">confirmCapture</a><wbr>(boolean&nbsp;success)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Confirms the capture operation by updating the capture URI state based on the operation's success
+ and resetting pending state.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#delete(edu.cnm.deepdive.trailtrack.model.entity.Pin)" class="member-name-link">delete</a><wbr>(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Deletes the specified <code>Pin</code> entity from the repository.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fetch(long)" class="member-name-link">fetch</a><wbr>(long&nbsp;pinId)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initiates the process of fetching a Pin identified by the specified pin ID.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCaptureUri()" class="member-name-link">getCaptureUri</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPin()" class="member-name-link">getPin</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves a <code>LiveData</code> object representing the current <code>Pin</code> being managed by the ViewModel.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPinId()" class="member-name-link">getPinId</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves a <code>LiveData</code> object representing the ID of the current pin.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPins()" class="member-name-link">getPins</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getThrowable()" class="member-name-link">getThrowable</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTrack()" class="member-name-link">getTrack</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves a <code>LiveData</code> object representing the current <code>Track</code> being managed by the ViewModel.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTracks()" class="member-name-link">getTracks</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onStop(androidx.lifecycle.LifecycleOwner)" class="member-name-link">onStop</a><wbr>(<a href="https://developer.android.com/reference/androidx/lifecycle/LifecycleOwner.html" title="class or interface in androidx.lifecycle" class="external-link">LifecycleOwner</a>&nbsp;owner)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#savePin(edu.cnm.deepdive.trailtrack.model.entity.Pin)" class="member-name-link">savePin</a><wbr>(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Saves a given <code>Pin</code> to the database by associating it with the current user and the track
+ currently being processed.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPendingCaptureUri(android.net.Uri)" class="member-name-link">setPendingCaptureUri</a><wbr>(<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&nbsp;pendingCaptureUri)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTrack(edu.cnm.deepdive.trailtrack.model.entity.Track)" class="member-name-link">setTrack</a><wbr>(<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&nbsp;track)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -174,73 +209,143 @@ implements <a href="https://developer.android.com/reference/androidx/lifecycle/D
 <li>
 <section class="detail" id="savePin(edu.cnm.deepdive.trailtrack.model.entity.Pin)">
 <h3>savePin</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-47">savePin</a></span><wbr><span class="parameters">(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-81">savePin</a></span><wbr><span class="parameters">(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</span></div>
+<div class="block">Saves a given <code>Pin</code> to the database by associating it with the current user and the track
+ currently being processed. This method resets the throwable state before performing the save
+ operation and handles completion, errors, and pending states.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pin</code> - The <code>Pin</code> object to be saved. It must contain valid data and will be updated
+            internally with the ID of the current user and the associated track.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="fetch(long)">
 <h3>fetch</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-67">fetch</a></span><wbr><span class="parameters">(long&nbsp;pinId)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-110">fetch</a></span><wbr><span class="parameters">(long&nbsp;pinId)</span></div>
+<div class="block">Initiates the process of fetching a Pin identified by the specified pin ID. This method resets
+ the throwable state to null before setting the given pin ID, which triggers the relevant
+ data-fetching and LiveData state updates.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pinId</code> - The unique identifier of the Pin to be fetched. Must be a non-negative long value.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="delete(edu.cnm.deepdive.trailtrack.model.entity.Pin)">
 <h3>delete</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-73">delete</a></span><wbr><span class="parameters">(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-124">delete</a></span><wbr><span class="parameters">(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</span></div>
+<div class="block">Deletes the specified <code>Pin</code> entity from the repository. This method clears the current
+ throwable state, performs a removal operation on the repository, and manages completion,
+ error handling, and pending states through reactive streams.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pin</code> - The <code>Pin</code> object to be deleted. It must be a valid, existing entity
+            in the repository.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="confirmCapture(boolean)">
 <h3>confirmCapture</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-85">confirmCapture</a></span><wbr><span class="parameters">(boolean&nbsp;success)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-144">confirmCapture</a></span><wbr><span class="parameters">(boolean&nbsp;success)</span></div>
+<div class="block">Confirms the capture operation by updating the capture URI state based on the operation's success
+ and resetting pending state. If successful, the pending capture URI is assigned to the capture
+ URI; otherwise, the capture URI is cleared.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>success</code> - Indicates whether the capture operation was successful. If true, the capture URI
+                is updated to the pending capture URI. If false, the capture URI is set to null.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="clearCaptureUri()">
 <h3>clearCaptureUri</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-90">clearCaptureUri</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-154">clearCaptureUri</a></span>()</div>
+<div class="block">Clears the current capture URI by setting its value to null. This method is typically used
+ to reset or remove any information about the URI associated with a capture operation,
+ ensuring that subsequent operations do not mistakenly use outdated or irrelevant data.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getPinId()">
 <h3>getPinId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-94">getPinId</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-164">getPinId</a></span>()</div>
+<div class="block">Retrieves a <code>LiveData</code> object representing the ID of the current pin.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A <code>LiveData&lt;Long&gt;</code> instance that provides the current pin ID. The value
+         may be null if no pin is currently set or available.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getPin()">
 <h3>getPin</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-98">getPin</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-174">getPin</a></span>()</div>
+<div class="block">Retrieves a <code>LiveData</code> object representing the current <code>Pin</code> being managed by the ViewModel.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A <code>LiveData&lt;Pin&gt;</code> instance that provides the current pin. The value may be null if no pin
+         is currently set or available in the repository.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTrack()">
+<h3>getTrack</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-184">getTrack</a></span>()</div>
+<div class="block">Retrieves a <code>LiveData</code> object representing the current <code>Track</code> being managed by the ViewModel.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A <code>LiveData&lt;Track&gt;</code> instance that provides the current track. The value may be null if
+         no track is currently set or available in the repository.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setTrack(edu.cnm.deepdive.trailtrack.model.entity.Track)">
+<h3>setTrack</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-188">setTrack</a></span><wbr><span class="parameters">(<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&nbsp;track)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getPins()">
 <h3>getPins</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-102">getPins</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-194">getPins</a></span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getTracks()">
+<h3>getTracks</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-198">getTracks</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getCaptureUri()">
 <h3>getCaptureUri</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-107">getCaptureUri</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-202">getCaptureUri</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setPendingCaptureUri(android.net.Uri)">
 <h3>setPendingCaptureUri</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-111">setPendingCaptureUri</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&nbsp;pendingCaptureUri)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-206">setPendingCaptureUri</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&nbsp;pendingCaptureUri)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getThrowable()">
 <h3>getThrowable</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-115">getThrowable</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-210">getThrowable</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="onStop(androidx.lifecycle.LifecycleOwner)">
 <h3>onStop</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-119">onStop</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PinViewModel.html#line-214">onStop</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://developer.android.com/reference/androidx/lifecycle/LifecycleOwner.html" title="class or interface in androidx.lifecycle" class="external-link">LifecycleOwner</a>&nbsp;owner)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>

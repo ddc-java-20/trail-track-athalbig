@@ -14,87 +14,265 @@
 <pre><span class="source-line-no">001</span><span id="line-1">package edu.cnm.deepdive.trailtrack.controller;</span>
 <span class="source-line-no">002</span><span id="line-2"></span>
 <span class="source-line-no">003</span><span id="line-3">import android.Manifest.permission;</span>
-<span class="source-line-no">004</span><span id="line-4">import androidx.annotation.NonNull;</span>
-<span class="source-line-no">005</span><span id="line-5">import androidx.annotation.Nullable;</span>
-<span class="source-line-no">006</span><span id="line-6">import androidx.fragment.app.Fragment;</span>
-<span class="source-line-no">007</span><span id="line-7"></span>
-<span class="source-line-no">008</span><span id="line-8">import android.os.Bundle;</span>
-<span class="source-line-no">009</span><span id="line-9">import android.view.LayoutInflater;</span>
-<span class="source-line-no">010</span><span id="line-10">import android.view.View;</span>
-<span class="source-line-no">011</span><span id="line-11">import android.view.ViewGroup;</span>
-<span class="source-line-no">012</span><span id="line-12"></span>
-<span class="source-line-no">013</span><span id="line-13">import androidx.fragment.app.FragmentActivity;</span>
-<span class="source-line-no">014</span><span id="line-14">import androidx.lifecycle.LifecycleOwner;</span>
-<span class="source-line-no">015</span><span id="line-15">import androidx.lifecycle.ViewModelProvider;</span>
-<span class="source-line-no">016</span><span id="line-16">import com.google.android.gms.maps.CameraUpdateFactory;</span>
-<span class="source-line-no">017</span><span id="line-17">import com.google.android.gms.maps.GoogleMap;</span>
-<span class="source-line-no">018</span><span id="line-18">import com.google.android.gms.maps.OnMapReadyCallback;</span>
-<span class="source-line-no">019</span><span id="line-19">import com.google.android.gms.maps.SupportMapFragment;</span>
-<span class="source-line-no">020</span><span id="line-20">import com.google.android.gms.maps.model.LatLng;</span>
-<span class="source-line-no">021</span><span id="line-21">import com.google.android.gms.maps.model.MarkerOptions;</span>
-<span class="source-line-no">022</span><span id="line-22">import dagger.hilt.android.AndroidEntryPoint;</span>
-<span class="source-line-no">023</span><span id="line-23">import edu.cnm.deepdive.trailtrack.R;</span>
-<span class="source-line-no">024</span><span id="line-24">import edu.cnm.deepdive.trailtrack.viewmodel.PermissionsViewModel;</span>
-<span class="source-line-no">025</span><span id="line-25"></span>
-<span class="source-line-no">026</span><span id="line-26">@AndroidEntryPoint</span>
-<span class="source-line-no">027</span><span id="line-27">public class MapFragment extends Fragment {</span>
-<span class="source-line-no">028</span><span id="line-28"></span>
-<span class="source-line-no">029</span><span id="line-29">  private PermissionsViewModel permissionsViewModel;</span>
-<span class="source-line-no">030</span><span id="line-30"></span>
-<span class="source-line-no">031</span><span id="line-31">  private OnMapReadyCallback callback = new OnMapReadyCallback() {</span>
-<span class="source-line-no">032</span><span id="line-32"></span>
-<span class="source-line-no">033</span><span id="line-33">    /**</span>
-<span class="source-line-no">034</span><span id="line-34">     * Manipulates the map once available.</span>
-<span class="source-line-no">035</span><span id="line-35">     * This callback is triggered when the map is ready to be used.</span>
-<span class="source-line-no">036</span><span id="line-36">     * This is where we can add markers or lines, add listeners or move the camera.</span>
-<span class="source-line-no">037</span><span id="line-37">     * In this case, we just add a marker near Sydney, Australia.</span>
-<span class="source-line-no">038</span><span id="line-38">     * If Google Play services is not installed on the device, the user will be prompted to</span>
-<span class="source-line-no">039</span><span id="line-39">     * install it inside the SupportMapFragment. This method will only be triggered once the</span>
-<span class="source-line-no">040</span><span id="line-40">     * user has installed Google Play services and returned to the app.</span>
-<span class="source-line-no">041</span><span id="line-41">     */</span>
-<span class="source-line-no">042</span><span id="line-42"></span>
-<span class="source-line-no">043</span><span id="line-43">    @Override</span>
-<span class="source-line-no">044</span><span id="line-44">    public void onMapReady(GoogleMap googleMap) {</span>
-<span class="source-line-no">045</span><span id="line-45"></span>
-<span class="source-line-no">046</span><span id="line-46">            googleMap.setMyLocationEnabled(true);</span>
-<span class="source-line-no">047</span><span id="line-47"></span>
-<span class="source-line-no">048</span><span id="line-48">//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));</span>
-<span class="source-line-no">049</span><span id="line-49">          }</span>
-<span class="source-line-no">050</span><span id="line-50">    };</span>
-<span class="source-line-no">051</span><span id="line-51"></span>
-<span class="source-line-no">052</span><span id="line-52"></span>
-<span class="source-line-no">053</span><span id="line-53">    @Nullable</span>
-<span class="source-line-no">054</span><span id="line-54">    @Override</span>
-<span class="source-line-no">055</span><span id="line-55">    public View onCreateView(@NonNull LayoutInflater inflater,</span>
-<span class="source-line-no">056</span><span id="line-56">        @Nullable ViewGroup container,</span>
-<span class="source-line-no">057</span><span id="line-57">        @Nullable Bundle savedInstanceState) {</span>
-<span class="source-line-no">058</span><span id="line-58">      return inflater.inflate(R.layout.fragment_map, container, false);</span>
-<span class="source-line-no">059</span><span id="line-59">    }</span>
-<span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">    @Override</span>
-<span class="source-line-no">062</span><span id="line-62">    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {</span>
-<span class="source-line-no">063</span><span id="line-63">      super.onViewCreated(view, savedInstanceState);</span>
-<span class="source-line-no">064</span><span id="line-64"></span>
-<span class="source-line-no">065</span><span id="line-65">//      FragmentActivity activity = requireActivity();</span>
-<span class="source-line-no">066</span><span id="line-66">//      ViewModelProvider provider = new ViewModelProvider(activity);</span>
-<span class="source-line-no">067</span><span id="line-67">//      LifecycleOwner owner = getViewLifecycleOwner();</span>
-<span class="source-line-no">068</span><span id="line-68">//</span>
-<span class="source-line-no">069</span><span id="line-69">//      permissionsViewModel = provider.get(PermissionsViewModel.class);</span>
-<span class="source-line-no">070</span><span id="line-70">//      permissionsViewModel</span>
-<span class="source-line-no">071</span><span id="line-71">//          .getPermissionsStatus()</span>
-<span class="source-line-no">072</span><span id="line-72">//          .observe(owner, (permissions) -&gt; {</span>
-<span class="source-line-no">073</span><span id="line-73">//                //noinspection DataFlowIssue</span>
-<span class="source-line-no">074</span><span id="line-74">//                binding.capture.setVisibility(</span>
-<span class="source-line-no">075</span><span id="line-75">//                    permissions.getOrDefault(permission.CAMERA, false) ? View.VISIBLE : View.GONE);</span>
-<span class="source-line-no">076</span><span id="line-76">//              });</span>
-<span class="source-line-no">077</span><span id="line-77">//</span>
-<span class="source-line-no">078</span><span id="line-78">      SupportMapFragment mapFragment =</span>
-<span class="source-line-no">079</span><span id="line-79">          (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);</span>
-<span class="source-line-no">080</span><span id="line-80">      if (mapFragment != null) {</span>
-<span class="source-line-no">081</span><span id="line-81">        mapFragment.getMapAsync(callback);</span>
-<span class="source-line-no">082</span><span id="line-82">      }</span>
-<span class="source-line-no">083</span><span id="line-83">    }</span>
-<span class="source-line-no">084</span><span id="line-84">  }</span>
+<span class="source-line-no">004</span><span id="line-4">import android.annotation.SuppressLint;</span>
+<span class="source-line-no">005</span><span id="line-5">import android.os.Bundle;</span>
+<span class="source-line-no">006</span><span id="line-6">import android.view.LayoutInflater;</span>
+<span class="source-line-no">007</span><span id="line-7">import android.view.View;</span>
+<span class="source-line-no">008</span><span id="line-8">import android.view.ViewGroup;</span>
+<span class="source-line-no">009</span><span id="line-9">import android.widget.AdapterView;</span>
+<span class="source-line-no">010</span><span id="line-10">import android.widget.AdapterView.OnItemSelectedListener;</span>
+<span class="source-line-no">011</span><span id="line-11">import android.widget.ArrayAdapter;</span>
+<span class="source-line-no">012</span><span id="line-12">import androidx.annotation.NonNull;</span>
+<span class="source-line-no">013</span><span id="line-13">import androidx.annotation.Nullable;</span>
+<span class="source-line-no">014</span><span id="line-14">import androidx.fragment.app.Fragment;</span>
+<span class="source-line-no">015</span><span id="line-15">import androidx.fragment.app.FragmentActivity;</span>
+<span class="source-line-no">016</span><span id="line-16">import androidx.lifecycle.LifecycleOwner;</span>
+<span class="source-line-no">017</span><span id="line-17">import androidx.lifecycle.ViewModelProvider;</span>
+<span class="source-line-no">018</span><span id="line-18">import androidx.navigation.Navigation;</span>
+<span class="source-line-no">019</span><span id="line-19">import com.google.android.gms.maps.CameraUpdate;</span>
+<span class="source-line-no">020</span><span id="line-20">import com.google.android.gms.maps.CameraUpdateFactory;</span>
+<span class="source-line-no">021</span><span id="line-21">import com.google.android.gms.maps.GoogleMap;</span>
+<span class="source-line-no">022</span><span id="line-22">import com.google.android.gms.maps.OnMapReadyCallback;</span>
+<span class="source-line-no">023</span><span id="line-23">import com.google.android.gms.maps.model.LatLng;</span>
+<span class="source-line-no">024</span><span id="line-24">import com.google.android.gms.maps.model.MarkerOptions;</span>
+<span class="source-line-no">025</span><span id="line-25">import dagger.hilt.android.AndroidEntryPoint;</span>
+<span class="source-line-no">026</span><span id="line-26">import edu.cnm.deepdive.trailtrack.MapsPinsNavGraphDirections;</span>
+<span class="source-line-no">027</span><span id="line-27">import edu.cnm.deepdive.trailtrack.databinding.FragmentMapBinding;</span>
+<span class="source-line-no">028</span><span id="line-28">import edu.cnm.deepdive.trailtrack.databinding.FragmentPinsBinding;</span>
+<span class="source-line-no">029</span><span id="line-29">import edu.cnm.deepdive.trailtrack.model.entity.Pin;</span>
+<span class="source-line-no">030</span><span id="line-30">import edu.cnm.deepdive.trailtrack.model.entity.Track;</span>
+<span class="source-line-no">031</span><span id="line-31">import edu.cnm.deepdive.trailtrack.model.pojo.Location;</span>
+<span class="source-line-no">032</span><span id="line-32">import edu.cnm.deepdive.trailtrack.viewmodel.LocationViewModel;</span>
+<span class="source-line-no">033</span><span id="line-33">import edu.cnm.deepdive.trailtrack.viewmodel.PermissionsViewModel;</span>
+<span class="source-line-no">034</span><span id="line-34">import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;</span>
+<span class="source-line-no">035</span><span id="line-35">import java.util.List;</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">/**</span>
+<span class="source-line-no">038</span><span id="line-38"> * MapFragment is a Fragment subclass responsible for displaying a Google Map and interacting</span>
+<span class="source-line-no">039</span><span id="line-39"> * with map-related elements and user actions. It implements OnMapReadyCallback to manage</span>
+<span class="source-line-no">040</span><span id="line-40"> * GoogleMap initialization and OnItemSelectedListener to handle selection changes in the tracks</span>
+<span class="source-line-no">041</span><span id="line-41"> * dropdown menu. The fragment integrates multiple ViewModels and observes LiveData to synchronize</span>
+<span class="source-line-no">042</span><span id="line-42"> * UI elements with real-time data updates.</span>
+<span class="source-line-no">043</span><span id="line-43"> *</span>
+<span class="source-line-no">044</span><span id="line-44"> * Responsibilities:</span>
+<span class="source-line-no">045</span><span id="line-45"> * - Displays a Google Map using Google Maps SDK.</span>
+<span class="source-line-no">046</span><span id="line-46"> * - Manages lifecycle events of the map to ensure proper behavior during Fragment lifecycle changes.</span>
+<span class="source-line-no">047</span><span id="line-47"> * - Observes and reacts to changes in permissions, location, and pin data via injected ViewModels.</span>
+<span class="source-line-no">048</span><span id="line-48"> * - Displays and updates markers on the map based on observed pin data.</span>
+<span class="source-line-no">049</span><span id="line-49"> * - Handles user interactions such as selecting tracks and creating new pins.</span>
+<span class="source-line-no">050</span><span id="line-50"> *</span>
+<span class="source-line-no">051</span><span id="line-51"> * Integrations:</span>
+<span class="source-line-no">052</span><span id="line-52"> * - PermissionsViewModel: Monitors and updates the user's permissions, specifically location-related permissions.</span>
+<span class="source-line-no">053</span><span id="line-53"> * - LocationViewModel: Provides live updates of the user's current location and manages location services.</span>
+<span class="source-line-no">054</span><span id="line-54"> * - PinViewModel: Stores and updates information about tracks and pins, including handling current selection and displaying pin markers on the map.</span>
+<span class="source-line-no">055</span><span id="line-55"> *</span>
+<span class="source-line-no">056</span><span id="line-56"> * Key Lifecycle Handling:</span>
+<span class="source-line-no">057</span><span id="line-57"> * - Registers observers for LiveData from ViewModels to update UI elements dynamically.</span>
+<span class="source-line-no">058</span><span id="line-58"> * - Manages Google Map lifecycle by forwarding lifecycle callbacks to the map object.</span>
+<span class="source-line-no">059</span><span id="line-59"> *</span>
+<span class="source-line-no">060</span><span id="line-60"> * Implementations:</span>
+<span class="source-line-no">061</span><span id="line-61"> * - OnMapReadyCallback: Enables map setup when the map instance is ready.</span>
+<span class="source-line-no">062</span><span id="line-62"> * - OnItemSelectedListener: Handles user interactions with the track selection dropdown menu.</span>
+<span class="source-line-no">063</span><span id="line-63"> */</span>
+<span class="source-line-no">064</span><span id="line-64">@AndroidEntryPoint</span>
+<span class="source-line-no">065</span><span id="line-65">public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemSelectedListener {</span>
+<span class="source-line-no">066</span><span id="line-66"></span>
+<span class="source-line-no">067</span><span id="line-67">  private PermissionsViewModel permissionsViewModel;</span>
+<span class="source-line-no">068</span><span id="line-68">  private LocationViewModel locationViewModel;</span>
+<span class="source-line-no">069</span><span id="line-69">  private PinViewModel pinViewModel;</span>
+<span class="source-line-no">070</span><span id="line-70">  private FragmentMapBinding mapBinding;</span>
+<span class="source-line-no">071</span><span id="line-71">  private boolean currentLocationEnabled;</span>
+<span class="source-line-no">072</span><span id="line-72">  private GoogleMap map;</span>
+<span class="source-line-no">073</span><span id="line-73">  private List&lt;Track&gt; tracks;</span>
+<span class="source-line-no">074</span><span id="line-74">  private CameraUpdate cameraUpdate;</span>
+<span class="source-line-no">075</span><span id="line-75">  private Track track;</span>
+<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">077</span><span id="line-77">  @Nullable</span>
+<span class="source-line-no">078</span><span id="line-78">  @Override</span>
+<span class="source-line-no">079</span><span id="line-79">  public View onCreateView(@NonNull LayoutInflater inflater,</span>
+<span class="source-line-no">080</span><span id="line-80">      @Nullable ViewGroup container,</span>
+<span class="source-line-no">081</span><span id="line-81">      @Nullable Bundle savedInstanceState) {</span>
+<span class="source-line-no">082</span><span id="line-82">    mapBinding = FragmentMapBinding.inflate(inflater, container, false);</span>
+<span class="source-line-no">083</span><span id="line-83">    mapBinding.mainMap.onCreate(savedInstanceState);</span>
+<span class="source-line-no">084</span><span id="line-84">    mapBinding.mainMap.getMapAsync(this);</span>
+<span class="source-line-no">085</span><span id="line-85">    mapBinding.tracks.setOnItemSelectedListener(this);</span>
+<span class="source-line-no">086</span><span id="line-86">    mapBinding.newPin.setOnClickListener((v) -&gt; Navigation.findNavController(mapBinding.getRoot())</span>
+<span class="source-line-no">087</span><span id="line-87">        .navigate(MapsPinsNavGraphDirections.editPin()));</span>
+<span class="source-line-no">088</span><span id="line-88">    // TODO: 3/31/25 Attach listeners to UI widgets</span>
+<span class="source-line-no">089</span><span id="line-89">    return mapBinding.getRoot();</span>
+<span class="source-line-no">090</span><span id="line-90">  }</span>
+<span class="source-line-no">091</span><span id="line-91"></span>
+<span class="source-line-no">092</span><span id="line-92">  @Override</span>
+<span class="source-line-no">093</span><span id="line-93">  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {</span>
+<span class="source-line-no">094</span><span id="line-94">    super.onViewCreated(view, savedInstanceState);</span>
+<span class="source-line-no">095</span><span id="line-95"></span>
+<span class="source-line-no">096</span><span id="line-96">    FragmentActivity activity = requireActivity();</span>
+<span class="source-line-no">097</span><span id="line-97">    ViewModelProvider provider = new ViewModelProvider(activity);</span>
+<span class="source-line-no">098</span><span id="line-98">    LifecycleOwner owner = getViewLifecycleOwner();</span>
+<span class="source-line-no">099</span><span id="line-99"></span>
+<span class="source-line-no">100</span><span id="line-100">    locationViewModel = provider.get(LocationViewModel.class);</span>
+<span class="source-line-no">101</span><span id="line-101">    locationViewModel.getLocation()</span>
+<span class="source-line-no">102</span><span id="line-102">        .observe(owner, location -&gt; {</span>
+<span class="source-line-no">103</span><span id="line-103">           cameraUpdate = CameraUpdateFactory.newLatLng(</span>
+<span class="source-line-no">104</span><span id="line-104">              new LatLng(location.getLatitude(), location.getLongitude()));</span>
+<span class="source-line-no">105</span><span id="line-105">          centerCamera();</span>
+<span class="source-line-no">106</span><span id="line-106">        });</span>
+<span class="source-line-no">107</span><span id="line-107">    getLifecycle().addObserver(locationViewModel);</span>
+<span class="source-line-no">108</span><span id="line-108">    permissionsViewModel = provider.get(PermissionsViewModel.class);</span>
+<span class="source-line-no">109</span><span id="line-109">    permissionsViewModel</span>
+<span class="source-line-no">110</span><span id="line-110">        .getPermissionsStatus()</span>
+<span class="source-line-no">111</span><span id="line-111">        .observe(owner, (permissions) -&gt; {</span>
+<span class="source-line-no">112</span><span id="line-112">          if (Boolean.TRUE.equals(</span>
+<span class="source-line-no">113</span><span id="line-113">              permissions.getOrDefault(permission.ACCESS_FINE_LOCATION, false))) {</span>
+<span class="source-line-no">114</span><span id="line-114">            locationViewModel.startService();</span>
+<span class="source-line-no">115</span><span id="line-115">            currentLocationEnabled = true;</span>
+<span class="source-line-no">116</span><span id="line-116">          } else {</span>
+<span class="source-line-no">117</span><span id="line-117">            currentLocationEnabled = false;</span>
+<span class="source-line-no">118</span><span id="line-118">          }</span>
+<span class="source-line-no">119</span><span id="line-119">        });</span>
+<span class="source-line-no">120</span><span id="line-120">    pinViewModel = new ViewModelProvider(requireActivity()).get(PinViewModel.class);</span>
+<span class="source-line-no">121</span><span id="line-121">    pinViewModel</span>
+<span class="source-line-no">122</span><span id="line-122">        .getTracks()</span>
+<span class="source-line-no">123</span><span id="line-123">        .observe(owner, (tracks) -&gt; {</span>
+<span class="source-line-no">124</span><span id="line-124">          this.tracks = tracks;</span>
+<span class="source-line-no">125</span><span id="line-125">          ArrayAdapter&lt;Track&gt; adapter =</span>
+<span class="source-line-no">126</span><span id="line-126">              new ArrayAdapter&lt;&gt;(requireContext(), android.R.layout.simple_list_item_1, tracks);</span>
+<span class="source-line-no">127</span><span id="line-127">          mapBinding.tracks.setAdapter(adapter);</span>
+<span class="source-line-no">128</span><span id="line-128">          setSelectedTrack();</span>
+<span class="source-line-no">129</span><span id="line-129">        });</span>
+<span class="source-line-no">130</span><span id="line-130">    pinViewModel.getTrack().observe(owner, (track) -&gt; {</span>
+<span class="source-line-no">131</span><span id="line-131">      this.track = track;</span>
+<span class="source-line-no">132</span><span id="line-132">      setSelectedTrack();</span>
+<span class="source-line-no">133</span><span id="line-133">    });</span>
+<span class="source-line-no">134</span><span id="line-134">    pinViewModel</span>
+<span class="source-line-no">135</span><span id="line-135">        .getPins()</span>
+<span class="source-line-no">136</span><span id="line-136">        .observe(owner, this::handlePins);</span>
+<span class="source-line-no">137</span><span id="line-137">  }</span>
+<span class="source-line-no">138</span><span id="line-138"></span>
+<span class="source-line-no">139</span><span id="line-139">  /**</span>
+<span class="source-line-no">140</span><span id="line-140">   * Sets the currently selected track in the UI to match the position of the {@code track}</span>
+<span class="source-line-no">141</span><span id="line-141">   * field within the {@code tracks} list. If {@code track} or {@code tracks} are {@code null},</span>
+<span class="source-line-no">142</span><span id="line-142">   * this method does nothing.</span>
+<span class="source-line-no">143</span><span id="line-143">   *</span>
+<span class="source-line-no">144</span><span id="line-144">   * The method retrieves the index of the {@code track} within the {@code tracks} list using</span>
+<span class="source-line-no">145</span><span id="line-145">   * the {@code indexOf} method. If the {@code track} exists in the list, the selection of</span>
+<span class="source-line-no">146</span><span id="line-146">   * the UI component represented by {@code mapBinding.tracks} is updated to the matching</span>
+<span class="source-line-no">147</span><span id="line-147">   * position.</span>
+<span class="source-line-no">148</span><span id="line-148">   */</span>
+<span class="source-line-no">149</span><span id="line-149">  private void setSelectedTrack() {</span>
+<span class="source-line-no">150</span><span id="line-150">    if (track != null &amp;&amp; tracks != null) {</span>
+<span class="source-line-no">151</span><span id="line-151">      int position = tracks.indexOf(track);</span>
+<span class="source-line-no">152</span><span id="line-152">      mapBinding.tracks.setSelection(position);</span>
+<span class="source-line-no">153</span><span id="line-153">    }</span>
+<span class="source-line-no">154</span><span id="line-154">  }</span>
+<span class="source-line-no">155</span><span id="line-155"></span>
+<span class="source-line-no">156</span><span id="line-156">  /**</span>
+<span class="source-line-no">157</span><span id="line-157">   * Adjusts the camera of the map to a specified update if both the map and</span>
+<span class="source-line-no">158</span><span id="line-158">   * camera update objects are not null.</span>
+<span class="source-line-no">159</span><span id="line-159">   *</span>
+<span class="source-line-no">160</span><span id="line-160">   * This method ensures the camera's position is updated smoothly by invoking</span>
+<span class="source-line-no">161</span><span id="line-161">   * the moveCamera method on the map instance with the specified camera update.</span>
+<span class="source-line-no">162</span><span id="line-162">   * If either the map or the camera update is null, the method does nothing.</span>
+<span class="source-line-no">163</span><span id="line-163">   */</span>
+<span class="source-line-no">164</span><span id="line-164">  private void centerCamera() {</span>
+<span class="source-line-no">165</span><span id="line-165">    if (map != null &amp;&amp; cameraUpdate != null) {</span>
+<span class="source-line-no">166</span><span id="line-166">      map.moveCamera(cameraUpdate);</span>
+<span class="source-line-no">167</span><span id="line-167">    }</span>
+<span class="source-line-no">168</span><span id="line-168">  }</span>
+<span class="source-line-no">169</span><span id="line-169"></span>
+<span class="source-line-no">170</span><span id="line-170">  /**</span>
+<span class="source-line-no">171</span><span id="line-171">   * Processes a list of pins to populate a map with markers based on each pin's location.</span>
+<span class="source-line-no">172</span><span id="line-172">   * The map is cleared initially, and for each pin in the list, a marker is created</span>
+<span class="source-line-no">173</span><span id="line-173">   * using the title and location from the pin and added to the map.</span>
+<span class="source-line-no">174</span><span id="line-174">   *</span>
+<span class="source-line-no">175</span><span id="line-175">   * @param pins a list of Pin objects to be processed, each containing a title and location data</span>
+<span class="source-line-no">176</span><span id="line-176">   */</span>
+<span class="source-line-no">177</span><span id="line-177">  private void handlePins(List&lt;Pin&gt; pins) {</span>
+<span class="source-line-no">178</span><span id="line-178">    map.clear();</span>
+<span class="source-line-no">179</span><span id="line-179">    pins.forEach((pin) -&gt; {</span>
+<span class="source-line-no">180</span><span id="line-180">      Location location = pin.getLocation();</span>
+<span class="source-line-no">181</span><span id="line-181">      if (location != null) {</span>
+<span class="source-line-no">182</span><span id="line-182">        MarkerOptions options = new MarkerOptions()</span>
+<span class="source-line-no">183</span><span id="line-183">            .title(pin.getTitle())</span>
+<span class="source-line-no">184</span><span id="line-184">            .position(new LatLng(location.latitude(), location.longitude()));</span>
+<span class="source-line-no">185</span><span id="line-185">        map.addMarker(options);</span>
+<span class="source-line-no">186</span><span id="line-186">      }</span>
+<span class="source-line-no">187</span><span id="line-187">    });</span>
+<span class="source-line-no">188</span><span id="line-188">    // DONE 4/1/25 Iterate over pins, create marker for each, and add it to map (googleMap Map field)</span>
+<span class="source-line-no">189</span><span id="line-189">  }</span>
+<span class="source-line-no">190</span><span id="line-190"></span>
+<span class="source-line-no">191</span><span id="line-191">  @Override</span>
+<span class="source-line-no">192</span><span id="line-192">  public void onStart() {</span>
+<span class="source-line-no">193</span><span id="line-193">    super.onStart();</span>
+<span class="source-line-no">194</span><span id="line-194">    mapBinding.mainMap.onStart();</span>
+<span class="source-line-no">195</span><span id="line-195">  }</span>
+<span class="source-line-no">196</span><span id="line-196"></span>
+<span class="source-line-no">197</span><span id="line-197">  @Override</span>
+<span class="source-line-no">198</span><span id="line-198">  public void onResume() {</span>
+<span class="source-line-no">199</span><span id="line-199">    super.onResume();</span>
+<span class="source-line-no">200</span><span id="line-200">    mapBinding.mainMap.onResume();</span>
+<span class="source-line-no">201</span><span id="line-201">  }</span>
+<span class="source-line-no">202</span><span id="line-202"></span>
+<span class="source-line-no">203</span><span id="line-203">  @Override</span>
+<span class="source-line-no">204</span><span id="line-204">  public void onPause() {</span>
+<span class="source-line-no">205</span><span id="line-205">    mapBinding.mainMap.onPause();</span>
+<span class="source-line-no">206</span><span id="line-206">    super.onPause();</span>
+<span class="source-line-no">207</span><span id="line-207">  }</span>
+<span class="source-line-no">208</span><span id="line-208"></span>
+<span class="source-line-no">209</span><span id="line-209">  @Override</span>
+<span class="source-line-no">210</span><span id="line-210">  public void onStop() {</span>
+<span class="source-line-no">211</span><span id="line-211">    mapBinding.mainMap.onStop();</span>
+<span class="source-line-no">212</span><span id="line-212">    super.onStop();</span>
+<span class="source-line-no">213</span><span id="line-213">  }</span>
+<span class="source-line-no">214</span><span id="line-214"></span>
+<span class="source-line-no">215</span><span id="line-215">  @Override</span>
+<span class="source-line-no">216</span><span id="line-216">  public void onDestroyView() {</span>
+<span class="source-line-no">217</span><span id="line-217">    mapBinding.mainMap.onDestroy();</span>
+<span class="source-line-no">218</span><span id="line-218">    super.onDestroyView();</span>
+<span class="source-line-no">219</span><span id="line-219">  }</span>
+<span class="source-line-no">220</span><span id="line-220"></span>
+<span class="source-line-no">221</span><span id="line-221">  @Override</span>
+<span class="source-line-no">222</span><span id="line-222">  public void onSaveInstanceState(@NonNull Bundle outState) {</span>
+<span class="source-line-no">223</span><span id="line-223">    mapBinding.mainMap.onSaveInstanceState(outState);</span>
+<span class="source-line-no">224</span><span id="line-224">    super.onSaveInstanceState(outState);</span>
+<span class="source-line-no">225</span><span id="line-225">  }</span>
+<span class="source-line-no">226</span><span id="line-226"></span>
+<span class="source-line-no">227</span><span id="line-227">  @Override</span>
+<span class="source-line-no">228</span><span id="line-228">  public void onLowMemory() {</span>
+<span class="source-line-no">229</span><span id="line-229">    mapBinding.mainMap.onLowMemory();</span>
+<span class="source-line-no">230</span><span id="line-230">    super.onLowMemory();</span>
+<span class="source-line-no">231</span><span id="line-231">  }</span>
+<span class="source-line-no">232</span><span id="line-232"></span>
+<span class="source-line-no">233</span><span id="line-233">  /**</span>
+<span class="source-line-no">234</span><span id="line-234">   * Manipulates the map once available. This callback is triggered when the map is ready to be</span>
+<span class="source-line-no">235</span><span id="line-235">   * used. This is where we can add markers or lines, add listeners or move the camera. In this</span>
+<span class="source-line-no">236</span><span id="line-236">   * case, we just add a marker near Sydney, Australia. If Google Play services is not installed on</span>
+<span class="source-line-no">237</span><span id="line-237">   * the device, the user will be prompted to install it inside the SupportMapFragment. This method</span>
+<span class="source-line-no">238</span><span id="line-238">   * will only be triggered once the user has installed Google Play services and returned to the</span>
+<span class="source-line-no">239</span><span id="line-239">   * app.</span>
+<span class="source-line-no">240</span><span id="line-240">   */</span>
+<span class="source-line-no">241</span><span id="line-241"></span>
+<span class="source-line-no">242</span><span id="line-242">  @SuppressLint("MissingPermission")</span>
+<span class="source-line-no">243</span><span id="line-243">  @Override</span>
+<span class="source-line-no">244</span><span id="line-244">  public void onMapReady(GoogleMap googleMap) {</span>
+<span class="source-line-no">245</span><span id="line-245">    map = googleMap;</span>
+<span class="source-line-no">246</span><span id="line-246">    if (currentLocationEnabled) {</span>
+<span class="source-line-no">247</span><span id="line-247">      googleMap.setMyLocationEnabled(true);</span>
+<span class="source-line-no">248</span><span id="line-248">      centerCamera();</span>
+<span class="source-line-no">249</span><span id="line-249">    }</span>
+<span class="source-line-no">250</span><span id="line-250">  }</span>
+<span class="source-line-no">251</span><span id="line-251"></span>
+<span class="source-line-no">252</span><span id="line-252">  @Override</span>
+<span class="source-line-no">253</span><span id="line-253">  public void onItemSelected(AdapterView&lt;?&gt; adapterView, View view, int position,</span>
+<span class="source-line-no">254</span><span id="line-254">      long generatedId) {</span>
+<span class="source-line-no">255</span><span id="line-255">    pinViewModel.setTrack((Track) adapterView.getItemAtPosition(position));</span>
+<span class="source-line-no">256</span><span id="line-256">  }</span>
+<span class="source-line-no">257</span><span id="line-257"></span>
+<span class="source-line-no">258</span><span id="line-258">  @Override</span>
+<span class="source-line-no">259</span><span id="line-259">  public void onNothingSelected(AdapterView&lt;?&gt; adapterView) {</span>
+<span class="source-line-no">260</span><span id="line-260">//No action needed, this doesn't happen</span>
+<span class="source-line-no">261</span><span id="line-261">  }</span>
+<span class="source-line-no">262</span><span id="line-262">}</span>
 
 
 

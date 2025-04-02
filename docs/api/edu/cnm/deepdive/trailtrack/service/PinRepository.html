@@ -90,8 +90,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@Singleton
-</span><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-16">PinRepository</a></span>
+</span><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-24">PinRepository</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">Repository class to manage data operations related to Pins and Tracks.
+ Provides methods to interact with the persistence layer through DAOs and
+ integrates with the Google Sign-In service for user-specific operations.
+ Utilizes dependency injection for instantiation and RxJava for handling asynchronous operations.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -108,19 +112,40 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#get(long)" class="member-name-link">get</a><wbr>(long&nbsp;id)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves a <code>Pin</code> object identified by the specified unique ID from the database.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAll(edu.cnm.deepdive.trailtrack.model.entity.User)" class="member-name-link">getAll</a><wbr>(<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&nbsp;user)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves a list of <code>Pin</code> entities associated with the specified <code>User</code>,
+ ordered by their creation timestamp in ascending order.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllForUser(edu.cnm.deepdive.trailtrack.model.entity.User)" class="member-name-link">getAllForUser</a><wbr>(<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&nbsp;user)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllForTrack(edu.cnm.deepdive.trailtrack.model.entity.Track)" class="member-name-link">getAllForTrack</a><wbr>(<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&nbsp;track)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves a list of <code>Pin</code> entities associated with the specified <code>Track</code>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllForUser(edu.cnm.deepdive.trailtrack.model.entity.User)" class="member-name-link">getAllForUser</a><wbr>(<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&nbsp;user)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves a list of <code>Pin</code> objects associated with the specified <code>User</code>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllTracks()" class="member-name-link">getAllTracks</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves a list of all <code>Track</code> entities stored in the database.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Completable.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Completable</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#remove(edu.cnm.deepdive.trailtrack.model.entity.Pin)" class="member-name-link">remove</a><wbr>(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Deletes the specified <code>Pin</code> object from the database.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a><wbr>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#save(edu.cnm.deepdive.trailtrack.model.entity.Pin)" class="member-name-link">save</a><wbr>(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Saves the specified <code>Pin</code> object to the database.</div>
+</div>
 </div>
 </div>
 </div>
@@ -141,31 +166,96 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="save(edu.cnm.deepdive.trailtrack.model.entity.Pin)">
 <h3>save</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-30">save</a></span><wbr><span class="parameters">(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-58">save</a></span><wbr><span class="parameters">(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</span></div>
+<div class="block">Saves the specified <code>Pin</code> object to the database. If the pin already exists
+ (determined by a nonzero ID), it updates the existing record and sets the modification timestamp
+ to the current time. Otherwise, it inserts the new <code>Pin</code> into the database.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pin</code> - The <code>Pin</code> object to be saved or updated. Must not be null.</dd>
+<dt>Returns:</dt>
+<dd>A <code>Single&lt;Pin&gt;</code> representing the saved or updated <code>Pin</code> object.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="get(long)">
 <h3>get</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-41">get</a></span><wbr><span class="parameters">(long&nbsp;id)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-75">get</a></span><wbr><span class="parameters">(long&nbsp;id)</span></div>
+<div class="block">Retrieves a <code>Pin</code> object identified by the specified unique ID from the database.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>id</code> - The unique identifier of the <code>Pin</code> to fetch. Must be a positive number.</dd>
+<dt>Returns:</dt>
+<dd>A <code>LiveData&lt;Pin&gt;</code> instance representing the <code>Pin</code> entity with the given ID.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="remove(edu.cnm.deepdive.trailtrack.model.entity.Pin)">
 <h3>remove</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Completable.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Completable</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-45">remove</a></span><wbr><span class="parameters">(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Completable.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Completable</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-87">remove</a></span><wbr><span class="parameters">(<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&nbsp;pin)</span></div>
+<div class="block">Deletes the specified <code>Pin</code> object from the database.
+ This operation is asynchronous and will execute on the specified scheduler.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pin</code> - The <code>Pin</code> object to be removed from the database. Must not be null.</dd>
+<dt>Returns:</dt>
+<dd>A <code>Completable</code> representing the result of the delete operation. It
+         completes successfully when the <code>Pin</code> is deleted or emits an error if the operation fails.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getAll(edu.cnm.deepdive.trailtrack.model.entity.User)">
 <h3>getAll</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-51">getAll</a></span><wbr><span class="parameters">(<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&nbsp;user)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-100">getAll</a></span><wbr><span class="parameters">(<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&nbsp;user)</span></div>
+<div class="block">Retrieves a list of <code>Pin</code> entities associated with the specified <code>User</code>,
+ ordered by their creation timestamp in ascending order.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>user</code> - The <code>User</code> whose pins are to be fetched. Must not be null.</dd>
+<dt>Returns:</dt>
+<dd>A <code>LiveData&lt;List&lt;Pin&gt;&gt;</code> containing the list of pins for the given user.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getAllForUser(edu.cnm.deepdive.trailtrack.model.entity.User)">
 <h3>getAllForUser</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-55">getAllForUser</a></span><wbr><span class="parameters">(<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&nbsp;user)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-110">getAllForUser</a></span><wbr><span class="parameters">(<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&nbsp;user)</span></div>
+<div class="block">Retrieves a list of <code>Pin</code> objects associated with the specified <code>User</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>user</code> - The <code>User</code> whose associated pins are to be retrieved. Must not be null.</dd>
+<dt>Returns:</dt>
+<dd>A <code>LiveData&lt;List&lt;Pin&gt;&gt;</code> containing the list of pins linked to the specified user.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAllForTrack(edu.cnm.deepdive.trailtrack.model.entity.Track)">
+<h3>getAllForTrack</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-120">getAllForTrack</a></span><wbr><span class="parameters">(<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&nbsp;track)</span></div>
+<div class="block">Retrieves a list of <code>Pin</code> entities associated with the specified <code>Track</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>track</code> - The <code>Track</code> whose associated pins are to be fetched. Must not be null.</dd>
+<dt>Returns:</dt>
+<dd>A <code>LiveData&lt;List&lt;Pin&gt;&gt;</code> containing the list of pins linked to the specified track.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAllTracks()">
+<h3>getAllTracks</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Track</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinRepository.html#line-130">getAllTracks</a></span>()</div>
+<div class="block">Retrieves a list of all <code>Track</code> entities stored in the database.
+ The tracks are ordered alphabetically by their name.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A <code>LiveData&lt;List&lt;Track&gt;&gt;</code> containing all tracks in the database.</dd>
+</dl>
 </section>
 </li>
 </ul>

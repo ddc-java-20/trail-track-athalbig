@@ -23,59 +23,72 @@
 <span class="source-line-no">010</span><span id="line-10">import edu.cnm.deepdive.trailtrack.R;</span>
 <span class="source-line-no">011</span><span id="line-11">import edu.cnm.deepdive.trailtrack.databinding.ActivityMainBinding;</span>
 <span class="source-line-no">012</span><span id="line-12"></span>
-<span class="source-line-no">013</span><span id="line-13">@AndroidEntryPoint</span>
-<span class="source-line-no">014</span><span id="line-14">public class MainActivity extends AppCompatActivity {</span>
-<span class="source-line-no">015</span><span id="line-15"></span>
-<span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">  private ActivityMainBinding binding;</span>
-<span class="source-line-no">018</span><span id="line-18">  private NavController navController;</span>
-<span class="source-line-no">019</span><span id="line-19">  private AppBarConfiguration appBarConfig;</span>
-<span class="source-line-no">020</span><span id="line-20"></span>
-<span class="source-line-no">021</span><span id="line-21">  @Override</span>
-<span class="source-line-no">022</span><span id="line-22">  protected void onCreate(Bundle savedInstanceState) {</span>
-<span class="source-line-no">023</span><span id="line-23">    super.onCreate(savedInstanceState);</span>
-<span class="source-line-no">024</span><span id="line-24">    binding = ActivityMainBinding.inflate(getLayoutInflater());</span>
-<span class="source-line-no">025</span><span id="line-25">    setContentView(binding.getRoot());</span>
-<span class="source-line-no">026</span><span id="line-26">    //Adding our own toolbar</span>
-<span class="source-line-no">027</span><span id="line-27">    setupNavigation();</span>
-<span class="source-line-no">028</span><span id="line-28">  }</span>
-<span class="source-line-no">029</span><span id="line-29"></span>
-<span class="source-line-no">030</span><span id="line-30">  @Override</span>
-<span class="source-line-no">031</span><span id="line-31">  public boolean onSupportNavigateUp() {</span>
-<span class="source-line-no">032</span><span id="line-32">    return NavigationUI.navigateUp(navController, appBarConfig);</span>
-<span class="source-line-no">033</span><span id="line-33">  }</span>
-<span class="source-line-no">034</span><span id="line-34"></span>
-<span class="source-line-no">035</span><span id="line-35">  private void setupNavigation() {</span>
-<span class="source-line-no">036</span><span id="line-36">    setSupportActionBar(binding.toolbar);</span>
-<span class="source-line-no">037</span><span id="line-37">    appBarConfig = new AppBarConfiguration.Builder(R.id.home_fragment, R.id.pre_login_fragment, R.id.login_fragment)</span>
-<span class="source-line-no">038</span><span id="line-38">        .build();</span>
-<span class="source-line-no">039</span><span id="line-39">    navController =((NavHostFragment) binding.navHostContainer.getFragment()).getNavController();</span>
-<span class="source-line-no">040</span><span id="line-40">    NavigationUI.setupActionBarWithNavController(this, navController, appBarConfig);</span>
-<span class="source-line-no">041</span><span id="line-41">  }</span>
+<span class="source-line-no">013</span><span id="line-13">/**</span>
+<span class="source-line-no">014</span><span id="line-14"> * MainActivity serves as the primary entry point of the application and acts as the host for</span>
+<span class="source-line-no">015</span><span id="line-15"> * navigation within the app. It is annotated with @AndroidEntryPoint to enable dependency</span>
+<span class="source-line-no">016</span><span id="line-16"> * injection with Hilt. This activity is responsible for setting up and managing the application's</span>
+<span class="source-line-no">017</span><span id="line-17"> * navigation components, including the toolbar and NavController.</span>
+<span class="source-line-no">018</span><span id="line-18"> *</span>
+<span class="source-line-no">019</span><span id="line-19"> * The activity uses a custom toolbar for navigation and integrates it with the navigation</span>
+<span class="source-line-no">020</span><span id="line-20"> * architecture component using AppBarConfiguration and NavController.</span>
+<span class="source-line-no">021</span><span id="line-21"> *</span>
+<span class="source-line-no">022</span><span id="line-22"> * Lifecycle methods:</span>
+<span class="source-line-no">023</span><span id="line-23"> * - onCreate: Initializes the activity, sets up data binding, and calls the navigation setup</span>
+<span class="source-line-no">024</span><span id="line-24"> *   method to configure navigation and toolbar.</span>
+<span class="source-line-no">025</span><span id="line-25"> *</span>
+<span class="source-line-no">026</span><span id="line-26"> * Core methods:</span>
+<span class="source-line-no">027</span><span id="line-27"> * - setupNavigation: Configures the AppBar with the NavController and associates the toolbar</span>
+<span class="source-line-no">028</span><span id="line-28"> *   with the navigation graph, enabling proper navigation between screens.</span>
+<span class="source-line-no">029</span><span id="line-29"> * - onSupportNavigateUp: Handles navigation when the user taps on the up button, delegating</span>
+<span class="source-line-no">030</span><span id="line-30"> *   the action to NavigationUI.</span>
+<span class="source-line-no">031</span><span id="line-31"> *</span>
+<span class="source-line-no">032</span><span id="line-32"> * Note: The activity includes a placeholder for obtaining location permission but it is</span>
+<span class="source-line-no">033</span><span id="line-33"> * currently commented out and marked as a TODO for future implementation.</span>
+<span class="source-line-no">034</span><span id="line-34"> */</span>
+<span class="source-line-no">035</span><span id="line-35">@AndroidEntryPoint</span>
+<span class="source-line-no">036</span><span id="line-36">public class MainActivity extends AppCompatActivity {</span>
+<span class="source-line-no">037</span><span id="line-37"></span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">  private ActivityMainBinding binding;</span>
+<span class="source-line-no">040</span><span id="line-40">  private NavController navController;</span>
+<span class="source-line-no">041</span><span id="line-41">  private AppBarConfiguration appBarConfig;</span>
 <span class="source-line-no">042</span><span id="line-42"></span>
-<span class="source-line-no">043</span><span id="line-43"></span>
-<span class="source-line-no">044</span><span id="line-44"></span>
-<span class="source-line-no">045</span><span id="line-45">  // TODO: 3/27/25 Figure out how to add Location permission</span>
-<span class="source-line-no">046</span><span id="line-46"></span>
-<span class="source-line-no">047</span><span id="line-47">//  private void getLocationPermission() {</span>
-<span class="source-line-no">048</span><span id="line-48">//    /*</span>
-<span class="source-line-no">049</span><span id="line-49">//     * Request location permission, so that we can get the location of the</span>
-<span class="source-line-no">050</span><span id="line-50">//     * device. The result of the permission request is handled by a callback,</span>
-<span class="source-line-no">051</span><span id="line-51">//     * onRequestPermissionsResult.</span>
-<span class="source-line-no">052</span><span id="line-52">//     */</span>
-<span class="source-line-no">053</span><span id="line-53">//    if (ContextCompat.checkSelfPermission(this.getApplicationContext(),</span>
-<span class="source-line-no">054</span><span id="line-54">//        android.Manifest.permission.ACCESS_FINE_LOCATION)</span>
-<span class="source-line-no">055</span><span id="line-55">//        == PackageManager.PERMISSION_GRANTED) {</span>
-<span class="source-line-no">056</span><span id="line-56">//      locationPermissionGranted = true;</span>
-<span class="source-line-no">057</span><span id="line-57">//    } else {</span>
-<span class="source-line-no">058</span><span id="line-58">//      ActivityCompat.requestPermissions(this,</span>
-<span class="source-line-no">059</span><span id="line-59">//          new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},</span>
-<span class="source-line-no">060</span><span id="line-60">//          PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);</span>
-<span class="source-line-no">061</span><span id="line-61">//    }</span>
-<span class="source-line-no">062</span><span id="line-62">//  }</span>
-<span class="source-line-no">063</span><span id="line-63"></span>
-<span class="source-line-no">064</span><span id="line-64"></span>
-<span class="source-line-no">065</span><span id="line-65">}</span>
+<span class="source-line-no">043</span><span id="line-43">  @Override</span>
+<span class="source-line-no">044</span><span id="line-44">  protected void onCreate(Bundle savedInstanceState) {</span>
+<span class="source-line-no">045</span><span id="line-45">    super.onCreate(savedInstanceState);</span>
+<span class="source-line-no">046</span><span id="line-46">    binding = ActivityMainBinding.inflate(getLayoutInflater());</span>
+<span class="source-line-no">047</span><span id="line-47">    setContentView(binding.getRoot());</span>
+<span class="source-line-no">048</span><span id="line-48">    //Adding our own toolbar</span>
+<span class="source-line-no">049</span><span id="line-49">    setupNavigation();</span>
+<span class="source-line-no">050</span><span id="line-50">  }</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">  @Override</span>
+<span class="source-line-no">053</span><span id="line-53">  public boolean onSupportNavigateUp() {</span>
+<span class="source-line-no">054</span><span id="line-54">    return NavigationUI.navigateUp(navController, appBarConfig);</span>
+<span class="source-line-no">055</span><span id="line-55">  }</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">  /**</span>
+<span class="source-line-no">058</span><span id="line-58">   * Configures the application's navigation components, integrating the toolbar with the app's</span>
+<span class="source-line-no">059</span><span id="line-59">   * navigation graph and setting up proper handling of navigation actions.</span>
+<span class="source-line-no">060</span><span id="line-60">   *</span>
+<span class="source-line-no">061</span><span id="line-61">   * This method sets the activity's toolbar as the support ActionBar and establishes an</span>
+<span class="source-line-no">062</span><span id="line-62">   * AppBarConfiguration that defines the top-level destinations within the app's navigation graph.</span>
+<span class="source-line-no">063</span><span id="line-63">   * It retrieves the NavController from the NavHostFragment and binds it to the ActionBar to enable</span>
+<span class="source-line-no">064</span><span id="line-64">   * navigation using the NavController.</span>
+<span class="source-line-no">065</span><span id="line-65">   *</span>
+<span class="source-line-no">066</span><span id="line-66">   * Core responsibilities:</span>
+<span class="source-line-no">067</span><span id="line-67">   * - Sets up the custom toolbar as the ActionBar for the activity.</span>
+<span class="source-line-no">068</span><span id="line-68">   * - Configures an AppBarConfiguration to manage navigation behaviors for top-level destinations.</span>
+<span class="source-line-no">069</span><span id="line-69">   * - Associates the NavController with the ActionBar to synchronize navigation actions and UI behavior.</span>
+<span class="source-line-no">070</span><span id="line-70">   */</span>
+<span class="source-line-no">071</span><span id="line-71">  private void setupNavigation() {</span>
+<span class="source-line-no">072</span><span id="line-72">    setSupportActionBar(binding.toolbar);</span>
+<span class="source-line-no">073</span><span id="line-73">    appBarConfig = new AppBarConfiguration.Builder(R.id.home_fragment, R.id.pre_login_fragment, R.id.login_fragment)</span>
+<span class="source-line-no">074</span><span id="line-74">        .build();</span>
+<span class="source-line-no">075</span><span id="line-75">    navController =((NavHostFragment) binding.navHostContainer.getFragment()).getNavController();</span>
+<span class="source-line-no">076</span><span id="line-76">    NavigationUI.setupActionBarWithNavController(this, navController, appBarConfig);</span>
+<span class="source-line-no">077</span><span id="line-77">  }</span>
+<span class="source-line-no">078</span><span id="line-78">}</span>
 
 
 

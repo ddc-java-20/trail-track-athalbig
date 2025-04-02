@@ -91,8 +91,22 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-17">PinDatabase</a></span>
+<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-33">PinDatabase</a></span>
 <span class="extends-implements">extends <a href="https://developer.android.com/reference/androidx/room/RoomDatabase.html" title="class or interface in androidx.room" class="external-link">RoomDatabase</a></span></div>
+<div class="block">PinDatabase is an abstract representation of the Room database implementation for the application's
+ underlying storage. It provides access to Data Access Objects (DAOs) for database operations on
+ entities such as <a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>Pin</code></a>, <a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>Track</code></a>, and <a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>User</code></a>.
+
+ Features:
+ - Manages database creation and version management using Room.
+ - Uses entity classes to structure and map the database schema.
+ - Incorporates type converters for type transformations between database values and application values.
+
+ The database is configured with the following properties:
+ - The database schema includes <a href="../model/entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>Pin</code></a>, <a href="../model/entity/Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>Track</code></a>, and <a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>User</code></a> entities.
+ - The version is managed by the <code>VERSION</code> constant.
+ - Type converters are provided via the <a href="PinDatabase.Converters.html" title="class in edu.cnm.deepdive.trailtrack.service"><code>PinDatabase.Converters</code></a> class to handle custom data types such as
+   <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link"><code>Instant</code></a> and <a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link"><code>Uri</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -107,7 +121,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static class&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="PinDatabase.Converters.html" class="type-name-link" title="class in edu.cnm.deepdive.trailtrack.service">PinDatabase.Converters</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Provides type conversion methods for Room database to handle custom data types.</div>
+</div>
 </div>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-androidx.room.RoomDatabase">Nested classes/interfaces inherited from class&nbsp;androidx.room.<a href="https://developer.android.com/reference/androidx/room/RoomDatabase.html" title="class or interface in androidx.room" class="external-link">RoomDatabase</a></h2>
@@ -182,7 +198,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>PinDatabase</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-19">PinDatabase</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-35">PinDatabase</a></span>()</div>
 </section>
 </li>
 </ul>
@@ -196,25 +212,25 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getDatabaseName()">
 <h3>getDatabaseName</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-24">getDatabaseName</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-40">getDatabaseName</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getPinDao()">
 <h3>getPinDao</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../model/dao/PinDao.html" title="interface in edu.cnm.deepdive.trailtrack.model.dao">PinDao</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-28">getPinDao</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../model/dao/PinDao.html" title="interface in edu.cnm.deepdive.trailtrack.model.dao">PinDao</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-44">getPinDao</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getUserDao()">
 <h3>getUserDao</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../model/dao/UserDao.html" title="interface in edu.cnm.deepdive.trailtrack.model.dao">UserDao</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-30">getUserDao</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../model/dao/UserDao.html" title="interface in edu.cnm.deepdive.trailtrack.model.dao">UserDao</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-46">getUserDao</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getTrackDao()">
 <h3>getTrackDao</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../model/dao/TrackDao.html" title="interface in edu.cnm.deepdive.trailtrack.model.dao">TrackDao</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-32">getTrackDao</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../model/dao/TrackDao.html" title="interface in edu.cnm.deepdive.trailtrack.model.dao">TrackDao</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-48">getTrackDao</a></span>()</div>
 </section>
 </li>
 </ul>

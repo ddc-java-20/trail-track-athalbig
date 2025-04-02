@@ -97,8 +97,17 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="https://developer.android.com/reference/android/content/ComponentCallbacks.html" title="class or interface in android.content" class="external-link">ComponentCallbacks</a></code>, <code><a href="https://developer.android.com/reference/android/content/ComponentCallbacks2.html" title="class or interface in android.content" class="external-link">ComponentCallbacks2</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/ImageFileProvider.html#line-6">ImageFileProvider</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/ImageFileProvider.html#line-17">ImageFileProvider</a></span>
 <span class="extends-implements">extends <a href="https://developer.android.com/reference/androidx/core/content/FileProvider.html" title="class or interface in androidx.core.content" class="external-link">FileProvider</a></span></div>
+<div class="block">A specialized implementation of <a href="https://developer.android.com/reference/androidx/core/content/FileProvider.html" title="class or interface in androidx.core.content" class="external-link"><code>FileProvider</code></a> for managing access to image files within
+ the app. This class extends the functionality of <code>FileProvider</code> by providing file path
+ mappings defined in the `provider_paths` resource.
+
+ This class is primarily used to securely grant access to image files stored in the app's private
+ storage to other components or applications, for example, when sharing images via intents.
+
+ Note: This class uses the <code>R.xml.provider_paths</code> file to define URI mappings for secure
+ file sharing.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -160,7 +169,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>ImageFileProvider</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/ImageFileProvider.html#line-8">ImageFileProvider</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/ImageFileProvider.html#line-19">ImageFileProvider</a></span>()</div>
 </section>
 </li>
 </ul>

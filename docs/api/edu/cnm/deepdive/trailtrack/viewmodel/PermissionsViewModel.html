@@ -91,8 +91,26 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PermissionsViewModel.html#line-12">PermissionsViewModel</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PermissionsViewModel.html#line-32">PermissionsViewModel</a></span>
 <span class="extends-implements">extends <a href="https://developer.android.com/reference/androidx/lifecycle/ViewModel.html" title="class or interface in androidx.lifecycle" class="external-link">ViewModel</a></span></div>
+<div class="block">ViewModel class for managing permissions status. This class is designed
+ to maintain and update permissions states as a central repository for UI
+ controllers that may need to observe or update the status of multiple
+ permissions. It interacts with the UI layer to propagate changes and
+ ensures that the state persists across configuration changes.
+
+ This class uses dependency injection provided by Hilt and leverages
+ LiveData to expose its state in a lifecycle-aware manner.
+
+ Key responsibilities:
+ - Maintain the status of permissions, represented as a map where key is
+   the permission name and value is a boolean indicating its granted status.
+ - Provide a LiveData object to expose permissions status to observers.
+ - Allow updates to the permission status, triggering updates to observers
+   when changes occur.
+
+ Dependencies, lifecycle management, and architecture principles are at
+ the core of the design of this implementation.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -105,7 +123,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">PermissionsViewModel</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Constructor for the PermissionsViewModel class.</div>
+</div>
 </div>
 </section>
 </li>
@@ -122,10 +142,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPermissionsStatus()" class="member-name-link">getPermissionsStatus</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the current permissions status, represented as a <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a> object containing a map
+ with permission names as keys and their granted statuses (true/false) as values.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePermissionsStatus(java.util.Map)" class="member-name-link">updatePermissionsStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;permissionsStatus)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Updates the current permissions status by merging the provided map of permission names and
+ their granted statuses into the existing permissions status map.</div>
+</div>
 </div>
 </div>
 </div>
@@ -150,7 +176,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>PermissionsViewModel</h3>
 <div class="member-signature"><span class="annotations">@Inject
-</span><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PermissionsViewModel.html#line-17">PermissionsViewModel</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PermissionsViewModel.html#line-46">PermissionsViewModel</a></span>()</div>
+<div class="block">Constructor for the PermissionsViewModel class. This constructor initializes the
+ <code>permissionsStatus</code> as a <a href="https://developer.android.com/reference/androidx/lifecycle/MutableLiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>MutableLiveData</code></a> instance containing an empty map.
+ The <code>permissionsStatus</code> is used to represent the current status of app permissions,
+ with the permission name as the key and the granted status (true/false) as the corresponding value.
+
+ This constructor is annotated with <code>Inject</code> to allow for dependency injection via Hilt,
+ ensuring proper instantiation and lifecycle management within the dependency injection framework.</div>
 </section>
 </li>
 </ul>
@@ -164,13 +197,32 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getPermissionsStatus()">
 <h3>getPermissionsStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PermissionsViewModel.html#line-22">getPermissionsStatus</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PermissionsViewModel.html#line-60">getPermissionsStatus</a></span>()</div>
+<div class="block">Retrieves the current permissions status, represented as a <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a> object containing a map
+ with permission names as keys and their granted statuses (true/false) as values. This allows
+ lifecycle-aware observers to monitor changes in the permissions status.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a> object wrapping a map where each key is a permission name
+         and the corresponding value is a <code>boolean</code> indicating whether the permission
+         is granted (<code>true</code>) or not (<code>false</code>).</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="updatePermissionsStatus(java.util.Map)">
 <h3>updatePermissionsStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PermissionsViewModel.html#line-26">updatePermissionsStatus</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;permissionsStatus)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/PermissionsViewModel.html#line-74">updatePermissionsStatus</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;&nbsp;permissionsStatus)</span></div>
+<div class="block">Updates the current permissions status by merging the provided map of permission names and
+ their granted statuses into the existing permissions status map. The updated map is then
+ set as the value of the <code>permissionsStatus</code> LiveData, allowing observers to be
+ notified of the changes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>permissionsStatus</code> - a map where each key is a permission name and the corresponding
+                          value is a <code>boolean</code> indicating whether the permission is
+                          granted (<code>true</code>) or not (<code>false</code>).</dd>
+</dl>
 </section>
 </li>
 </ul>

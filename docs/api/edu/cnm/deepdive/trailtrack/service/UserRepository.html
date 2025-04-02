@@ -90,8 +90,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@Singleton
-</span><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/UserRepository.html#line-13">UserRepository</a></span>
+</span><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/UserRepository.html#line-23">UserRepository</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">A repository class responsible for handling operations related to user accounts and user data.
+ This class acts as the main access point for managing users, providing seamless integration
+ between Google Sign-In authentication and local database operations.
+
+ This class is managed as a singleton and is constructed using dependency injection.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -108,10 +113,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a><wbr>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCurrentAccount()" class="member-name-link">getCurrentAccount</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the current Google Sign-In account information asynchronously.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a><wbr>&lt;<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCurrentUser()" class="member-name-link">getCurrentUser</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the currently authenticated user from the database or creates a new user
+ if the user does not exist in the database.</div>
+</div>
 </div>
 </div>
 </div>
@@ -132,13 +142,32 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getCurrentAccount()">
 <h3>getCurrentAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/UserRepository.html#line-29">getCurrentAccount</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/UserRepository.html#line-56">getCurrentAccount</a></span>()</div>
+<div class="block">Retrieves the current Google Sign-In account information asynchronously. This method
+ performs a silent sign-in operation using the Google Sign-In service and observes the
+ result on the configured scheduler.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A <a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link"><code>Single</code></a> emitting the currently signed-in <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInAccount</code></a>, or
+ an error if the sign-in attempt fails.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getCurrentUser()">
 <h3>getCurrentUser</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/UserRepository.html#line-35">getCurrentUser</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/UserRepository.html#line-73">getCurrentUser</a></span>()</div>
+<div class="block">Retrieves the currently authenticated user from the database or creates a new user
+ if the user does not exist in the database. This method first attempts to fetch the
+ signed-in account using the Google Sign-In service. If the user's associated record
+ is not found in the database, it creates a new <code>User</code> instance, initializes its
+ properties (OAuth key and display name), stores it in the database, and returns it.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A <a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link"><code>Single</code></a> emitting the <a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>User</code></a> associated with the currently signed-in
+ account. If no record is found in the database, a new <a href="../model/entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>User</code></a> is created and returned.
+ An error is emitted if the retrieval or creation process fails.</dd>
+</dl>
 </section>
 </li>
 </ul>

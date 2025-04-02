@@ -93,8 +93,20 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="PinDatabase.html" title="class in edu.cnm.deepdive.trailtrack.service">PinDatabase</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-34">PinDatabase.Converters</a></span>
+<div class="type-signature"><span class="modifiers">public static class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.html#line-64">PinDatabase.Converters</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">Provides type conversion methods for Room database to handle custom data types.
+
+ This utility class is referenced via the <code>@TypeConverters(Converters.class)</code> annotation in
+ classes such as <code>PinDatabase</code>. It is responsible for converting between custom types and
+ primitive types that the database can store, ensuring seamless integration between the database
+ schema and the application's object model.
+
+ Methods in this class include:
+ - Conversion of <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link"><code>Instant</code></a> objects to <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link"><code>Long</code></a> values, representing milliseconds
+   since the Unix epoch, and vice versa.
+ - Conversion of <a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link"><code>Uri</code></a> objects to their <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> representations usable by the database,
+   and vice versa.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -154,7 +166,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>Converters</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-34">Converters</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-64">Converters</a></span>()</div>
 </section>
 </li>
 </ul>
@@ -168,25 +180,25 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="fromInstant(java.time.Instant)">
 <h3>fromInstant</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-36">fromInstant</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a>&nbsp;value)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-66">fromInstant</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a>&nbsp;value)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="fromLong(java.lang.Long)">
 <h3>fromLong</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-41">fromLong</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;value)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-71">fromLong</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;value)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="fromUri(android.net.Uri)">
 <h3>fromUri</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-46">fromUri</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&nbsp;value)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-76">fromUri</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&nbsp;value)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="fromString(java.lang.String)">
 <h3>fromString</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-51">fromString</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;value)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/PinDatabase.Converters.html#line-81">fromString</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;value)</span></div>
 </section>
 </li>
 </ul>

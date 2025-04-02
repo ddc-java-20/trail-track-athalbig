@@ -55,127 +55,171 @@
 <span class="source-line-no">042</span><span id="line-42">import java.util.function.Predicate;</span>
 <span class="source-line-no">043</span><span id="line-43">import java.util.stream.Collectors;</span>
 <span class="source-line-no">044</span><span id="line-44"></span>
-<span class="source-line-no">045</span><span id="line-45">@AndroidEntryPoint</span>
-<span class="source-line-no">046</span><span id="line-46">public class HomeFragment extends Fragment implements MenuProvider, OnDismissListener {</span>
-<span class="source-line-no">047</span><span id="line-47"></span>
-<span class="source-line-no">048</span><span id="line-48">  private static final int PERMISSIONS_REQUEST_CODE = 674;</span>
-<span class="source-line-no">049</span><span id="line-49">  private static final String TAG = HomeFragment.class.getSimpleName();</span>
-<span class="source-line-no">050</span><span id="line-50">  private static final String[] permissionsNeeded = {ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION,</span>
-<span class="source-line-no">051</span><span id="line-51">      CAMERA};</span>
-<span class="source-line-no">052</span><span id="line-52"></span>
-<span class="source-line-no">053</span><span id="line-53">  private FragmentHomeBinding binding;</span>
-<span class="source-line-no">054</span><span id="line-54">  private LoginViewModel loginViewModel;</span>
-<span class="source-line-no">055</span><span id="line-55">  private PinViewModel pinViewModel;</span>
-<span class="source-line-no">056</span><span id="line-56">  private PermissionsViewModel permissionsViewModel;</span>
-<span class="source-line-no">057</span><span id="line-57">  private String[] permissionsToRequest;</span>
-<span class="source-line-no">058</span><span id="line-58">  /**</span>
-<span class="source-line-no">059</span><span id="line-59">   * @noinspection FieldCanBeLocal</span>
-<span class="source-line-no">060</span><span id="line-60">   */</span>
-<span class="source-line-no">061</span><span id="line-61">  private ActivityResultLauncher&lt;String[]&gt; requestPermissionsLauncher = registerForActivityResult(</span>
-<span class="source-line-no">062</span><span id="line-62">      new ActivityResultContracts.RequestMultiplePermissions(), this::handleGrantResults);</span>
-<span class="source-line-no">063</span><span id="line-63">  private NavController childNavController;</span>
-<span class="source-line-no">064</span><span id="line-64">  private NavController parentNavController;</span>
-<span class="source-line-no">065</span><span id="line-65"></span>
-<span class="source-line-no">066</span><span id="line-66">  @Override</span>
-<span class="source-line-no">067</span><span id="line-67">  public View onCreateView(</span>
-<span class="source-line-no">068</span><span id="line-68">      @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {</span>
-<span class="source-line-no">069</span><span id="line-69">    binding = FragmentHomeBinding.inflate(inflater, container, false);</span>
-<span class="source-line-no">070</span><span id="line-70">    return binding.getRoot();</span>
-<span class="source-line-no">071</span><span id="line-71">  }</span>
-<span class="source-line-no">072</span><span id="line-72"></span>
-<span class="source-line-no">073</span><span id="line-73"></span>
-<span class="source-line-no">074</span><span id="line-74">  @Override</span>
-<span class="source-line-no">075</span><span id="line-75">  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {</span>
-<span class="source-line-no">076</span><span id="line-76">    super.onViewCreated(view, savedInstanceState);</span>
-<span class="source-line-no">077</span><span id="line-77">    LifecycleOwner lifecycleOwner = getViewLifecycleOwner();</span>
-<span class="source-line-no">078</span><span id="line-78">    FragmentActivity activity = requireActivity();</span>
-<span class="source-line-no">079</span><span id="line-79">    ViewModelProvider provider = new ViewModelProvider(activity);</span>
-<span class="source-line-no">080</span><span id="line-80">    loginViewModel = provider.get(LoginViewModel.class);</span>
-<span class="source-line-no">081</span><span id="line-81">    loginViewModel</span>
-<span class="source-line-no">082</span><span id="line-82">        .getAccount()</span>
-<span class="source-line-no">083</span><span id="line-83">        .observe(lifecycleOwner, (account) -&gt; {</span>
-<span class="source-line-no">084</span><span id="line-84">          if (account == null) {</span>
-<span class="source-line-no">085</span><span id="line-85">            parentNavController.navigate(HomeFragmentDirections.navigateToPreLoginFragment());</span>
-<span class="source-line-no">086</span><span id="line-86">          }</span>
-<span class="source-line-no">087</span><span id="line-87">        });</span>
-<span class="source-line-no">088</span><span id="line-88">    permissionsViewModel = provider.get(PermissionsViewModel.class);</span>
-<span class="source-line-no">089</span><span id="line-89">    activity.addMenuProvider(this, getViewLifecycleOwner(), State.RESUMED);</span>
-<span class="source-line-no">090</span><span id="line-90">  }</span>
-<span class="source-line-no">091</span><span id="line-91"></span>
-<span class="source-line-no">092</span><span id="line-92">  @Override</span>
-<span class="source-line-no">093</span><span id="line-93">  public void onResume() {</span>
-<span class="source-line-no">094</span><span id="line-94">    super.onResume();</span>
-<span class="source-line-no">095</span><span id="line-95">    // TOD 3/28/25 Setup navigation connection. Connect the nav controller to the appbar and use</span>
-<span class="source-line-no">096</span><span id="line-96">    //  the nav UI class to use bottom button with NavController</span>
-<span class="source-line-no">097</span><span id="line-97">    childNavController =</span>
-<span class="source-line-no">098</span><span id="line-98">        ((NavHostFragment) binding.mapsPinsFragmentContainer.getFragment()).getNavController();</span>
-<span class="source-line-no">099</span><span id="line-99">    parentNavController = Navigation.findNavController(binding.getRoot());</span>
-<span class="source-line-no">100</span><span id="line-100">    NavigationUI.setupWithNavController(binding.bottomNavigation, childNavController);</span>
-<span class="source-line-no">101</span><span id="line-101">    setupPermissions();</span>
-<span class="source-line-no">102</span><span id="line-102">  }</span>
-<span class="source-line-no">103</span><span id="line-103"></span>
-<span class="source-line-no">104</span><span id="line-104">  @Override</span>
-<span class="source-line-no">105</span><span id="line-105">  public void onDestroyView() {</span>
-<span class="source-line-no">106</span><span id="line-106">    binding = null;</span>
-<span class="source-line-no">107</span><span id="line-107">    super.onDestroyView();</span>
-<span class="source-line-no">108</span><span id="line-108">  }</span>
-<span class="source-line-no">109</span><span id="line-109"></span>
-<span class="source-line-no">110</span><span id="line-110">  @Override</span>
-<span class="source-line-no">111</span><span id="line-111">  public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {</span>
-<span class="source-line-no">112</span><span id="line-112">    menuInflater.inflate(R.menu.main_actions, menu);</span>
-<span class="source-line-no">113</span><span id="line-113">  }</span>
-<span class="source-line-no">114</span><span id="line-114"></span>
-<span class="source-line-no">115</span><span id="line-115">  @Override</span>
-<span class="source-line-no">116</span><span id="line-116">  public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {</span>
-<span class="source-line-no">117</span><span id="line-117">    boolean handled = true;</span>
-<span class="source-line-no">118</span><span id="line-118">    if (menuItem.getItemId() == R.id.sign_out) {</span>
-<span class="source-line-no">119</span><span id="line-119">      loginViewModel.signOut();</span>
-<span class="source-line-no">120</span><span id="line-120">    } else {</span>
-<span class="source-line-no">121</span><span id="line-121">      handled = false;</span>
-<span class="source-line-no">122</span><span id="line-122">    }</span>
-<span class="source-line-no">123</span><span id="line-123">    return handled;</span>
-<span class="source-line-no">124</span><span id="line-124">  }</span>
-<span class="source-line-no">125</span><span id="line-125"></span>
-<span class="source-line-no">126</span><span id="line-126">  private void setupPermissions() {</span>
-<span class="source-line-no">127</span><span id="line-127">    permissionsToRequest = Arrays.stream(permissionsNeeded)</span>
-<span class="source-line-no">128</span><span id="line-128">        .filter(this::shouldRequestPermission)</span>
-<span class="source-line-no">129</span><span id="line-129">        .toArray(String[]::new);</span>
-<span class="source-line-no">130</span><span id="line-130">    Map&lt;String, Boolean&gt; permissionsStatus = Arrays.stream(permissionsNeeded)</span>
-<span class="source-line-no">131</span><span id="line-131">        .filter(Predicate.not(this::shouldRequestPermission))</span>
-<span class="source-line-no">132</span><span id="line-132">        .collect(Collectors.toMap(Function.identity(), (permission) -&gt; true));</span>
-<span class="source-line-no">133</span><span id="line-133">    permissionsViewModel.updatePermissionsStatus(permissionsStatus);</span>
-<span class="source-line-no">134</span><span id="line-134">    String[] permissionsToExplain = Arrays.stream(permissionsToRequest)</span>
-<span class="source-line-no">135</span><span id="line-135">        .filter(this::shouldExplainPermission)</span>
-<span class="source-line-no">136</span><span id="line-136">        .toArray(String[]::new);</span>
-<span class="source-line-no">137</span><span id="line-137">    if (permissionsToExplain.length &gt; 0) {</span>
-<span class="source-line-no">138</span><span id="line-138">      parentNavController.navigate(</span>
-<span class="source-line-no">139</span><span id="line-139">          LoginFragmentDirections.openExplanationFragment(permissionsToExplain));</span>
-<span class="source-line-no">140</span><span id="line-140">    } else {</span>
-<span class="source-line-no">141</span><span id="line-141">      onDismiss();</span>
-<span class="source-line-no">142</span><span id="line-142">    }</span>
-<span class="source-line-no">143</span><span id="line-143">  }</span>
-<span class="source-line-no">144</span><span id="line-144"></span>
-<span class="source-line-no">145</span><span id="line-145">  public void handleGrantResults(@NonNull Map&lt;String, Boolean&gt; grantResults) {</span>
-<span class="source-line-no">146</span><span id="line-146">    Log.d(TAG, grantResults.toString());</span>
-<span class="source-line-no">147</span><span id="line-147">    permissionsViewModel.updatePermissionsStatus(grantResults);</span>
-<span class="source-line-no">148</span><span id="line-148"></span>
-<span class="source-line-no">149</span><span id="line-149">  }</span>
-<span class="source-line-no">150</span><span id="line-150"></span>
-<span class="source-line-no">151</span><span id="line-151">  @Override</span>
-<span class="source-line-no">152</span><span id="line-152">  public void onDismiss() {</span>
-<span class="source-line-no">153</span><span id="line-153">    requestPermissionsLauncher.launch(permissionsToRequest);</span>
-<span class="source-line-no">154</span><span id="line-154">  }</span>
-<span class="source-line-no">155</span><span id="line-155"></span>
-<span class="source-line-no">156</span><span id="line-156">  private boolean shouldRequestPermission(String permission) {</span>
-<span class="source-line-no">157</span><span id="line-157">    return ContextCompat.checkSelfPermission(requireContext(), permission)</span>
-<span class="source-line-no">158</span><span id="line-158">        != PackageManager.PERMISSION_GRANTED;</span>
-<span class="source-line-no">159</span><span id="line-159">  }</span>
-<span class="source-line-no">160</span><span id="line-160"></span>
-<span class="source-line-no">161</span><span id="line-161">  private boolean shouldExplainPermission(String permission) {</span>
-<span class="source-line-no">162</span><span id="line-162">    return ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission);</span>
-<span class="source-line-no">163</span><span id="line-163">  }</span>
-<span class="source-line-no">164</span><span id="line-164"></span>
-<span class="source-line-no">165</span><span id="line-165">}</span>
+<span class="source-line-no">045</span><span id="line-45">/**</span>
+<span class="source-line-no">046</span><span id="line-46"> * The HomeFragment class represents the main user interface component of the application.</span>
+<span class="source-line-no">047</span><span id="line-47"> * It is responsible for handling the navigation, permissions, and menu interactions within the app.</span>
+<span class="source-line-no">048</span><span id="line-48"> * This fragment is integrated with Android Hilt for dependency injection and utilizes multiple</span>
+<span class="source-line-no">049</span><span id="line-49"> * ViewModels for state management and logic handling.</span>
+<span class="source-line-no">050</span><span id="line-50"> */</span>
+<span class="source-line-no">051</span><span id="line-51">@AndroidEntryPoint</span>
+<span class="source-line-no">052</span><span id="line-52">public class HomeFragment extends Fragment implements MenuProvider, OnDismissListener {</span>
+<span class="source-line-no">053</span><span id="line-53"></span>
+<span class="source-line-no">054</span><span id="line-54">  private static final int PERMISSIONS_REQUEST_CODE = 674;</span>
+<span class="source-line-no">055</span><span id="line-55">  private static final String TAG = HomeFragment.class.getSimpleName();</span>
+<span class="source-line-no">056</span><span id="line-56">  private static final String[] permissionsNeeded = {ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION,</span>
+<span class="source-line-no">057</span><span id="line-57">      CAMERA};</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">  private FragmentHomeBinding binding;</span>
+<span class="source-line-no">060</span><span id="line-60">  private LoginViewModel loginViewModel;</span>
+<span class="source-line-no">061</span><span id="line-61">  private PinViewModel pinViewModel;</span>
+<span class="source-line-no">062</span><span id="line-62">  private PermissionsViewModel permissionsViewModel;</span>
+<span class="source-line-no">063</span><span id="line-63">  private String[] permissionsToRequest;</span>
+<span class="source-line-no">064</span><span id="line-64">  /**</span>
+<span class="source-line-no">065</span><span id="line-65">   * @noinspection FieldCanBeLocal</span>
+<span class="source-line-no">066</span><span id="line-66">   */</span>
+<span class="source-line-no">067</span><span id="line-67">  private ActivityResultLauncher&lt;String[]&gt; requestPermissionsLauncher = registerForActivityResult(</span>
+<span class="source-line-no">068</span><span id="line-68">      new ActivityResultContracts.RequestMultiplePermissions(), this::handleGrantResults);</span>
+<span class="source-line-no">069</span><span id="line-69">  private NavController childNavController;</span>
+<span class="source-line-no">070</span><span id="line-70">  private NavController parentNavController;</span>
+<span class="source-line-no">071</span><span id="line-71"></span>
+<span class="source-line-no">072</span><span id="line-72">  @Override</span>
+<span class="source-line-no">073</span><span id="line-73">  public View onCreateView(</span>
+<span class="source-line-no">074</span><span id="line-74">      @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {</span>
+<span class="source-line-no">075</span><span id="line-75">    binding = FragmentHomeBinding.inflate(inflater, container, false);</span>
+<span class="source-line-no">076</span><span id="line-76">    return binding.getRoot();</span>
+<span class="source-line-no">077</span><span id="line-77">  }</span>
+<span class="source-line-no">078</span><span id="line-78"></span>
+<span class="source-line-no">079</span><span id="line-79"></span>
+<span class="source-line-no">080</span><span id="line-80">  @Override</span>
+<span class="source-line-no">081</span><span id="line-81">  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {</span>
+<span class="source-line-no">082</span><span id="line-82">    super.onViewCreated(view, savedInstanceState);</span>
+<span class="source-line-no">083</span><span id="line-83">    LifecycleOwner lifecycleOwner = getViewLifecycleOwner();</span>
+<span class="source-line-no">084</span><span id="line-84">    FragmentActivity activity = requireActivity();</span>
+<span class="source-line-no">085</span><span id="line-85">    ViewModelProvider provider = new ViewModelProvider(activity);</span>
+<span class="source-line-no">086</span><span id="line-86">    loginViewModel = provider.get(LoginViewModel.class);</span>
+<span class="source-line-no">087</span><span id="line-87">    loginViewModel</span>
+<span class="source-line-no">088</span><span id="line-88">        .getAccount()</span>
+<span class="source-line-no">089</span><span id="line-89">        .observe(lifecycleOwner, (account) -&gt; {</span>
+<span class="source-line-no">090</span><span id="line-90">          if (account == null) {</span>
+<span class="source-line-no">091</span><span id="line-91">            parentNavController.navigate(HomeFragmentDirections.navigateToPreLoginFragment());</span>
+<span class="source-line-no">092</span><span id="line-92">          } else {</span>
+<span class="source-line-no">093</span><span id="line-93">            Log.d(TAG,"displayname = " + account.getDisplayName());</span>
+<span class="source-line-no">094</span><span id="line-94">            Log.d(TAG,"OAuth key = " + account.getId());</span>
+<span class="source-line-no">095</span><span id="line-95">          }</span>
+<span class="source-line-no">096</span><span id="line-96">        });</span>
+<span class="source-line-no">097</span><span id="line-97">    permissionsViewModel = provider.get(PermissionsViewModel.class);</span>
+<span class="source-line-no">098</span><span id="line-98">    activity.addMenuProvider(this, getViewLifecycleOwner(), State.RESUMED);</span>
+<span class="source-line-no">099</span><span id="line-99">  }</span>
+<span class="source-line-no">100</span><span id="line-100"></span>
+<span class="source-line-no">101</span><span id="line-101">  @Override</span>
+<span class="source-line-no">102</span><span id="line-102">  public void onResume() {</span>
+<span class="source-line-no">103</span><span id="line-103">    super.onResume();</span>
+<span class="source-line-no">104</span><span id="line-104">    // TOD 3/28/25 Setup navigation connection. Connect the nav controller to the appbar and use</span>
+<span class="source-line-no">105</span><span id="line-105">    //  the nav UI class to use bottom button with NavController</span>
+<span class="source-line-no">106</span><span id="line-106">    childNavController =</span>
+<span class="source-line-no">107</span><span id="line-107">        ((NavHostFragment) binding.mapsPinsFragmentContainer.getFragment()).getNavController();</span>
+<span class="source-line-no">108</span><span id="line-108">    parentNavController = Navigation.findNavController(binding.getRoot());</span>
+<span class="source-line-no">109</span><span id="line-109">    NavigationUI.setupWithNavController(binding.bottomNavigation, childNavController);</span>
+<span class="source-line-no">110</span><span id="line-110">    setupPermissions();</span>
+<span class="source-line-no">111</span><span id="line-111">  }</span>
+<span class="source-line-no">112</span><span id="line-112"></span>
+<span class="source-line-no">113</span><span id="line-113">  @Override</span>
+<span class="source-line-no">114</span><span id="line-114">  public void onDestroyView() {</span>
+<span class="source-line-no">115</span><span id="line-115">    binding = null;</span>
+<span class="source-line-no">116</span><span id="line-116">    super.onDestroyView();</span>
+<span class="source-line-no">117</span><span id="line-117">  }</span>
+<span class="source-line-no">118</span><span id="line-118"></span>
+<span class="source-line-no">119</span><span id="line-119">  @Override</span>
+<span class="source-line-no">120</span><span id="line-120">  public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {</span>
+<span class="source-line-no">121</span><span id="line-121">    menuInflater.inflate(R.menu.main_actions, menu);</span>
+<span class="source-line-no">122</span><span id="line-122">  }</span>
+<span class="source-line-no">123</span><span id="line-123"></span>
+<span class="source-line-no">124</span><span id="line-124">  @Override</span>
+<span class="source-line-no">125</span><span id="line-125">  public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {</span>
+<span class="source-line-no">126</span><span id="line-126">    boolean handled = true;</span>
+<span class="source-line-no">127</span><span id="line-127">    if (menuItem.getItemId() == R.id.sign_out) {</span>
+<span class="source-line-no">128</span><span id="line-128">      loginViewModel.signOut();</span>
+<span class="source-line-no">129</span><span id="line-129">    } else {</span>
+<span class="source-line-no">130</span><span id="line-130">      handled = false;</span>
+<span class="source-line-no">131</span><span id="line-131">    }</span>
+<span class="source-line-no">132</span><span id="line-132">    return handled;</span>
+<span class="source-line-no">133</span><span id="line-133">  }</span>
+<span class="source-line-no">134</span><span id="line-134"></span>
+<span class="source-line-no">135</span><span id="line-135">  /**</span>
+<span class="source-line-no">136</span><span id="line-136">   * Sets up the app permissions workflow by determining which permissions need to be requested,</span>
+<span class="source-line-no">137</span><span id="line-137">   * collecting the permissions that are already granted, and handling the explanatory steps for</span>
+<span class="source-line-no">138</span><span id="line-138">   * permissions if necessary.</span>
+<span class="source-line-no">139</span><span id="line-139">   *</span>
+<span class="source-line-no">140</span><span id="line-140">   * The method performs the following operations:</span>
+<span class="source-line-no">141</span><span id="line-141">   * - Identifies permissions that still need to be requested based on their current status.</span>
+<span class="source-line-no">142</span><span id="line-142">   * - Updates the view model with the status of permissions that are already granted.</span>
+<span class="source-line-no">143</span><span id="line-143">   * - Checks if any of the permissions to be requested require an explanation to the user.</span>
+<span class="source-line-no">144</span><span id="line-144">   * - If explanations are required, navigates to an explanation fragment to inform the user about</span>
+<span class="source-line-no">145</span><span id="line-145">   *   the permissions. Otherwise, directly triggers the permission request process.</span>
+<span class="source-line-no">146</span><span id="line-146">   *</span>
+<span class="source-line-no">147</span><span id="line-147">   * This method interacts with the view model to maintain the state of permissions and uses</span>
+<span class="source-line-no">148</span><span id="line-148">   * navigation to guide the user through the permission flow.</span>
+<span class="source-line-no">149</span><span id="line-149">   */</span>
+<span class="source-line-no">150</span><span id="line-150">  private void setupPermissions() {</span>
+<span class="source-line-no">151</span><span id="line-151">    permissionsToRequest = Arrays.stream(permissionsNeeded)</span>
+<span class="source-line-no">152</span><span id="line-152">        .filter(this::shouldRequestPermission)</span>
+<span class="source-line-no">153</span><span id="line-153">        .toArray(String[]::new);</span>
+<span class="source-line-no">154</span><span id="line-154">    Map&lt;String, Boolean&gt; permissionsStatus = Arrays.stream(permissionsNeeded)</span>
+<span class="source-line-no">155</span><span id="line-155">        .filter(Predicate.not(this::shouldRequestPermission))</span>
+<span class="source-line-no">156</span><span id="line-156">        .collect(Collectors.toMap(Function.identity(), (permission) -&gt; true));</span>
+<span class="source-line-no">157</span><span id="line-157">    permissionsViewModel.updatePermissionsStatus(permissionsStatus);</span>
+<span class="source-line-no">158</span><span id="line-158">    String[] permissionsToExplain = Arrays.stream(permissionsToRequest)</span>
+<span class="source-line-no">159</span><span id="line-159">        .filter(this::shouldExplainPermission)</span>
+<span class="source-line-no">160</span><span id="line-160">        .toArray(String[]::new);</span>
+<span class="source-line-no">161</span><span id="line-161">    if (permissionsToExplain.length &gt; 0) {</span>
+<span class="source-line-no">162</span><span id="line-162">      parentNavController.navigate(</span>
+<span class="source-line-no">163</span><span id="line-163">          LoginFragmentDirections.openExplanationFragment(permissionsToExplain));</span>
+<span class="source-line-no">164</span><span id="line-164">    } else {</span>
+<span class="source-line-no">165</span><span id="line-165">      onDismiss();</span>
+<span class="source-line-no">166</span><span id="line-166">    }</span>
+<span class="source-line-no">167</span><span id="line-167">  }</span>
+<span class="source-line-no">168</span><span id="line-168"></span>
+<span class="source-line-no">169</span><span id="line-169">  /**</span>
+<span class="source-line-no">170</span><span id="line-170">   * Handles the results of permission requests and updates the permissions status in the view model.</span>
+<span class="source-line-no">171</span><span id="line-171">   *</span>
+<span class="source-line-no">172</span><span id="line-172">   * @param grantResults A map containing the permissions requested and their corresponding</span>
+<span class="source-line-no">173</span><span id="line-173">   *                     grant results, where the key is the permission name, and the value is</span>
+<span class="source-line-no">174</span><span id="line-174">   *                     a boolean indicating whether the permission was granted (true) or denied (false).</span>
+<span class="source-line-no">175</span><span id="line-175">   */</span>
+<span class="source-line-no">176</span><span id="line-176">  public void handleGrantResults(@NonNull Map&lt;String, Boolean&gt; grantResults) {</span>
+<span class="source-line-no">177</span><span id="line-177">    Log.d(TAG, grantResults.toString());</span>
+<span class="source-line-no">178</span><span id="line-178">    permissionsViewModel.updatePermissionsStatus(grantResults);</span>
+<span class="source-line-no">179</span><span id="line-179">  }</span>
+<span class="source-line-no">180</span><span id="line-180"></span>
+<span class="source-line-no">181</span><span id="line-181">  @Override</span>
+<span class="source-line-no">182</span><span id="line-182">  public void onDismiss() {</span>
+<span class="source-line-no">183</span><span id="line-183">    requestPermissionsLauncher.launch(permissionsToRequest);</span>
+<span class="source-line-no">184</span><span id="line-184">  }</span>
+<span class="source-line-no">185</span><span id="line-185"></span>
+<span class="source-line-no">186</span><span id="line-186">  /**</span>
+<span class="source-line-no">187</span><span id="line-187">   * Determines whether the specified permission should be requested by checking if it is already granted.</span>
+<span class="source-line-no">188</span><span id="line-188">   *</span>
+<span class="source-line-no">189</span><span id="line-189">   * @param permission The name of the permission to check (e.g., android.permission.CAMERA).</span>
+<span class="source-line-no">190</span><span id="line-190">   * @return {@code true} if the specified permission is not granted and should be requested, {@code false} otherwise.</span>
+<span class="source-line-no">191</span><span id="line-191">   */</span>
+<span class="source-line-no">192</span><span id="line-192">  private boolean shouldRequestPermission(String permission) {</span>
+<span class="source-line-no">193</span><span id="line-193">    return ContextCompat.checkSelfPermission(requireContext(), permission)</span>
+<span class="source-line-no">194</span><span id="line-194">        != PackageManager.PERMISSION_GRANTED;</span>
+<span class="source-line-no">195</span><span id="line-195">  }</span>
+<span class="source-line-no">196</span><span id="line-196"></span>
+<span class="source-line-no">197</span><span id="line-197">  /**</span>
+<span class="source-line-no">198</span><span id="line-198">   * Checks whether an explanation should be shown to the user for the specified permission.</span>
+<span class="source-line-no">199</span><span id="line-199">   * This is typically used to determine if rationale should be provided before requesting a permission.</span>
+<span class="source-line-no">200</span><span id="line-200">   *</span>
+<span class="source-line-no">201</span><span id="line-201">   * @param permission The name of the permission to check (e.g., android.permission.CAMERA).</span>
+<span class="source-line-no">202</span><span id="line-202">   * @return {@code true} if an explanation should be shown to the user for the specified permission,</span>
+<span class="source-line-no">203</span><span id="line-203">   *         {@code false} otherwise.</span>
+<span class="source-line-no">204</span><span id="line-204">   */</span>
+<span class="source-line-no">205</span><span id="line-205">  private boolean shouldExplainPermission(String permission) {</span>
+<span class="source-line-no">206</span><span id="line-206">    return ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission);</span>
+<span class="source-line-no">207</span><span id="line-207">  }</span>
+<span class="source-line-no">208</span><span id="line-208"></span>
+<span class="source-line-no">209</span><span id="line-209">}</span>
 
 
 

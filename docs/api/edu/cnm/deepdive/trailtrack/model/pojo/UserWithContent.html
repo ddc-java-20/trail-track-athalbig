@@ -91,8 +91,20 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-9">UserWithContent</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-23">UserWithContent</a></span>
 <span class="extends-implements">extends <a href="../entity/User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">User</a></span></div>
+<div class="block">The <code>UserWithContent</code> class is an extension of the <code>User</code> class
+ that incorporates additional related content, such as <code>Pin</code> and
+ <code>TrackWithPins</code> entities associated with a user.
+
+ It includes relationships to other entities:
+ - <code>pins</code>: Represents a list of <code>Pin</code> objects associated with the user,
+   linked by the "user_id" field.
+ - <code>tracks</code>: Represents a list of <code>TrackWithPins</code> objects associated
+   with the user, also linked by the "user_id" field.
+
+ This class is typically used for scenarios where additional content or relationships
+ related to the user need to be retrieved or processed.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -155,7 +167,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>UserWithContent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-9">UserWithContent</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-23">UserWithContent</a></span>()</div>
 </section>
 </li>
 </ul>
@@ -169,25 +181,25 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getPins()">
 <h3>getPins</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-16">getPins</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-30">getPins</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setPins(java.util.List)">
 <h3>setPins</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-20">setPins</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&nbsp;pins)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-34">setPins</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/Pin.html" title="class in edu.cnm.deepdive.trailtrack.model.entity">Pin</a>&gt;&nbsp;pins)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getTracks()">
 <h3>getTracks</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TrackWithPins.html" title="class in edu.cnm.deepdive.trailtrack.model.pojo">TrackWithPins</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-24">getTracks</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TrackWithPins.html" title="class in edu.cnm.deepdive.trailtrack.model.pojo">TrackWithPins</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-38">getTracks</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setTracks(java.util.List)">
 <h3>setTracks</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-28">setTracks</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TrackWithPins.html" title="class in edu.cnm.deepdive.trailtrack.model.pojo">TrackWithPins</a>&gt;&nbsp;tracks)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/pojo/UserWithContent.html#line-42">setTracks</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TrackWithPins.html" title="class in edu.cnm.deepdive.trailtrack.model.pojo">TrackWithPins</a>&gt;&nbsp;tracks)</span></div>
 </section>
 </li>
 </ul>

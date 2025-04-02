@@ -15,61 +15,136 @@
 <span class="source-line-no">002</span><span id="line-2"></span>
 <span class="source-line-no">003</span><span id="line-3">import androidx.lifecycle.LiveData;</span>
 <span class="source-line-no">004</span><span id="line-4">import edu.cnm.deepdive.trailtrack.model.dao.PinDao;</span>
-<span class="source-line-no">005</span><span id="line-5">import edu.cnm.deepdive.trailtrack.model.entity.Pin;</span>
-<span class="source-line-no">006</span><span id="line-6">import edu.cnm.deepdive.trailtrack.model.entity.User;</span>
-<span class="source-line-no">007</span><span id="line-7">import io.reactivex.rxjava3.core.Completable;</span>
-<span class="source-line-no">008</span><span id="line-8">import io.reactivex.rxjava3.core.Scheduler;</span>
-<span class="source-line-no">009</span><span id="line-9">import io.reactivex.rxjava3.core.Single;</span>
-<span class="source-line-no">010</span><span id="line-10">import io.reactivex.rxjava3.schedulers.Schedulers;</span>
-<span class="source-line-no">011</span><span id="line-11">import java.time.Instant;</span>
-<span class="source-line-no">012</span><span id="line-12">import java.util.List;</span>
-<span class="source-line-no">013</span><span id="line-13">import javax.inject.Inject;</span>
-<span class="source-line-no">014</span><span id="line-14">import javax.inject.Singleton;</span>
-<span class="source-line-no">015</span><span id="line-15"></span>
-<span class="source-line-no">016</span><span id="line-16">@Singleton</span>
-<span class="source-line-no">017</span><span id="line-17">public class PinRepository {</span>
-<span class="source-line-no">018</span><span id="line-18"></span>
-<span class="source-line-no">019</span><span id="line-19">  private final PinDao pinDao;</span>
-<span class="source-line-no">020</span><span id="line-20">  private final Scheduler scheduler;</span>
-<span class="source-line-no">021</span><span id="line-21">  private final GoogleSignInService googleSignInService;</span>
-<span class="source-line-no">022</span><span id="line-22"></span>
-<span class="source-line-no">023</span><span id="line-23">  @Inject</span>
-<span class="source-line-no">024</span><span id="line-24">  PinRepository(PinDao pinDao, GoogleSignInService googleSignInService) {</span>
-<span class="source-line-no">025</span><span id="line-25">    this.pinDao = pinDao;</span>
-<span class="source-line-no">026</span><span id="line-26">    this.googleSignInService = googleSignInService;</span>
-<span class="source-line-no">027</span><span id="line-27">    scheduler = Schedulers.io();</span>
-<span class="source-line-no">028</span><span id="line-28">  }</span>
-<span class="source-line-no">029</span><span id="line-29"></span>
-<span class="source-line-no">030</span><span id="line-30">  public Single&lt;Pin&gt; save(Pin pin) {</span>
-<span class="source-line-no">031</span><span id="line-31">    return (pin.getId() != 0)</span>
-<span class="source-line-no">032</span><span id="line-32">      ? Completable.fromAction(() -&gt; pin.setModifiedOn(Instant.now()))</span>
-<span class="source-line-no">033</span><span id="line-33">        .andThen(pinDao.update(pin))</span>
-<span class="source-line-no">034</span><span id="line-34">        .toSingle(() -&gt; pin)</span>
-<span class="source-line-no">035</span><span id="line-35">        .subscribeOn(scheduler)</span>
-<span class="source-line-no">036</span><span id="line-36">      : pinDao</span>
-<span class="source-line-no">037</span><span id="line-37">        .insertAndReturn(pin)</span>
-<span class="source-line-no">038</span><span id="line-38">        .subscribeOn(scheduler);</span>
-<span class="source-line-no">039</span><span id="line-39">  }</span>
-<span class="source-line-no">040</span><span id="line-40"></span>
-<span class="source-line-no">041</span><span id="line-41">  public LiveData&lt;Pin&gt; get(long id) {</span>
-<span class="source-line-no">042</span><span id="line-42">    return pinDao.selectById(id);</span>
-<span class="source-line-no">043</span><span id="line-43">  }</span>
-<span class="source-line-no">044</span><span id="line-44"></span>
-<span class="source-line-no">045</span><span id="line-45">  public Completable remove(Pin pin) {</span>
-<span class="source-line-no">046</span><span id="line-46">    return pinDao</span>
-<span class="source-line-no">047</span><span id="line-47">        .delete(pin)</span>
-<span class="source-line-no">048</span><span id="line-48">        .subscribeOn(scheduler);</span>
-<span class="source-line-no">049</span><span id="line-49">  }</span>
-<span class="source-line-no">050</span><span id="line-50"></span>
-<span class="source-line-no">051</span><span id="line-51">  public LiveData&lt;List&lt;Pin&gt;&gt; getAll(User user) {</span>
-<span class="source-line-no">052</span><span id="line-52">    return pinDao.selectByCreatedOnAsc(user.getId());</span>
-<span class="source-line-no">053</span><span id="line-53">  }</span>
-<span class="source-line-no">054</span><span id="line-54"></span>
-<span class="source-line-no">055</span><span id="line-55">  public LiveData&lt;List&lt;Pin&gt;&gt; getAllForUser(User user) {</span>
-<span class="source-line-no">056</span><span id="line-56">    return pinDao.selectByUserId(user.getId());</span>
-<span class="source-line-no">057</span><span id="line-57">  }</span>
-<span class="source-line-no">058</span><span id="line-58"></span>
-<span class="source-line-no">059</span><span id="line-59">}</span>
+<span class="source-line-no">005</span><span id="line-5">import edu.cnm.deepdive.trailtrack.model.dao.TrackDao;</span>
+<span class="source-line-no">006</span><span id="line-6">import edu.cnm.deepdive.trailtrack.model.entity.Pin;</span>
+<span class="source-line-no">007</span><span id="line-7">import edu.cnm.deepdive.trailtrack.model.entity.Track;</span>
+<span class="source-line-no">008</span><span id="line-8">import edu.cnm.deepdive.trailtrack.model.entity.User;</span>
+<span class="source-line-no">009</span><span id="line-9">import io.reactivex.rxjava3.core.Completable;</span>
+<span class="source-line-no">010</span><span id="line-10">import io.reactivex.rxjava3.core.Scheduler;</span>
+<span class="source-line-no">011</span><span id="line-11">import io.reactivex.rxjava3.core.Single;</span>
+<span class="source-line-no">012</span><span id="line-12">import io.reactivex.rxjava3.schedulers.Schedulers;</span>
+<span class="source-line-no">013</span><span id="line-13">import java.time.Instant;</span>
+<span class="source-line-no">014</span><span id="line-14">import java.util.List;</span>
+<span class="source-line-no">015</span><span id="line-15">import javax.inject.Inject;</span>
+<span class="source-line-no">016</span><span id="line-16">import javax.inject.Singleton;</span>
+<span class="source-line-no">017</span><span id="line-17"></span>
+<span class="source-line-no">018</span><span id="line-18">/**</span>
+<span class="source-line-no">019</span><span id="line-19"> * Repository class to manage data operations related to Pins and Tracks.</span>
+<span class="source-line-no">020</span><span id="line-20"> * Provides methods to interact with the persistence layer through DAOs and</span>
+<span class="source-line-no">021</span><span id="line-21"> * integrates with the Google Sign-In service for user-specific operations.</span>
+<span class="source-line-no">022</span><span id="line-22"> * Utilizes dependency injection for instantiation and RxJava for handling asynchronous operations.</span>
+<span class="source-line-no">023</span><span id="line-23"> */</span>
+<span class="source-line-no">024</span><span id="line-24">@Singleton</span>
+<span class="source-line-no">025</span><span id="line-25">public class PinRepository {</span>
+<span class="source-line-no">026</span><span id="line-26"></span>
+<span class="source-line-no">027</span><span id="line-27">  private final PinDao pinDao;</span>
+<span class="source-line-no">028</span><span id="line-28">  private final TrackDao trackDao;</span>
+<span class="source-line-no">029</span><span id="line-29">  private final Scheduler scheduler;</span>
+<span class="source-line-no">030</span><span id="line-30">  private final GoogleSignInService googleSignInService;</span>
+<span class="source-line-no">031</span><span id="line-31"></span>
+<span class="source-line-no">032</span><span id="line-32">  /**</span>
+<span class="source-line-no">033</span><span id="line-33">   * Constructs a new instance of the PinRepository class. This repository encapsulates</span>
+<span class="source-line-no">034</span><span id="line-34">   * data operations related to Pins and Tracks, bridging the persistence layer via DAOs</span>
+<span class="source-line-no">035</span><span id="line-35">   * and integrating with user authentication through the Google Sign-In service.</span>
+<span class="source-line-no">036</span><span id="line-36">   * The class leverages dependency injection for its dependencies.</span>
+<span class="source-line-no">037</span><span id="line-37">   *</span>
+<span class="source-line-no">038</span><span id="line-38">   * @param pinDao               Data access object for performing operations on Pin entities.</span>
+<span class="source-line-no">039</span><span id="line-39">   * @param trackDao             Data access object for performing operations on Track entities.</span>
+<span class="source-line-no">040</span><span id="line-40">   * @param googleSignInService  Service for handling Google Sign-In operations and user-specific tasks.</span>
+<span class="source-line-no">041</span><span id="line-41">   */</span>
+<span class="source-line-no">042</span><span id="line-42">  @Inject</span>
+<span class="source-line-no">043</span><span id="line-43">  PinRepository(PinDao pinDao, TrackDao trackDao, GoogleSignInService googleSignInService) {</span>
+<span class="source-line-no">044</span><span id="line-44">    this.pinDao = pinDao;</span>
+<span class="source-line-no">045</span><span id="line-45">    this.trackDao = trackDao;</span>
+<span class="source-line-no">046</span><span id="line-46">    this.googleSignInService = googleSignInService;</span>
+<span class="source-line-no">047</span><span id="line-47">    scheduler = Schedulers.io();</span>
+<span class="source-line-no">048</span><span id="line-48">  }</span>
+<span class="source-line-no">049</span><span id="line-49"></span>
+<span class="source-line-no">050</span><span id="line-50">  /**</span>
+<span class="source-line-no">051</span><span id="line-51">   * Saves the specified {@code Pin} object to the database. If the pin already exists</span>
+<span class="source-line-no">052</span><span id="line-52">   * (determined by a nonzero ID), it updates the existing record and sets the modification timestamp</span>
+<span class="source-line-no">053</span><span id="line-53">   * to the current time. Otherwise, it inserts the new {@code Pin} into the database.</span>
+<span class="source-line-no">054</span><span id="line-54">   *</span>
+<span class="source-line-no">055</span><span id="line-55">   * @param pin The {@code Pin} object to be saved or updated. Must not be null.</span>
+<span class="source-line-no">056</span><span id="line-56">   * @return A {@code Single&lt;Pin&gt;} representing the saved or updated {@code Pin} object.</span>
+<span class="source-line-no">057</span><span id="line-57">   */</span>
+<span class="source-line-no">058</span><span id="line-58">  public Single&lt;Pin&gt; save(Pin pin) {</span>
+<span class="source-line-no">059</span><span id="line-59">    return (pin.getId() != 0)</span>
+<span class="source-line-no">060</span><span id="line-60">      ? Completable.fromAction(() -&gt; pin.setModifiedOn(Instant.now()))</span>
+<span class="source-line-no">061</span><span id="line-61">        .andThen(pinDao.update(pin))</span>
+<span class="source-line-no">062</span><span id="line-62">        .toSingle(() -&gt; pin)</span>
+<span class="source-line-no">063</span><span id="line-63">        .subscribeOn(scheduler)</span>
+<span class="source-line-no">064</span><span id="line-64">      : pinDao</span>
+<span class="source-line-no">065</span><span id="line-65">        .insertAndReturn(pin)</span>
+<span class="source-line-no">066</span><span id="line-66">        .subscribeOn(scheduler);</span>
+<span class="source-line-no">067</span><span id="line-67">  }</span>
+<span class="source-line-no">068</span><span id="line-68"></span>
+<span class="source-line-no">069</span><span id="line-69">  /**</span>
+<span class="source-line-no">070</span><span id="line-70">   * Retrieves a {@code Pin} object identified by the specified unique ID from the database.</span>
+<span class="source-line-no">071</span><span id="line-71">   *</span>
+<span class="source-line-no">072</span><span id="line-72">   * @param id The unique identifier of the {@code Pin} to fetch. Must be a positive number.</span>
+<span class="source-line-no">073</span><span id="line-73">   * @return A {@code LiveData&lt;Pin&gt;} instance representing the {@code Pin} entity with the given ID.</span>
+<span class="source-line-no">074</span><span id="line-74">   */</span>
+<span class="source-line-no">075</span><span id="line-75">  public LiveData&lt;Pin&gt; get(long id) {</span>
+<span class="source-line-no">076</span><span id="line-76">    return pinDao.selectById(id);</span>
+<span class="source-line-no">077</span><span id="line-77">  }</span>
+<span class="source-line-no">078</span><span id="line-78"></span>
+<span class="source-line-no">079</span><span id="line-79">  /**</span>
+<span class="source-line-no">080</span><span id="line-80">   * Deletes the specified {@code Pin} object from the database.</span>
+<span class="source-line-no">081</span><span id="line-81">   * This operation is asynchronous and will execute on the specified scheduler.</span>
+<span class="source-line-no">082</span><span id="line-82">   *</span>
+<span class="source-line-no">083</span><span id="line-83">   * @param pin The {@code Pin} object to be removed from the database. Must not be null.</span>
+<span class="source-line-no">084</span><span id="line-84">   * @return A {@code Completable} representing the result of the delete operation. It</span>
+<span class="source-line-no">085</span><span id="line-85">   *         completes successfully when the {@code Pin} is deleted or emits an error if the operation fails.</span>
+<span class="source-line-no">086</span><span id="line-86">   */</span>
+<span class="source-line-no">087</span><span id="line-87">  public Completable remove(Pin pin) {</span>
+<span class="source-line-no">088</span><span id="line-88">    return pinDao</span>
+<span class="source-line-no">089</span><span id="line-89">        .delete(pin)</span>
+<span class="source-line-no">090</span><span id="line-90">        .subscribeOn(scheduler);</span>
+<span class="source-line-no">091</span><span id="line-91">  }</span>
+<span class="source-line-no">092</span><span id="line-92"></span>
+<span class="source-line-no">093</span><span id="line-93">  /**</span>
+<span class="source-line-no">094</span><span id="line-94">   * Retrieves a list of {@code Pin} entities associated with the specified {@code User},</span>
+<span class="source-line-no">095</span><span id="line-95">   * ordered by their creation timestamp in ascending order.</span>
+<span class="source-line-no">096</span><span id="line-96">   *</span>
+<span class="source-line-no">097</span><span id="line-97">   * @param user The {@code User} whose pins are to be fetched. Must not be null.</span>
+<span class="source-line-no">098</span><span id="line-98">   * @return A {@code LiveData&lt;List&lt;Pin&gt;&gt;} containing the list of pins for the given user.</span>
+<span class="source-line-no">099</span><span id="line-99">   */</span>
+<span class="source-line-no">100</span><span id="line-100">  public LiveData&lt;List&lt;Pin&gt;&gt; getAll(User user) {</span>
+<span class="source-line-no">101</span><span id="line-101">    return pinDao.selectByCreatedOnAsc(user.getId());</span>
+<span class="source-line-no">102</span><span id="line-102">  }</span>
+<span class="source-line-no">103</span><span id="line-103"></span>
+<span class="source-line-no">104</span><span id="line-104">  /**</span>
+<span class="source-line-no">105</span><span id="line-105">   * Retrieves a list of {@code Pin} objects associated with the specified {@code User}.</span>
+<span class="source-line-no">106</span><span id="line-106">   *</span>
+<span class="source-line-no">107</span><span id="line-107">   * @param user The {@code User} whose associated pins are to be retrieved. Must not be null.</span>
+<span class="source-line-no">108</span><span id="line-108">   * @return A {@code LiveData&lt;List&lt;Pin&gt;&gt;} containing the list of pins linked to the specified user.</span>
+<span class="source-line-no">109</span><span id="line-109">   */</span>
+<span class="source-line-no">110</span><span id="line-110">  public LiveData&lt;List&lt;Pin&gt;&gt; getAllForUser(User user) {</span>
+<span class="source-line-no">111</span><span id="line-111">    return pinDao.selectByUserId(user.getId());</span>
+<span class="source-line-no">112</span><span id="line-112">  }</span>
+<span class="source-line-no">113</span><span id="line-113"></span>
+<span class="source-line-no">114</span><span id="line-114">  /**</span>
+<span class="source-line-no">115</span><span id="line-115">   * Retrieves a list of {@code Pin} entities associated with the specified {@code Track}.</span>
+<span class="source-line-no">116</span><span id="line-116">   *</span>
+<span class="source-line-no">117</span><span id="line-117">   * @param track The {@code Track} whose associated pins are to be fetched. Must not be null.</span>
+<span class="source-line-no">118</span><span id="line-118">   * @return A {@code LiveData&lt;List&lt;Pin&gt;&gt;} containing the list of pins linked to the specified track.</span>
+<span class="source-line-no">119</span><span id="line-119">   */</span>
+<span class="source-line-no">120</span><span id="line-120">  public LiveData&lt;List&lt;Pin&gt;&gt; getAllForTrack(Track track) {</span>
+<span class="source-line-no">121</span><span id="line-121">    return pinDao.selectByTrackId(track.getId());</span>
+<span class="source-line-no">122</span><span id="line-122">  }</span>
+<span class="source-line-no">123</span><span id="line-123"></span>
+<span class="source-line-no">124</span><span id="line-124">  /**</span>
+<span class="source-line-no">125</span><span id="line-125">   * Retrieves a list of all {@code Track} entities stored in the database.</span>
+<span class="source-line-no">126</span><span id="line-126">   * The tracks are ordered alphabetically by their name.</span>
+<span class="source-line-no">127</span><span id="line-127">   *</span>
+<span class="source-line-no">128</span><span id="line-128">   * @return A {@code LiveData&lt;List&lt;Track&gt;&gt;} containing all tracks in the database.</span>
+<span class="source-line-no">129</span><span id="line-129">   */</span>
+<span class="source-line-no">130</span><span id="line-130">  public LiveData&lt;List&lt;Track&gt;&gt; getAllTracks(){</span>
+<span class="source-line-no">131</span><span id="line-131">    return trackDao.selectAll();</span>
+<span class="source-line-no">132</span><span id="line-132">  }</span>
+<span class="source-line-no">133</span><span id="line-133"></span>
+<span class="source-line-no">134</span><span id="line-134">}</span>
 
 
 

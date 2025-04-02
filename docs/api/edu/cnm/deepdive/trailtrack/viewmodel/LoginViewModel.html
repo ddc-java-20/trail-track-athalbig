@@ -95,9 +95,29 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="https://developer.android.com/reference/androidx/lifecycle/DefaultLifecycleObserver.html" title="class or interface in androidx.lifecycle" class="external-link">DefaultLifecycleObserver</a></code>, <code><a href="https://developer.android.com/reference/androidx/lifecycle/LifecycleObserver.html" title="class or interface in androidx.lifecycle" class="external-link">LifecycleObserver</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-20">LoginViewModel</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-41">LoginViewModel</a></span>
 <span class="extends-implements">extends <a href="https://developer.android.com/reference/androidx/lifecycle/ViewModel.html" title="class or interface in androidx.lifecycle" class="external-link">ViewModel</a>
 implements <a href="https://developer.android.com/reference/androidx/lifecycle/DefaultLifecycleObserver.html" title="class or interface in androidx.lifecycle" class="external-link">DefaultLifecycleObserver</a></span></div>
+<div class="block">ViewModel for managing user authentication through Google Sign-In.
+ Responsible for coordinating between the UI and the <a href="../service/GoogleSignInService.html" title="class in edu.cnm.deepdive.trailtrack.service"><code>GoogleSignInService</code></a>,
+ handling sign-in, sign-out, and account refresh operations. This class also
+ manages the lifecycle of ongoing operations and provides LiveData objects
+ for observing authentication-related events.
+
+ This ViewModel integrates with the Android lifecycle, clearing ongoing operations
+ automatically on lifecycle changes. It uses RxJava for asynchronous operations and
+ provides error handling through LiveData objects to propagate exceptions to the UI layer.
+
+ Features:
+ - Supports silent sign-in to retrieve the last authenticated Google account.
+ - Initiates and completes Google Sign-In flows.
+ - Handles sign-out functionality.
+ - Exposes LiveData for observing the authenticated account and any errors encountered during operations.
+ - Ensures proper cleanup of disposables upon lifecycle transitions.
+
+ Constructor:
+ The ViewModel is instantiated via dependency injection using Hilt, injecting
+ an instance of the <a href="../service/GoogleSignInService.html" title="class in edu.cnm.deepdive.trailtrack.service"><code>GoogleSignInService</code></a> for managing Google Sign-In flows.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -114,28 +134,45 @@ implements <a href="https://developer.android.com/reference/androidx/lifecycle/D
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#completeSignIn(androidx.activity.result.ActivityResult)" class="member-name-link">completeSignIn</a><wbr>(androidx.activity.result.ActivityResult&nbsp;result)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Completes the sign-in process using the result of a previously initiated sign-in activity.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAccount()" class="member-name-link">getAccount</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the currently signed-in Google account as observable <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a>.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRefreshThrowable()" class="member-name-link">getRefreshThrowable</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a> instance containing any <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a> encountered during the
+ refresh operation.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSignInThrowable()" class="member-name-link">getSignInThrowable</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a> instance containing any <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a> encountered during
+ the sign-in operation.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onStop(androidx.lifecycle.LifecycleOwner)" class="member-name-link">onStop</a><wbr>(<a href="https://developer.android.com/reference/androidx/lifecycle/LifecycleOwner.html" title="class or interface in androidx.lifecycle" class="external-link">LifecycleOwner</a>&nbsp;owner)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attempts to refresh the currently signed-in Google account information by initiating a silent
+ sign-in process through the <code>GoogleSignInService</code>.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#signOut()" class="member-name-link">signOut</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Signs out the currently authenticated user and clears relevant state in the <code>LoginViewModel</code>.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSignIn(androidx.activity.result.ActivityResultLauncher)" class="member-name-link">startSignIn</a><wbr>(androidx.activity.result.ActivityResultLauncher&lt;<a href="https://developer.android.com/reference/android/content/Intent.html" title="class or interface in android.content" class="external-link">Intent</a>&gt;&nbsp;launcher)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initiates the sign-in process for the user.</div>
+</div>
 </div>
 </div>
 </div>
@@ -162,49 +199,109 @@ implements <a href="https://developer.android.com/reference/androidx/lifecycle/D
 <li>
 <section class="detail" id="getAccount()">
 <h3>getAccount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-40">getAccount</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-69">getAccount</a></span>()</div>
+<div class="block">Retrieves the currently signed-in Google account as observable <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a>.
+ This method provides access to the user's account information, allowing the UI
+ and other observers to react to changes in the user's sign-in status.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a <code>LiveData&lt;GoogleSignInAccount&gt;</code> instance representing the signed-in
+ Google account, or <code>null</code> if no account is currently signed in.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getRefreshThrowable()">
 <h3>getRefreshThrowable</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-44">getRefreshThrowable</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-81">getRefreshThrowable</a></span>()</div>
+<div class="block">Retrieves the <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a> instance containing any <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a> encountered during the
+ refresh operation. Observers can subscribe to this <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a> to receive updates whenever
+ a refresh-related error occurs.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a <code>LiveData&lt;Throwable&gt;</code> instance representing the throwable encountered during
+ the refresh operation, or <code>null</code> if no throwable is currently reported.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getSignInThrowable()">
 <h3>getSignInThrowable</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-48">getSignInThrowable</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link">LiveData</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-93">getSignInThrowable</a></span>()</div>
+<div class="block">Retrieves the <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a> instance containing any <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link"><code>Throwable</code></a> encountered during
+ the sign-in operation. Observers can subscribe to this <a href="https://developer.android.com/reference/androidx/lifecycle/LiveData.html" title="class or interface in androidx.lifecycle" class="external-link"><code>LiveData</code></a> to receive updates
+ whenever a sign-in-related error occurs.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a <code>LiveData&lt;Throwable&gt;</code> instance representing the throwable encountered during
+ the sign-in operation, or <code>null</code> if no throwable is currently reported.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="refresh()">
 <h3>refresh</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-52">refresh</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-107">refresh</a></span>()</div>
+<div class="block">Attempts to refresh the currently signed-in Google account information by initiating a silent
+ sign-in process through the <code>GoogleSignInService</code>. If successful, the updated account
+ information is posted to the associated <code>LiveData</code>. If an error occurs during the refresh
+ operation, the corresponding throwable is posted to the <code>refreshThrowable</code> <code>LiveData</code>.
+ Other observers may monitor these <code>LiveData</code> instances to track success or failures.
+
+ Additionally, this method resets any previously reported throwable values for both the
+ refresh and sign-in operations, ensuring a clean state before initiating the new refresh request.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="startSignIn(androidx.activity.result.ActivityResultLauncher)">
 <h3>startSignIn</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-64">startSignIn</a></span><wbr><span class="parameters">(androidx.activity.result.ActivityResultLauncher&lt;<a href="https://developer.android.com/reference/android/content/Intent.html" title="class or interface in android.content" class="external-link">Intent</a>&gt;&nbsp;launcher)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-129">startSignIn</a></span><wbr><span class="parameters">(androidx.activity.result.ActivityResultLauncher&lt;<a href="https://developer.android.com/reference/android/content/Intent.html" title="class or interface in android.content" class="external-link">Intent</a>&gt;&nbsp;launcher)</span></div>
+<div class="block">Initiates the sign-in process for the user. This method resets any previously reported
+ throwable values for both the refresh and sign-in operations, ensuring a clean state before
+ starting the sign-in workflow. The actual sign-in process is delegated to the
+ <code>GoogleSignInService</code> using the provided <code>ActivityResultLauncher</code>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>launcher</code> - An <code>ActivityResultLauncher</code> used to manage the result of the Google
+                 Sign-In activity, handling the user's interaction and receiving their
+                 authentication information.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="completeSignIn(androidx.activity.result.ActivityResult)">
 <h3>completeSignIn</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-70">completeSignIn</a></span><wbr><span class="parameters">(androidx.activity.result.ActivityResult&nbsp;result)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-145">completeSignIn</a></span><wbr><span class="parameters">(androidx.activity.result.ActivityResult&nbsp;result)</span></div>
+<div class="block">Completes the sign-in process using the result of a previously initiated sign-in activity.
+ This method clears any previously reported throwable values related to refresh and sign-in
+ operations, ensuring a clean state before updating the active Google account or posting
+ errors encountered during the sign-in process.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>result</code> - The <code>ActivityResult</code> containing the result data of a sign-in activity.
+               This result is processed to extract and update the signed-in account
+               information or to handle any errors encountered during the process.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="signOut()">
 <h3>signOut</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-82">signOut</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-167">signOut</a></span>()</div>
+<div class="block">Signs out the currently authenticated user and clears relevant state in the <code>LoginViewModel</code>.
+
+ This method performs the following actions:
+ - Resets any previously reported errors for both refresh and sign-in operations by setting
+   <code>refreshThrowable</code> and <code>signInThrowable</code> to <code>null</code>.
+ - Initiates the sign-out operation via the <code>signInService</code>.
+ - Updates the user account information to <code>null</code> asynchronously when the sign-out
+   operation is completed.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="onStop(androidx.lifecycle.LifecycleOwner)">
 <h3>onStop</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-91">onStop</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/viewmodel/LoginViewModel.html#line-176">onStop</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://developer.android.com/reference/androidx/lifecycle/LifecycleOwner.html" title="class or interface in androidx.lifecycle" class="external-link">LifecycleOwner</a>&nbsp;owner)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>

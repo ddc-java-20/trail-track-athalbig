@@ -21,52 +21,122 @@
 <span class="source-line-no">008</span><span id="line-8">import dagger.hilt.android.qualifiers.ApplicationContext;</span>
 <span class="source-line-no">009</span><span id="line-9">import edu.cnm.deepdive.trailtrack.R;</span>
 <span class="source-line-no">010</span><span id="line-10">import edu.cnm.deepdive.trailtrack.model.dao.PinDao;</span>
-<span class="source-line-no">011</span><span id="line-11">import edu.cnm.deepdive.trailtrack.model.entity.Pin;</span>
-<span class="source-line-no">012</span><span id="line-12">import io.reactivex.rxjava3.schedulers.Schedulers;</span>
-<span class="source-line-no">013</span><span id="line-13">import java.io.IOException;</span>
-<span class="source-line-no">014</span><span id="line-14">import java.io.InputStream;</span>
-<span class="source-line-no">015</span><span id="line-15">import java.io.InputStreamReader;</span>
-<span class="source-line-no">016</span><span id="line-16">import java.io.Reader;</span>
-<span class="source-line-no">017</span><span id="line-17">import javax.inject.Inject;</span>
-<span class="source-line-no">018</span><span id="line-18">import javax.inject.Provider;</span>
-<span class="source-line-no">019</span><span id="line-19"></span>
-<span class="source-line-no">020</span><span id="line-20">public class Preloader extends RoomDatabase.Callback {</span>
-<span class="source-line-no">021</span><span id="line-21"></span>
-<span class="source-line-no">022</span><span id="line-22"></span>
-<span class="source-line-no">023</span><span id="line-23">  private final Context context;</span>
-<span class="source-line-no">024</span><span id="line-24">  private final Provider&lt;PinDao&gt; pinDaoProvider;</span>
-<span class="source-line-no">025</span><span id="line-25">  private final Gson gson;</span>
-<span class="source-line-no">026</span><span id="line-26"></span>
-<span class="source-line-no">027</span><span id="line-27">  @Inject</span>
-<span class="source-line-no">028</span><span id="line-28">  Preloader(@ApplicationContext Context context, Provider&lt;PinDao&gt; pinDaoProvider, Gson gson) {</span>
-<span class="source-line-no">029</span><span id="line-29">    this.context = context;</span>
-<span class="source-line-no">030</span><span id="line-30">    this.pinDaoProvider = pinDaoProvider;</span>
-<span class="source-line-no">031</span><span id="line-31">    this.gson = gson;</span>
-<span class="source-line-no">032</span><span id="line-32">  }</span>
-<span class="source-line-no">033</span><span id="line-33"></span>
-<span class="source-line-no">034</span><span id="line-34">  @Override</span>
-<span class="source-line-no">035</span><span id="line-35">  public void onCreate(@NonNull SupportSQLiteDatabase db) {</span>
-<span class="source-line-no">036</span><span id="line-36">    super.onCreate(db);</span>
-<span class="source-line-no">037</span><span id="line-37"></span>
-<span class="source-line-no">038</span><span id="line-38">    PinDao pinDao = pinDaoProvider.get();</span>
-<span class="source-line-no">039</span><span id="line-39"></span>
-<span class="source-line-no">040</span><span id="line-40">    //Need an input stream</span>
-<span class="source-line-no">041</span><span id="line-41">    try (</span>
-<span class="source-line-no">042</span><span id="line-42">        InputStream input = context.getResources().openRawResource(R.raw.preload);</span>
-<span class="source-line-no">043</span><span id="line-43">        Reader reader = new InputStreamReader(input)</span>
-<span class="source-line-no">044</span><span id="line-44">    ) {</span>
-<span class="source-line-no">045</span><span id="line-45">      Pin[] pins = gson.fromJson(reader, Pin[].class);</span>
-<span class="source-line-no">046</span><span id="line-46">      pinDao</span>
-<span class="source-line-no">047</span><span id="line-47">          .insert(pins)</span>
-<span class="source-line-no">048</span><span id="line-48">          .subscribeOn(Schedulers.io())</span>
-<span class="source-line-no">049</span><span id="line-49">          .subscribe();</span>
-<span class="source-line-no">050</span><span id="line-50"></span>
-<span class="source-line-no">051</span><span id="line-51">    } catch (IOException e) {</span>
-<span class="source-line-no">052</span><span id="line-52">      throw new RuntimeException(e);</span>
-<span class="source-line-no">053</span><span id="line-53">    }</span>
-<span class="source-line-no">054</span><span id="line-54"></span>
-<span class="source-line-no">055</span><span id="line-55">  }</span>
-<span class="source-line-no">056</span><span id="line-56">}</span>
+<span class="source-line-no">011</span><span id="line-11">import edu.cnm.deepdive.trailtrack.model.dao.TrackDao;</span>
+<span class="source-line-no">012</span><span id="line-12">import edu.cnm.deepdive.trailtrack.model.dao.UserDao;</span>
+<span class="source-line-no">013</span><span id="line-13">import edu.cnm.deepdive.trailtrack.model.entity.Pin;</span>
+<span class="source-line-no">014</span><span id="line-14">import edu.cnm.deepdive.trailtrack.model.entity.User;</span>
+<span class="source-line-no">015</span><span id="line-15">import edu.cnm.deepdive.trailtrack.model.pojo.TrackWithPins;</span>
+<span class="source-line-no">016</span><span id="line-16">import io.reactivex.rxjava3.schedulers.Schedulers;</span>
+<span class="source-line-no">017</span><span id="line-17">import java.io.IOException;</span>
+<span class="source-line-no">018</span><span id="line-18">import java.io.InputStreamReader;</span>
+<span class="source-line-no">019</span><span id="line-19">import java.io.Reader;</span>
+<span class="source-line-no">020</span><span id="line-20">import java.util.Iterator;</span>
+<span class="source-line-no">021</span><span id="line-21">import java.util.LinkedList;</span>
+<span class="source-line-no">022</span><span id="line-22">import java.util.List;</span>
+<span class="source-line-no">023</span><span id="line-23">import javax.inject.Inject;</span>
+<span class="source-line-no">024</span><span id="line-24">import javax.inject.Provider;</span>
+<span class="source-line-no">025</span><span id="line-25"></span>
+<span class="source-line-no">026</span><span id="line-26">/**</span>
+<span class="source-line-no">027</span><span id="line-27"> * The Preloader class is responsible for preloading and populating a database with</span>
+<span class="source-line-no">028</span><span id="line-28"> * predefined data, such as users, tracks, and pins, during the creation of the database.</span>
+<span class="source-line-no">029</span><span id="line-29"> * It extends RoomDatabase.Callback to hook into the database creation lifecycle.</span>
+<span class="source-line-no">030</span><span id="line-30"> *</span>
+<span class="source-line-no">031</span><span id="line-31"> * This class handles the structured insertion of data:</span>
+<span class="source-line-no">032</span><span id="line-32"> * - Reads predefined JSON data (from resources) for users, tracks, and pins.</span>
+<span class="source-line-no">033</span><span id="line-33"> * - Inserts the data into the database using corresponding DAOs: PinDao, TrackDao, and UserDao.</span>
+<span class="source-line-no">034</span><span id="line-34"> * - Maintains proper relationships between the entities (e.g., associating pins with tracks and users).</span>
+<span class="source-line-no">035</span><span id="line-35"> *</span>
+<span class="source-line-no">036</span><span id="line-36"> * Preloading data is executed asynchronously and off the main thread using RxJava.</span>
+<span class="source-line-no">037</span><span id="line-37"> * Errors during the preloading process result in a runtime exception.</span>
+<span class="source-line-no">038</span><span id="line-38"> */</span>
+<span class="source-line-no">039</span><span id="line-39">public class Preloader extends RoomDatabase.Callback {</span>
+<span class="source-line-no">040</span><span id="line-40"></span>
+<span class="source-line-no">041</span><span id="line-41"></span>
+<span class="source-line-no">042</span><span id="line-42">  private final Context context;</span>
+<span class="source-line-no">043</span><span id="line-43">  private final Provider&lt;PinDao&gt; pinDaoProvider;</span>
+<span class="source-line-no">044</span><span id="line-44">  private final Provider&lt;TrackDao&gt; trackDaoProvider;</span>
+<span class="source-line-no">045</span><span id="line-45">  private final Provider&lt;UserDao&gt; userDaoProvider;</span>
+<span class="source-line-no">046</span><span id="line-46">  private final Gson gson;</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">  /**</span>
+<span class="source-line-no">049</span><span id="line-49">   * Constructs an instance of the {@code Preloader} class for initializing data access and</span>
+<span class="source-line-no">050</span><span id="line-50">   * serialization dependencies required for the application's operation.</span>
+<span class="source-line-no">051</span><span id="line-51">   *</span>
+<span class="source-line-no">052</span><span id="line-52">   * @param context the application context, used for access to shared application-level resources</span>
+<span class="source-line-no">053</span><span id="line-53">   *                and services.</span>
+<span class="source-line-no">054</span><span id="line-54">   * @param pinDaoProvider the provider for {@link PinDao}, enabling data access operations</span>
+<span class="source-line-no">055</span><span id="line-55">   *                       for {@code Pin} entities.</span>
+<span class="source-line-no">056</span><span id="line-56">   * @param trackDaoProvider the provider for {@link TrackDao}, enabling data access operations</span>
+<span class="source-line-no">057</span><span id="line-57">   *                         for {@code Track} entities.</span>
+<span class="source-line-no">058</span><span id="line-58">   * @param userDaoProvider the provider for {@link UserDao}, enabling data access operations</span>
+<span class="source-line-no">059</span><span id="line-59">   *                        for {@code User} entities.</span>
+<span class="source-line-no">060</span><span id="line-60">   * @param gson the Gson instance used for JSON serialization and deserialization.</span>
+<span class="source-line-no">061</span><span id="line-61">   */</span>
+<span class="source-line-no">062</span><span id="line-62">  @Inject</span>
+<span class="source-line-no">063</span><span id="line-63">  Preloader(@ApplicationContext Context context, Provider&lt;PinDao&gt; pinDaoProvider,</span>
+<span class="source-line-no">064</span><span id="line-64">      Provider&lt;TrackDao&gt; trackDaoProvider, Provider&lt;UserDao&gt; userDaoProvider, Gson gson) {</span>
+<span class="source-line-no">065</span><span id="line-65">    this.context = context;</span>
+<span class="source-line-no">066</span><span id="line-66">    this.pinDaoProvider = pinDaoProvider;</span>
+<span class="source-line-no">067</span><span id="line-67">    this.trackDaoProvider = trackDaoProvider;</span>
+<span class="source-line-no">068</span><span id="line-68">    this.userDaoProvider = userDaoProvider;</span>
+<span class="source-line-no">069</span><span id="line-69">    this.gson = gson;</span>
+<span class="source-line-no">070</span><span id="line-70">  }</span>
+<span class="source-line-no">071</span><span id="line-71"></span>
+<span class="source-line-no">072</span><span id="line-72">  /**</span>
+<span class="source-line-no">073</span><span id="line-73">   * Handles the creation and initial population of the database when it is first created.</span>
+<span class="source-line-no">074</span><span id="line-74">   * This method preloads pins and tracks data into the database using resources defined</span>
+<span class="source-line-no">075</span><span id="line-75">   * in the application, associates them with a user, and establishes the necessary relationships</span>
+<span class="source-line-no">076</span><span id="line-76">   * between the data entities.</span>
+<span class="source-line-no">077</span><span id="line-77">   *</span>
+<span class="source-line-no">078</span><span id="line-78">   * @param db the {@link SupportSQLiteDatabase} instance representing the database being created.</span>
+<span class="source-line-no">079</span><span id="line-79">   */</span>
+<span class="source-line-no">080</span><span id="line-80">  @Override</span>
+<span class="source-line-no">081</span><span id="line-81">  public void onCreate(@NonNull SupportSQLiteDatabase db) {</span>
+<span class="source-line-no">082</span><span id="line-82">    super.onCreate(db);</span>
+<span class="source-line-no">083</span><span id="line-83"></span>
+<span class="source-line-no">084</span><span id="line-84">    PinDao pinDao = pinDaoProvider.get();</span>
+<span class="source-line-no">085</span><span id="line-85">    TrackDao trackDao = trackDaoProvider.get();</span>
+<span class="source-line-no">086</span><span id="line-86">    UserDao userDao = userDaoProvider.get();</span>
+<span class="source-line-no">087</span><span id="line-87"></span>
+<span class="source-line-no">088</span><span id="line-88">    //Need an input stream</span>
+<span class="source-line-no">089</span><span id="line-89">    try (</span>
+<span class="source-line-no">090</span><span id="line-90">        Reader tracksReader = new InputStreamReader(</span>
+<span class="source-line-no">091</span><span id="line-91">            context.getResources().openRawResource(R.raw.preload_pins_tracks));</span>
+<span class="source-line-no">092</span><span id="line-92">        Reader userReader = new InputStreamReader(</span>
+<span class="source-line-no">093</span><span id="line-93">            context.getResources().openRawResource(R.raw.preload_user))</span>
+<span class="source-line-no">094</span><span id="line-94">    ) {</span>
+<span class="source-line-no">095</span><span id="line-95">      User user = gson.fromJson(userReader, User.class);</span>
+<span class="source-line-no">096</span><span id="line-96">      TrackWithPins[] tracksWithPins = gson.fromJson(tracksReader, TrackWithPins[].class);</span>
+<span class="source-line-no">097</span><span id="line-97">      userDao</span>
+<span class="source-line-no">098</span><span id="line-98">          .insert(user)</span>
+<span class="source-line-no">099</span><span id="line-99">          .flatMap((userId) -&gt; {</span>
+<span class="source-line-no">100</span><span id="line-100">            for (TrackWithPins trackWithPins : tracksWithPins) {</span>
+<span class="source-line-no">101</span><span id="line-101">              trackWithPins.setUserId(userId);</span>
+<span class="source-line-no">102</span><span id="line-102">              for (Pin pin : trackWithPins.getPins()) {</span>
+<span class="source-line-no">103</span><span id="line-103">                pin.setUserId(userId);</span>
+<span class="source-line-no">104</span><span id="line-104">              }</span>
+<span class="source-line-no">105</span><span id="line-105">            }</span>
+<span class="source-line-no">106</span><span id="line-106">            return trackDao.insert(tracksWithPins);</span>
+<span class="source-line-no">107</span><span id="line-107">          })</span>
+<span class="source-line-no">108</span><span id="line-108">          .flatMap((trackIds) -&gt; {</span>
+<span class="source-line-no">109</span><span id="line-109">            List&lt;Pin&gt; pins = new LinkedList&lt;&gt;();</span>
+<span class="source-line-no">110</span><span id="line-110">            Iterator&lt;Long&gt; idIterator = trackIds.iterator();</span>
+<span class="source-line-no">111</span><span id="line-111">            for (TrackWithPins trackWithPins : tracksWithPins) {</span>
+<span class="source-line-no">112</span><span id="line-112">              long trackId = idIterator.next();</span>
+<span class="source-line-no">113</span><span id="line-113">              for (Pin pin : trackWithPins.getPins()) {</span>
+<span class="source-line-no">114</span><span id="line-114">                pin.setTrackId(trackId);</span>
+<span class="source-line-no">115</span><span id="line-115">                pins.add(pin);</span>
+<span class="source-line-no">116</span><span id="line-116">              }</span>
+<span class="source-line-no">117</span><span id="line-117">            }</span>
+<span class="source-line-no">118</span><span id="line-118">            return pinDao.insert(pins);</span>
+<span class="source-line-no">119</span><span id="line-119">          })</span>
+<span class="source-line-no">120</span><span id="line-120">          .subscribeOn(Schedulers.io())</span>
+<span class="source-line-no">121</span><span id="line-121">          .subscribe();</span>
+<span class="source-line-no">122</span><span id="line-122">    } catch (IOException e) {</span>
+<span class="source-line-no">123</span><span id="line-123">      throw new RuntimeException(e);</span>
+<span class="source-line-no">124</span><span id="line-124">    }</span>
+<span class="source-line-no">125</span><span id="line-125">  }</span>
+<span class="source-line-no">126</span><span id="line-126">}</span>
 
 
 

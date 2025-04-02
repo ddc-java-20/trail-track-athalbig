@@ -28,50 +28,72 @@
 <span class="source-line-no">015</span><span id="line-15">import edu.cnm.deepdive.trailtrack.R;</span>
 <span class="source-line-no">016</span><span id="line-16">import edu.cnm.deepdive.trailtrack.viewmodel.LoginViewModel;</span>
 <span class="source-line-no">017</span><span id="line-17"></span>
-<span class="source-line-no">018</span><span id="line-18">/** @noinspection deprecation*/</span>
-<span class="source-line-no">019</span><span id="line-19">@AndroidEntryPoint</span>
-<span class="source-line-no">020</span><span id="line-20">public class PreLoginFragment extends Fragment {</span>
-<span class="source-line-no">021</span><span id="line-21"></span>
-<span class="source-line-no">022</span><span id="line-22">  private View root;</span>
-<span class="source-line-no">023</span><span id="line-23"></span>
-<span class="source-line-no">024</span><span id="line-24">  @Nullable</span>
-<span class="source-line-no">025</span><span id="line-25">  @Override</span>
-<span class="source-line-no">026</span><span id="line-26">  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,</span>
-<span class="source-line-no">027</span><span id="line-27">      @Nullable Bundle savedInstanceState) {</span>
-<span class="source-line-no">028</span><span id="line-28">    root = inflater.inflate(R.layout.fragment_pre_login, container, false);</span>
-<span class="source-line-no">029</span><span id="line-29">    return root;</span>
-<span class="source-line-no">030</span><span id="line-30">  }</span>
-<span class="source-line-no">031</span><span id="line-31"></span>
+<span class="source-line-no">018</span><span id="line-18">/**</span>
+<span class="source-line-no">019</span><span id="line-19"> * A Fragment that represents the pre-login state for the application.</span>
+<span class="source-line-no">020</span><span id="line-20"> * It observes the user's Google Sign-In account status and handles navigation</span>
+<span class="source-line-no">021</span><span id="line-21"> * to appropriate fragments based on the account state.</span>
+<span class="source-line-no">022</span><span id="line-22"> *</span>
+<span class="source-line-no">023</span><span id="line-23"> * This fragment initializes by setting up a ViewModel to monitor the account</span>
+<span class="source-line-no">024</span><span id="line-24"> * and throwable states for possible sign-in errors or account changes.</span>
+<span class="source-line-no">025</span><span id="line-25"> */</span>
+<span class="source-line-no">026</span><span id="line-26">@AndroidEntryPoint</span>
+<span class="source-line-no">027</span><span id="line-27">public class PreLoginFragment extends Fragment {</span>
+<span class="source-line-no">028</span><span id="line-28"></span>
+<span class="source-line-no">029</span><span id="line-29">  private View root;</span>
+<span class="source-line-no">030</span><span id="line-30"></span>
+<span class="source-line-no">031</span><span id="line-31">  @Nullable</span>
 <span class="source-line-no">032</span><span id="line-32">  @Override</span>
-<span class="source-line-no">033</span><span id="line-33">  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {</span>
-<span class="source-line-no">034</span><span id="line-34">    super.onViewCreated(view, savedInstanceState);</span>
-<span class="source-line-no">035</span><span id="line-35">    LoginViewModel viewModel = new ViewModelProvider(requireActivity())</span>
-<span class="source-line-no">036</span><span id="line-36">        .get(LoginViewModel.class);</span>
-<span class="source-line-no">037</span><span id="line-37">    LifecycleOwner owner = getViewLifecycleOwner();</span>
-<span class="source-line-no">038</span><span id="line-38">    viewModel</span>
-<span class="source-line-no">039</span><span id="line-39">        .getAccount()</span>
-<span class="source-line-no">040</span><span id="line-40">        .observe(owner, this::handleAccount);</span>
-<span class="source-line-no">041</span><span id="line-41">    viewModel</span>
-<span class="source-line-no">042</span><span id="line-42">        .getRefreshThrowable()</span>
-<span class="source-line-no">043</span><span id="line-43">        .observe(owner, this::handleThrowable);</span>
-<span class="source-line-no">044</span><span id="line-44">    viewModel.refresh();</span>
-<span class="source-line-no">045</span><span id="line-45">  }</span>
-<span class="source-line-no">046</span><span id="line-46"></span>
-<span class="source-line-no">047</span><span id="line-47">  private void handleAccount(GoogleSignInAccount account) {</span>
-<span class="source-line-no">048</span><span id="line-48">    if (account != null) {</span>
-<span class="source-line-no">049</span><span id="line-49">      Navigation.findNavController(root)</span>
-<span class="source-line-no">050</span><span id="line-50">          .navigate(PreLoginFragmentDirections.navigateToHomeFragment());</span>
-<span class="source-line-no">051</span><span id="line-51">    }</span>
+<span class="source-line-no">033</span><span id="line-33">  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,</span>
+<span class="source-line-no">034</span><span id="line-34">      @Nullable Bundle savedInstanceState) {</span>
+<span class="source-line-no">035</span><span id="line-35">    root = inflater.inflate(R.layout.fragment_pre_login, container, false);</span>
+<span class="source-line-no">036</span><span id="line-36">    return root;</span>
+<span class="source-line-no">037</span><span id="line-37">  }</span>
+<span class="source-line-no">038</span><span id="line-38"></span>
+<span class="source-line-no">039</span><span id="line-39">  @Override</span>
+<span class="source-line-no">040</span><span id="line-40">  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {</span>
+<span class="source-line-no">041</span><span id="line-41">    super.onViewCreated(view, savedInstanceState);</span>
+<span class="source-line-no">042</span><span id="line-42">    LoginViewModel viewModel = new ViewModelProvider(requireActivity())</span>
+<span class="source-line-no">043</span><span id="line-43">        .get(LoginViewModel.class);</span>
+<span class="source-line-no">044</span><span id="line-44">    LifecycleOwner owner = getViewLifecycleOwner();</span>
+<span class="source-line-no">045</span><span id="line-45">    viewModel</span>
+<span class="source-line-no">046</span><span id="line-46">        .getAccount()</span>
+<span class="source-line-no">047</span><span id="line-47">        .observe(owner, this::handleAccount);</span>
+<span class="source-line-no">048</span><span id="line-48">    viewModel</span>
+<span class="source-line-no">049</span><span id="line-49">        .getRefreshThrowable()</span>
+<span class="source-line-no">050</span><span id="line-50">        .observe(owner, this::handleThrowable);</span>
+<span class="source-line-no">051</span><span id="line-51">    viewModel.refresh();</span>
 <span class="source-line-no">052</span><span id="line-52">  }</span>
 <span class="source-line-no">053</span><span id="line-53"></span>
-<span class="source-line-no">054</span><span id="line-54">  private void handleThrowable(Throwable throwable) {</span>
-<span class="source-line-no">055</span><span id="line-55">    if (throwable != null) {</span>
-<span class="source-line-no">056</span><span id="line-56">      Navigation.findNavController(root)</span>
-<span class="source-line-no">057</span><span id="line-57">          .navigate(PreLoginFragmentDirections.navigateToLoginFragment());</span>
-<span class="source-line-no">058</span><span id="line-58">    }</span>
-<span class="source-line-no">059</span><span id="line-59">  }</span>
-<span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">}</span>
+<span class="source-line-no">054</span><span id="line-54">  /**</span>
+<span class="source-line-no">055</span><span id="line-55">   * Handles the user's Google Sign-In account. If the account is not null,</span>
+<span class="source-line-no">056</span><span id="line-56">   * it navigates the user to the HomeFragment.</span>
+<span class="source-line-no">057</span><span id="line-57">   *</span>
+<span class="source-line-no">058</span><span id="line-58">   * @param account the GoogleSignInAccount instance representing the user's</span>
+<span class="source-line-no">059</span><span id="line-59">   *                signed-in Google account, or null if no account is signed in</span>
+<span class="source-line-no">060</span><span id="line-60">   */</span>
+<span class="source-line-no">061</span><span id="line-61">  private void handleAccount(GoogleSignInAccount account) {</span>
+<span class="source-line-no">062</span><span id="line-62">    if (account != null) {</span>
+<span class="source-line-no">063</span><span id="line-63">      Navigation.findNavController(root)</span>
+<span class="source-line-no">064</span><span id="line-64">          .navigate(PreLoginFragmentDirections.navigateToHomeFragment());</span>
+<span class="source-line-no">065</span><span id="line-65">    }</span>
+<span class="source-line-no">066</span><span id="line-66">  }</span>
+<span class="source-line-no">067</span><span id="line-67"></span>
+<span class="source-line-no">068</span><span id="line-68">  /**</span>
+<span class="source-line-no">069</span><span id="line-69">   * Handles throwable errors that may occur during the account refresh process.</span>
+<span class="source-line-no">070</span><span id="line-70">   * If a throwable is not null, it navigates the user to the LoginFragment to</span>
+<span class="source-line-no">071</span><span id="line-71">   * handle the error scenario.</span>
+<span class="source-line-no">072</span><span id="line-72">   *</span>
+<span class="source-line-no">073</span><span id="line-73">   * @param throwable the Throwable instance representing the error encountered,</span>
+<span class="source-line-no">074</span><span id="line-74">   *                  or null if no error occurred</span>
+<span class="source-line-no">075</span><span id="line-75">   */</span>
+<span class="source-line-no">076</span><span id="line-76">  private void handleThrowable(Throwable throwable) {</span>
+<span class="source-line-no">077</span><span id="line-77">    if (throwable != null) {</span>
+<span class="source-line-no">078</span><span id="line-78">      Navigation.findNavController(root)</span>
+<span class="source-line-no">079</span><span id="line-79">          .navigate(PreLoginFragmentDirections.navigateToLoginFragment());</span>
+<span class="source-line-no">080</span><span id="line-80">    }</span>
+<span class="source-line-no">081</span><span id="line-81">  }</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">}</span>
 
 
 

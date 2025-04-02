@@ -90,8 +90,15 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@Singleton
-</span><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-23">GoogleSignInService</a></span>
+</span><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-31">GoogleSignInService</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">Provides authentication and session management for Google Sign-In functionality within the app.
+ This service offers methods for silent sign-in, explicit sign-in initiation and completion, and
+ signing out of Google accounts, leveraging the Google Sign-In API and RxJava for asynchronous
+ handling of operations.
+
+ This class relies on dependency injection to initialize a <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInClient.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInClient</code></a> instance
+ using the application context.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -108,16 +115,28 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a><wbr>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#completeSignIn(androidx.activity.result.ActivityResult)" class="member-name-link">completeSignIn</a><wbr>(androidx.activity.result.ActivityResult&nbsp;result)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Completes the Google Sign-In process by processing the result of a previously initiated
+ sign-in activity.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a><wbr>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Performs a silent sign-in using the <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInClient.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInClient</code></a> to attempt retrieval of the
+ last signed-in Google account asynchronously.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Completable.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Completable</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#signOut()" class="member-name-link">signOut</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Signs out the currently authenticated user by invoking the sign-out functionality
+ of the associated <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInClient.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInClient</code></a>.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startSignIn(androidx.activity.result.ActivityResultLauncher)" class="member-name-link">startSignIn</a><wbr>(androidx.activity.result.ActivityResultLauncher&lt;<a href="https://developer.android.com/reference/android/content/Intent.html" title="class or interface in android.content" class="external-link">Intent</a>&gt;&nbsp;launcher)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initiates the Google Sign-In process by launching the Google Sign-In Intent
+ provided by the <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInClient.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInClient</code></a>.</div>
+</div>
 </div>
 </div>
 </div>
@@ -138,25 +157,59 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="refresh()">
 <h3>refresh</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-38">refresh</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-61">refresh</a></span>()</div>
+<div class="block">Performs a silent sign-in using the <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInClient.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInClient</code></a> to attempt retrieval of the
+ last signed-in Google account asynchronously. If successful, the sign-in account is returned.
+ If the operation fails, an error notification is sent to the subscriber.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A <a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link"><code>Single</code></a> emitting a <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInAccount</code></a> object if the silent sign-in
+ succeeds, or an error if the operation fails.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="startSignIn(androidx.activity.result.ActivityResultLauncher)">
 <h3>startSignIn</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-47">startSignIn</a></span><wbr><span class="parameters">(androidx.activity.result.ActivityResultLauncher&lt;<a href="https://developer.android.com/reference/android/content/Intent.html" title="class or interface in android.content" class="external-link">Intent</a>&gt;&nbsp;launcher)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-77">startSignIn</a></span><wbr><span class="parameters">(androidx.activity.result.ActivityResultLauncher&lt;<a href="https://developer.android.com/reference/android/content/Intent.html" title="class or interface in android.content" class="external-link">Intent</a>&gt;&nbsp;launcher)</span></div>
+<div class="block">Initiates the Google Sign-In process by launching the Google Sign-In Intent
+ provided by the <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInClient.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInClient</code></a>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>launcher</code> - An <code>ActivityResultLauncher</code> that is used to start an activity
+                 to handle the Google Sign-In process and receive the result.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="completeSignIn(androidx.activity.result.ActivityResult)">
 <h3>completeSignIn</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-51">completeSignIn</a></span><wbr><span class="parameters">(androidx.activity.result.ActivityResult&nbsp;result)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Single</a>&lt;<a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link">GoogleSignInAccount</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-91">completeSignIn</a></span><wbr><span class="parameters">(androidx.activity.result.ActivityResult&nbsp;result)</span></div>
+<div class="block">Completes the Google Sign-In process by processing the result of a previously initiated
+ sign-in activity. If the sign-in is successful, the account information is emitted. In case
+ of an error, the error is propagated to the subscriber.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>result</code> - The <code>ActivityResult</code> containing the result data of the sign-in activity.
+               This data includes information necessary for obtaining the <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInAccount</code></a>.</dd>
+<dt>Returns:</dt>
+<dd>A <a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Single.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link"><code>Single</code></a> emitting a <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInAccount.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInAccount</code></a> object if the sign-in
+         is successful, or an error if the process fails.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="signOut()">
 <h3>signOut</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Completable.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Completable</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-64">signOut</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Completable.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link">Completable</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/GoogleSignInService.html#line-112">signOut</a></span>()</div>
+<div class="block">Signs out the currently authenticated user by invoking the sign-out functionality
+ of the associated <a href="https://developer.android.com/reference/com/google/android/gms/auth/api/signin/GoogleSignInClient.html" title="class or interface in com.google.android.gms.auth.api.signin" class="external-link"><code>GoogleSignInClient</code></a>. The operation is performed asynchronously,
+ emitting either a completion signal or an error notification to the subscriber.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>A <a href="https://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Completable.html" title="class or interface in io.reactivex.rxjava3.core" class="external-link"><code>Completable</code></a> that completes if the sign-out operation succeeds, or
+ emits an error if the operation fails.</dd>
+</dl>
 </section>
 </li>
 </ul>

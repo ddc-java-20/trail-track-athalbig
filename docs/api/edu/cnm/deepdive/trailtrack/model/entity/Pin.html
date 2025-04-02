@@ -89,8 +89,29 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-16">Pin</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-39">Pin</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">The Pin class represents a pinned item within the application's database,
+ mapped to the "pin" table in SQLite using Room. Each pin is uniquely identified
+ by an auto-generated ID and is associated with a user and optionally with a track.
+ Pins offer functionality for storing textual content, media, and geographical locations.
+
+ Features include:
+ - Unique combination of a track ID and title.
+ - Associations to <a href="User.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>User</code></a> and <a href="Track.html" title="class in edu.cnm.deepdive.trailtrack.model.entity"><code>Track</code></a>, ensuring relational integrity.
+ - Support for additional data like title, textual content, image URI, creation and modification timestamps, and location details.
+ - Automatic cascading deletion of a pin when the associated user is deleted.
+ - Nullification of the track ID when the associated track is deleted.
+
+ This class includes the following fields:
+ - A unique identifier (ID).
+ - A title for the pin.
+ - The ID of the associated track, if any.
+ - The ID of the associated user.
+ - The textual content associated with the pin.
+ - An optional URI pointing to a related image.
+ - Timestamps for when the pin was created and last modified.
+ - An embedded location containing latitude and longitude coordinates.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -192,7 +213,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>Pin</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-26">Pin</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-51">Pin</a></span>()</div>
 </section>
 </li>
 </ul>
@@ -206,26 +227,26 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getId()">
 <h3>getId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-61">getId</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-131">getId</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setId(long)">
 <h3>setId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-65">setId</a></span><wbr><span class="parameters">(long&nbsp;id)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-135">setId</a></span><wbr><span class="parameters">(long&nbsp;id)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getTitle()">
 <h3>getTitle</h3>
 <div class="member-signature"><span class="annotations"><a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-69">getTitle</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-139">getTitle</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setTitle(java.lang.String)">
 <h3>setTitle</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-74">setTitle</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-144">setTitle</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title)</span></div>
 </section>
 </li>
@@ -233,39 +254,39 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getContent()">
 <h3>getContent</h3>
 <div class="member-signature"><span class="annotations"><a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-78">getContent</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-148">getContent</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setContent(java.lang.String)">
 <h3>setContent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-83">setContent</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-153">setContent</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;content)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getImage()">
 <h3>getImage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-87">getImage</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-157">getImage</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setImage(android.net.Uri)">
 <h3>setImage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-91">setImage</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&nbsp;image)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-161">setImage</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/android/net/Uri.html" title="class or interface in android.net" class="external-link">Uri</a>&nbsp;image)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getCreatedOn()">
 <h3>getCreatedOn</h3>
 <div class="member-signature"><span class="annotations"><a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-95">getCreatedOn</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-165">getCreatedOn</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setCreatedOn(java.time.Instant)">
 <h3>setCreatedOn</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-100">setCreatedOn</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-170">setCreatedOn</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a>&nbsp;createdOn)</span></div>
 </section>
 </li>
@@ -273,50 +294,50 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getModifiedOn()">
 <h3>getModifiedOn</h3>
 <div class="member-signature"><span class="annotations"><a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-104">getModifiedOn</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-174">getModifiedOn</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setModifiedOn(java.time.Instant)">
 <h3>setModifiedOn</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-109">setModifiedOn</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-179">setModifiedOn</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" title="class or interface in java.time" class="external-link">Instant</a>&nbsp;modifiedOn)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getLocation()">
 <h3>getLocation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../pojo/Location.html" title="class in edu.cnm.deepdive.trailtrack.model.pojo">Location</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-114">getLocation</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../pojo/Location.html" title="class in edu.cnm.deepdive.trailtrack.model.pojo">Location</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-184">getLocation</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setLocation(edu.cnm.deepdive.trailtrack.model.pojo.Location)">
 <h3>setLocation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-118">setLocation</a></span><wbr><span class="parameters">(<a href="../pojo/Location.html" title="class in edu.cnm.deepdive.trailtrack.model.pojo">Location</a>&nbsp;location)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-188">setLocation</a></span><wbr><span class="parameters">(<a href="../pojo/Location.html" title="class in edu.cnm.deepdive.trailtrack.model.pojo">Location</a>&nbsp;location)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getTrackId()">
 <h3>getTrackId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-122">getTrackId</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-192">getTrackId</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setTrackId(java.lang.Long)">
 <h3>setTrackId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-126">setTrackId</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;trackId)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-196">setTrackId</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;trackId)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="getUserId()">
 <h3>getUserId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-130">getUserId</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-200">getUserId</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="setUserId(long)">
 <h3>setUserId</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-134">setUserId</a></span><wbr><span class="parameters">(long&nbsp;userId)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/edu/cnm/deepdive/trailtrack/model/entity/Pin.html#line-204">setUserId</a></span><wbr><span class="parameters">(long&nbsp;userId)</span></div>
 </section>
 </li>
 </ul>

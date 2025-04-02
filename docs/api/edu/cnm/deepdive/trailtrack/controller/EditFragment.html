@@ -101,8 +101,20 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="https://developer.android.com/reference/android/content/ComponentCallbacks.html" title="class or interface in android.content" class="external-link">ComponentCallbacks</a></code>, <code><a href="https://developer.android.com/reference/android/content/DialogInterface.OnCancelListener.html" title="class or interface in android.content" class="external-link">DialogInterface.OnCancelListener</a></code>, <code><a href="https://developer.android.com/reference/android/content/DialogInterface.OnDismissListener.html" title="class or interface in android.content" class="external-link">DialogInterface.OnDismissListener</a></code>, <code><a href="https://developer.android.com/reference/android/view/View.OnCreateContextMenuListener.html" title="class or interface in android.view" class="external-link">View.OnCreateContextMenuListener</a></code>, <code>androidx.activity.result.ActivityResultCaller</code>, <code><a href="https://developer.android.com/reference/androidx/lifecycle/HasDefaultViewModelProviderFactory.html" title="class or interface in androidx.lifecycle" class="external-link">HasDefaultViewModelProviderFactory</a></code>, <code><a href="https://developer.android.com/reference/androidx/lifecycle/LifecycleOwner.html" title="class or interface in androidx.lifecycle" class="external-link">LifecycleOwner</a></code>, <code><a href="https://developer.android.com/reference/androidx/lifecycle/ViewModelStoreOwner.html" title="class or interface in androidx.lifecycle" class="external-link">ViewModelStoreOwner</a></code>, <code><a href="https://developer.android.com/reference/androidx/savedstate/SavedStateRegistryOwner.html" title="class or interface in androidx.savedstate" class="external-link">SavedStateRegistryOwner</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-32">EditFragment</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-49">EditFragment</a></span>
 <span class="extends-implements">extends com.google.android.material.bottomsheet.BottomSheetDialogFragment</span></div>
+<div class="block">EditFragment is a BottomSheetDialogFragment that provides editing functionality for a
+ Pin object. This class manages the interaction between the UI, ViewModels, and system
+ resources to allow users to edit and save pin attributes.
+
+ It includes the following responsibilities:
+ - Displaying the details of a Pin object, such as title, content, and image.
+ - Allowing the user to update the Pin's title, content, image, and location.
+ - Handling camera permissions and initiating image capture.
+ - Observing and interacting with LiveData from various ViewModels.
+
+ This fragment utilizes data binding to bind UI elements to corresponding data processes
+ and ViewModels for core business logic.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -201,7 +213,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>EditFragment</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-33">EditFragment</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-50">EditFragment</a></span>()</div>
 </section>
 </li>
 </ul>
@@ -215,7 +227,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="onCreate(android.os.Bundle)">
 <h3>onCreate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-46">onCreate</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/Nullable.html" title="class or interface in androidx.annotation" class="external-link">@Nullable</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-65">onCreate</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/Nullable.html" title="class or interface in androidx.annotation" class="external-link">@Nullable</a>
  <a href="https://developer.android.com/reference/android/os/Bundle.html" title="class or interface in android.os" class="external-link">Bundle</a>&nbsp;savedInstanceState)</span></div>
 <dl class="notes">
 <dt>Overrides:</dt>
@@ -227,7 +239,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="onCreateDialog(android.os.Bundle)">
 <h3>onCreateDialog</h3>
 <div class="member-signature"><span class="annotations"><a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/android/app/Dialog.html" title="class or interface in android.app" class="external-link">Dialog</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-53">onCreateDialog</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/Nullable.html" title="class or interface in androidx.annotation" class="external-link">@Nullable</a>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/android/app/Dialog.html" title="class or interface in android.app" class="external-link">Dialog</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-72">onCreateDialog</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/Nullable.html" title="class or interface in androidx.annotation" class="external-link">@Nullable</a>
  <a href="https://developer.android.com/reference/android/os/Bundle.html" title="class or interface in android.os" class="external-link">Bundle</a>&nbsp;savedInstanceState)</span></div>
 <dl class="notes">
 <dt>Overrides:</dt>
@@ -239,7 +251,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle)">
 <h3>onCreateView</h3>
 <div class="member-signature"><span class="annotations"><a href="https://developer.android.com/reference/androidx/annotation/Nullable.html" title="class or interface in androidx.annotation" class="external-link">@Nullable</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/android/view/View.html" title="class or interface in android.view" class="external-link">View</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-60">onCreateView</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://developer.android.com/reference/android/view/View.html" title="class or interface in android.view" class="external-link">View</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-79">onCreateView</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://developer.android.com/reference/android/view/LayoutInflater.html" title="class or interface in android.view" class="external-link">LayoutInflater</a>&nbsp;inflater,
  <a href="https://developer.android.com/reference/androidx/annotation/Nullable.html" title="class or interface in androidx.annotation" class="external-link">@Nullable</a>
  <a href="https://developer.android.com/reference/android/view/ViewGroup.html" title="class or interface in android.view" class="external-link">ViewGroup</a>&nbsp;container,
@@ -254,7 +266,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="onViewCreated(android.view.View,android.os.Bundle)">
 <h3>onViewCreated</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-73">onViewCreated</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-92">onViewCreated</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://developer.android.com/reference/android/view/View.html" title="class or interface in android.view" class="external-link">View</a>&nbsp;view,
  <a href="https://developer.android.com/reference/androidx/annotation/Nullable.html" title="class or interface in androidx.annotation" class="external-link">@Nullable</a>
  <a href="https://developer.android.com/reference/android/os/Bundle.html" title="class or interface in android.os" class="external-link">Bundle</a>&nbsp;savedInstanceState)</span></div>
@@ -267,7 +279,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="onDestroyView()">
 <h3>onDestroyView</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-107">onDestroyView</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/controller/EditFragment.html#line-137">onDestroyView</a></span>()</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://developer.android.com/reference/androidx/fragment/app/DialogFragment.html#onDestroyView--" title="class or interface in androidx.fragment.app" class="external-link">onDestroyView</a></code>&nbsp;in class&nbsp;<code><a href="https://developer.android.com/reference/androidx/fragment/app/DialogFragment.html" title="class or interface in androidx.fragment.app" class="external-link">DialogFragment</a></code></dd>

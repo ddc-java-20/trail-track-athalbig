@@ -27,48 +27,76 @@
 <span class="source-line-no">014</span><span id="line-14">import edu.cnm.deepdive.trailtrack.service.PinDatabase.Converters;</span>
 <span class="source-line-no">015</span><span id="line-15">import java.time.Instant;</span>
 <span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">@Database(entities = {Pin.class, Track.class, User.class}, version = PinDatabase.VERSION)</span>
-<span class="source-line-no">018</span><span id="line-18">@TypeConverters(Converters.class)</span>
-<span class="source-line-no">019</span><span id="line-19">public abstract class PinDatabase extends RoomDatabase {</span>
-<span class="source-line-no">020</span><span id="line-20"></span>
-<span class="source-line-no">021</span><span id="line-21">  static final int VERSION = 1;</span>
-<span class="source-line-no">022</span><span id="line-22">  private static final String DATABASE_NAME = "pins";</span>
-<span class="source-line-no">023</span><span id="line-23"></span>
-<span class="source-line-no">024</span><span id="line-24">  public static String getDatabaseName() {</span>
-<span class="source-line-no">025</span><span id="line-25">    return DATABASE_NAME;</span>
-<span class="source-line-no">026</span><span id="line-26">  }</span>
-<span class="source-line-no">027</span><span id="line-27"></span>
-<span class="source-line-no">028</span><span id="line-28">  public abstract PinDao getPinDao();</span>
-<span class="source-line-no">029</span><span id="line-29"></span>
-<span class="source-line-no">030</span><span id="line-30">  public abstract UserDao getUserDao();</span>
-<span class="source-line-no">031</span><span id="line-31"></span>
-<span class="source-line-no">032</span><span id="line-32">  public abstract TrackDao getTrackDao();</span>
-<span class="source-line-no">033</span><span id="line-33"></span>
-<span class="source-line-no">034</span><span id="line-34">  public static class Converters {</span>
-<span class="source-line-no">035</span><span id="line-35"></span>
-<span class="source-line-no">036</span><span id="line-36">    @TypeConverter</span>
-<span class="source-line-no">037</span><span id="line-37">    public static Long fromInstant(Instant value) {</span>
-<span class="source-line-no">038</span><span id="line-38">      return (value != null) ? value.toEpochMilli() : null;</span>
-<span class="source-line-no">039</span><span id="line-39">    }</span>
-<span class="source-line-no">040</span><span id="line-40"></span>
-<span class="source-line-no">041</span><span id="line-41">    @TypeConverter</span>
-<span class="source-line-no">042</span><span id="line-42">    public static Instant fromLong(Long value) {</span>
-<span class="source-line-no">043</span><span id="line-43">      return (value != null) ? Instant.ofEpochMilli(value) : null;</span>
-<span class="source-line-no">044</span><span id="line-44">    }</span>
+<span class="source-line-no">017</span><span id="line-17">/**</span>
+<span class="source-line-no">018</span><span id="line-18"> * PinDatabase is an abstract representation of the Room database implementation for the application's</span>
+<span class="source-line-no">019</span><span id="line-19"> * underlying storage. It provides access to Data Access Objects (DAOs) for database operations on</span>
+<span class="source-line-no">020</span><span id="line-20"> * entities such as {@link Pin}, {@link Track}, and {@link User}.</span>
+<span class="source-line-no">021</span><span id="line-21"> *</span>
+<span class="source-line-no">022</span><span id="line-22"> * Features:</span>
+<span class="source-line-no">023</span><span id="line-23"> * - Manages database creation and version management using Room.</span>
+<span class="source-line-no">024</span><span id="line-24"> * - Uses entity classes to structure and map the database schema.</span>
+<span class="source-line-no">025</span><span id="line-25"> * - Incorporates type converters for type transformations between database values and application values.</span>
+<span class="source-line-no">026</span><span id="line-26"> *</span>
+<span class="source-line-no">027</span><span id="line-27"> * The database is configured with the following properties:</span>
+<span class="source-line-no">028</span><span id="line-28"> * - The database schema includes {@link Pin}, {@link Track}, and {@link User} entities.</span>
+<span class="source-line-no">029</span><span id="line-29"> * - The version is managed by the {@code VERSION} constant.</span>
+<span class="source-line-no">030</span><span id="line-30"> * - Type converters are provided via the {@link Converters} class to handle custom data types such as</span>
+<span class="source-line-no">031</span><span id="line-31"> *   {@link Instant} and {@link Uri}.</span>
+<span class="source-line-no">032</span><span id="line-32"> */</span>
+<span class="source-line-no">033</span><span id="line-33">@Database(entities = {Pin.class, Track.class, User.class}, version = PinDatabase.VERSION)</span>
+<span class="source-line-no">034</span><span id="line-34">@TypeConverters(Converters.class)</span>
+<span class="source-line-no">035</span><span id="line-35">public abstract class PinDatabase extends RoomDatabase {</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">  static final int VERSION = 1;</span>
+<span class="source-line-no">038</span><span id="line-38">  private static final String DATABASE_NAME = "pins";</span>
+<span class="source-line-no">039</span><span id="line-39"></span>
+<span class="source-line-no">040</span><span id="line-40">  public static String getDatabaseName() {</span>
+<span class="source-line-no">041</span><span id="line-41">    return DATABASE_NAME;</span>
+<span class="source-line-no">042</span><span id="line-42">  }</span>
+<span class="source-line-no">043</span><span id="line-43"></span>
+<span class="source-line-no">044</span><span id="line-44">  public abstract PinDao getPinDao();</span>
 <span class="source-line-no">045</span><span id="line-45"></span>
-<span class="source-line-no">046</span><span id="line-46">    @TypeConverter</span>
-<span class="source-line-no">047</span><span id="line-47">    public static String fromUri(Uri value) {</span>
-<span class="source-line-no">048</span><span id="line-48">      return (value != null) ? value.toString() : null;</span>
-<span class="source-line-no">049</span><span id="line-49">    }</span>
-<span class="source-line-no">050</span><span id="line-50"></span>
-<span class="source-line-no">051</span><span id="line-51">    @TypeConverter</span>
-<span class="source-line-no">052</span><span id="line-52">    public static Uri fromString(String value) {</span>
-<span class="source-line-no">053</span><span id="line-53">      return (value != null) ? Uri.parse(value) : null;</span>
-<span class="source-line-no">054</span><span id="line-54">    }</span>
-<span class="source-line-no">055</span><span id="line-55">  }</span>
-<span class="source-line-no">056</span><span id="line-56"></span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">}</span>
+<span class="source-line-no">046</span><span id="line-46">  public abstract UserDao getUserDao();</span>
+<span class="source-line-no">047</span><span id="line-47"></span>
+<span class="source-line-no">048</span><span id="line-48">  public abstract TrackDao getTrackDao();</span>
+<span class="source-line-no">049</span><span id="line-49"></span>
+<span class="source-line-no">050</span><span id="line-50">  /**</span>
+<span class="source-line-no">051</span><span id="line-51">   * Provides type conversion methods for Room database to handle custom data types.</span>
+<span class="source-line-no">052</span><span id="line-52">   *</span>
+<span class="source-line-no">053</span><span id="line-53">   * This utility class is referenced via the {@code @TypeConverters(Converters.class)} annotation in</span>
+<span class="source-line-no">054</span><span id="line-54">   * classes such as {@code PinDatabase}. It is responsible for converting between custom types and</span>
+<span class="source-line-no">055</span><span id="line-55">   * primitive types that the database can store, ensuring seamless integration between the database</span>
+<span class="source-line-no">056</span><span id="line-56">   * schema and the application's object model.</span>
+<span class="source-line-no">057</span><span id="line-57">   *</span>
+<span class="source-line-no">058</span><span id="line-58">   * Methods in this class include:</span>
+<span class="source-line-no">059</span><span id="line-59">   * - Conversion of {@link Instant} objects to {@link Long} values, representing milliseconds</span>
+<span class="source-line-no">060</span><span id="line-60">   *   since the Unix epoch, and vice versa.</span>
+<span class="source-line-no">061</span><span id="line-61">   * - Conversion of {@link Uri} objects to their {@link String} representations usable by the database,</span>
+<span class="source-line-no">062</span><span id="line-62">   *   and vice versa.</span>
+<span class="source-line-no">063</span><span id="line-63">   */</span>
+<span class="source-line-no">064</span><span id="line-64">  public static class Converters {</span>
+<span class="source-line-no">065</span><span id="line-65"></span>
+<span class="source-line-no">066</span><span id="line-66">    @TypeConverter</span>
+<span class="source-line-no">067</span><span id="line-67">    public static Long fromInstant(Instant value) {</span>
+<span class="source-line-no">068</span><span id="line-68">      return (value != null) ? value.toEpochMilli() : null;</span>
+<span class="source-line-no">069</span><span id="line-69">    }</span>
+<span class="source-line-no">070</span><span id="line-70"></span>
+<span class="source-line-no">071</span><span id="line-71">    @TypeConverter</span>
+<span class="source-line-no">072</span><span id="line-72">    public static Instant fromLong(Long value) {</span>
+<span class="source-line-no">073</span><span id="line-73">      return (value != null) ? Instant.ofEpochMilli(value) : null;</span>
+<span class="source-line-no">074</span><span id="line-74">    }</span>
+<span class="source-line-no">075</span><span id="line-75"></span>
+<span class="source-line-no">076</span><span id="line-76">    @TypeConverter</span>
+<span class="source-line-no">077</span><span id="line-77">    public static String fromUri(Uri value) {</span>
+<span class="source-line-no">078</span><span id="line-78">      return (value != null) ? value.toString() : null;</span>
+<span class="source-line-no">079</span><span id="line-79">    }</span>
+<span class="source-line-no">080</span><span id="line-80"></span>
+<span class="source-line-no">081</span><span id="line-81">    @TypeConverter</span>
+<span class="source-line-no">082</span><span id="line-82">    public static Uri fromString(String value) {</span>
+<span class="source-line-no">083</span><span id="line-83">      return (value != null) ? Uri.parse(value) : null;</span>
+<span class="source-line-no">084</span><span id="line-84">    }</span>
+<span class="source-line-no">085</span><span id="line-85">  }</span>
+<span class="source-line-no">086</span><span id="line-86">}</span>
 
 
 

@@ -26,73 +26,77 @@
 <span class="source-line-no">013</span><span id="line-13">import java.util.Collection;</span>
 <span class="source-line-no">014</span><span id="line-14">import java.util.List;</span>
 <span class="source-line-no">015</span><span id="line-15"></span>
-<span class="source-line-no">016</span><span id="line-16">@Dao</span>
-<span class="source-line-no">017</span><span id="line-17">public interface PinDao {</span>
-<span class="source-line-no">018</span><span id="line-18"></span>
-<span class="source-line-no">019</span><span id="line-19">  @Insert</span>
-<span class="source-line-no">020</span><span id="line-20">  Single&lt;Long&gt; insert(Pin pin);</span>
-<span class="source-line-no">021</span><span id="line-21"></span>
-<span class="source-line-no">022</span><span id="line-22">  default Single&lt;Pin&gt; insertAndReturn(Pin pin) {</span>
-<span class="source-line-no">023</span><span id="line-23">    return insert(pin)</span>
-<span class="source-line-no">024</span><span id="line-24">    .map((id) -&gt; {</span>
-<span class="source-line-no">025</span><span id="line-25">      pin.setId(id);</span>
-<span class="source-line-no">026</span><span id="line-26">      return pin;</span>
-<span class="source-line-no">027</span><span id="line-27">    });</span>
-<span class="source-line-no">028</span><span id="line-28">  }</span>
-<span class="source-line-no">029</span><span id="line-29"></span>
-<span class="source-line-no">030</span><span id="line-30">  @Insert</span>
-<span class="source-line-no">031</span><span id="line-31">  Single&lt;List&lt;Long&gt;&gt; insert(Collection&lt;Pin&gt; pins);</span>
-<span class="source-line-no">032</span><span id="line-32"></span>
-<span class="source-line-no">033</span><span id="line-33">  @Insert</span>
-<span class="source-line-no">034</span><span id="line-34">  Single&lt;List&lt;Long&gt;&gt; insert(Pin... pins);</span>
-<span class="source-line-no">035</span><span id="line-35"></span>
-<span class="source-line-no">036</span><span id="line-36">  @Update</span>
-<span class="source-line-no">037</span><span id="line-37">  Completable update(Pin pin);</span>
-<span class="source-line-no">038</span><span id="line-38"></span>
-<span class="source-line-no">039</span><span id="line-39">  @Update</span>
-<span class="source-line-no">040</span><span id="line-40">  Completable update(Collection&lt;Pin&gt; pins);</span>
-<span class="source-line-no">041</span><span id="line-41"></span>
-<span class="source-line-no">042</span><span id="line-42">  @Update</span>
-<span class="source-line-no">043</span><span id="line-43">  Completable update(Pin... pin);</span>
-<span class="source-line-no">044</span><span id="line-44"></span>
-<span class="source-line-no">045</span><span id="line-45">  @Delete</span>
-<span class="source-line-no">046</span><span id="line-46">  Completable delete(Pin pin);</span>
-<span class="source-line-no">047</span><span id="line-47"></span>
-<span class="source-line-no">048</span><span id="line-48">  @Delete</span>
-<span class="source-line-no">049</span><span id="line-49">  Completable delete(Collection&lt;Pin&gt; pins);</span>
-<span class="source-line-no">050</span><span id="line-50"></span>
-<span class="source-line-no">051</span><span id="line-51">  @Delete</span>
-<span class="source-line-no">052</span><span id="line-52">  Completable delete(Pin... pin);</span>
-<span class="source-line-no">053</span><span id="line-53"></span>
-<span class="source-line-no">054</span><span id="line-54">  @Query("SELECT * FROM pin WHERE pin_id = :id")</span>
-<span class="source-line-no">055</span><span id="line-55">  LiveData&lt;Pin&gt; selectById(long id);</span>
-<span class="source-line-no">056</span><span id="line-56"></span>
-<span class="source-line-no">057</span><span id="line-57">  @Query("SELECT * FROM pin WHERE user_id = :userId ORDER BY created_on ASC")</span>
-<span class="source-line-no">058</span><span id="line-58">  LiveData&lt;List&lt;Pin&gt;&gt; selectByCreatedOnAsc(long userId);</span>
-<span class="source-line-no">059</span><span id="line-59"></span>
-<span class="source-line-no">060</span><span id="line-60">  @Query("SELECT * FROM pin ORDER BY created_on DESC")</span>
-<span class="source-line-no">061</span><span id="line-61">  LiveData&lt;List&lt;Pin&gt;&gt; selectByCreatedOnDesc();</span>
-<span class="source-line-no">062</span><span id="line-62"></span>
-<span class="source-line-no">063</span><span id="line-63">  @Query("SELECT * FROM pin WHERE track_id = :trackId ORDER BY created_on ASC")</span>
-<span class="source-line-no">064</span><span id="line-64">  LiveData&lt;List&lt;Pin&gt;&gt; selectByTrackId(long trackId);</span>
-<span class="source-line-no">065</span><span id="line-65"></span>
-<span class="source-line-no">066</span><span id="line-66">  @Query("SELECT * FROM pin WHERE created_on &gt;= :rangeStart AND created_on &lt; :rangeEnd  ORDER BY created_on ASC")</span>
-<span class="source-line-no">067</span><span id="line-67">  LiveData&lt;List&lt;Pin&gt;&gt; selectWhereCreatedOnInRangeByCreatedOnAsc(Instant rangeStart, Instant rangeEnd);</span>
-<span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">  @Query("SELECT * FROM pin ORDER BY title ASC")</span>
-<span class="source-line-no">070</span><span id="line-70">  LiveData&lt;List&lt;Pin&gt;&gt; selectByTitleAsc();</span>
-<span class="source-line-no">071</span><span id="line-71"></span>
-<span class="source-line-no">072</span><span id="line-72">  @Query("SELECT * FROM pin ORDER BY title DESC")</span>
-<span class="source-line-no">073</span><span id="line-73">  LiveData&lt;List&lt;Pin&gt;&gt; selectByTitleDesc();</span>
-<span class="source-line-no">074</span><span id="line-74"></span>
-<span class="source-line-no">075</span><span id="line-75">  @Query("SELECT * FROM pin WHERE title LIKE :filter ORDER BY title ASC")</span>
-<span class="source-line-no">076</span><span id="line-76">  LiveData&lt;List&lt;Pin&gt;&gt; selectWhereTitleLikeByTitleAsc(String filter);</span>
-<span class="source-line-no">077</span><span id="line-77"></span>
-<span class="source-line-no">078</span><span id="line-78">  @Query("SELECT * FROM pin WHERE user_id = :userId ORDER BY created_on ASC")</span>
-<span class="source-line-no">079</span><span id="line-79">  LiveData&lt;List&lt;Pin&gt;&gt; selectByUserId(long userId);</span>
-<span class="source-line-no">080</span><span id="line-80"></span>
+<span class="source-line-no">016</span><span id="line-16">/**</span>
+<span class="source-line-no">017</span><span id="line-17"> * Data access object for managing operations on the Pin entity in the database.</span>
+<span class="source-line-no">018</span><span id="line-18"> * Provides methods for inserting, updating, deleting, and querying Pin records.</span>
+<span class="source-line-no">019</span><span id="line-19"> */</span>
+<span class="source-line-no">020</span><span id="line-20">@Dao</span>
+<span class="source-line-no">021</span><span id="line-21">public interface PinDao {</span>
+<span class="source-line-no">022</span><span id="line-22"></span>
+<span class="source-line-no">023</span><span id="line-23">  @Insert</span>
+<span class="source-line-no">024</span><span id="line-24">  Single&lt;Long&gt; insert(Pin pin);</span>
+<span class="source-line-no">025</span><span id="line-25"></span>
+<span class="source-line-no">026</span><span id="line-26">  default Single&lt;Pin&gt; insertAndReturn(Pin pin) {</span>
+<span class="source-line-no">027</span><span id="line-27">    return insert(pin)</span>
+<span class="source-line-no">028</span><span id="line-28">    .map((id) -&gt; {</span>
+<span class="source-line-no">029</span><span id="line-29">      pin.setId(id);</span>
+<span class="source-line-no">030</span><span id="line-30">      return pin;</span>
+<span class="source-line-no">031</span><span id="line-31">    });</span>
+<span class="source-line-no">032</span><span id="line-32">  }</span>
+<span class="source-line-no">033</span><span id="line-33"></span>
+<span class="source-line-no">034</span><span id="line-34">  @Insert</span>
+<span class="source-line-no">035</span><span id="line-35">  Single&lt;List&lt;Long&gt;&gt; insert(Collection&lt;Pin&gt; pins);</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">  @Insert</span>
+<span class="source-line-no">038</span><span id="line-38">  Single&lt;List&lt;Long&gt;&gt; insert(Pin... pins);</span>
+<span class="source-line-no">039</span><span id="line-39"></span>
+<span class="source-line-no">040</span><span id="line-40">  @Update</span>
+<span class="source-line-no">041</span><span id="line-41">  Completable update(Pin pin);</span>
+<span class="source-line-no">042</span><span id="line-42"></span>
+<span class="source-line-no">043</span><span id="line-43">  @Update</span>
+<span class="source-line-no">044</span><span id="line-44">  Completable update(Collection&lt;Pin&gt; pins);</span>
+<span class="source-line-no">045</span><span id="line-45"></span>
+<span class="source-line-no">046</span><span id="line-46">  @Update</span>
+<span class="source-line-no">047</span><span id="line-47">  Completable update(Pin... pin);</span>
+<span class="source-line-no">048</span><span id="line-48"></span>
+<span class="source-line-no">049</span><span id="line-49">  @Delete</span>
+<span class="source-line-no">050</span><span id="line-50">  Completable delete(Pin pin);</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">  @Delete</span>
+<span class="source-line-no">053</span><span id="line-53">  Completable delete(Collection&lt;Pin&gt; pins);</span>
+<span class="source-line-no">054</span><span id="line-54"></span>
+<span class="source-line-no">055</span><span id="line-55">  @Delete</span>
+<span class="source-line-no">056</span><span id="line-56">  Completable delete(Pin... pin);</span>
+<span class="source-line-no">057</span><span id="line-57"></span>
+<span class="source-line-no">058</span><span id="line-58">  @Query("SELECT * FROM pin WHERE pin_id = :id")</span>
+<span class="source-line-no">059</span><span id="line-59">  LiveData&lt;Pin&gt; selectById(long id);</span>
+<span class="source-line-no">060</span><span id="line-60"></span>
+<span class="source-line-no">061</span><span id="line-61">  @Query("SELECT * FROM pin WHERE user_id = :userId ORDER BY created_on ASC")</span>
+<span class="source-line-no">062</span><span id="line-62">  LiveData&lt;List&lt;Pin&gt;&gt; selectByCreatedOnAsc(long userId);</span>
+<span class="source-line-no">063</span><span id="line-63"></span>
+<span class="source-line-no">064</span><span id="line-64">  @Query("SELECT * FROM pin ORDER BY created_on DESC")</span>
+<span class="source-line-no">065</span><span id="line-65">  LiveData&lt;List&lt;Pin&gt;&gt; selectByCreatedOnDesc();</span>
+<span class="source-line-no">066</span><span id="line-66"></span>
+<span class="source-line-no">067</span><span id="line-67">  @Query("SELECT * FROM pin WHERE track_id = :trackId ORDER BY created_on ASC")</span>
+<span class="source-line-no">068</span><span id="line-68">  LiveData&lt;List&lt;Pin&gt;&gt; selectByTrackId(long trackId);</span>
+<span class="source-line-no">069</span><span id="line-69"></span>
+<span class="source-line-no">070</span><span id="line-70">  @Query("SELECT * FROM pin WHERE created_on &gt;= :rangeStart AND created_on &lt; :rangeEnd  ORDER BY created_on ASC")</span>
+<span class="source-line-no">071</span><span id="line-71">  LiveData&lt;List&lt;Pin&gt;&gt; selectWhereCreatedOnInRangeByCreatedOnAsc(Instant rangeStart, Instant rangeEnd);</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">  @Query("SELECT * FROM pin ORDER BY title ASC")</span>
+<span class="source-line-no">074</span><span id="line-74">  LiveData&lt;List&lt;Pin&gt;&gt; selectByTitleAsc();</span>
+<span class="source-line-no">075</span><span id="line-75"></span>
+<span class="source-line-no">076</span><span id="line-76">  @Query("SELECT * FROM pin ORDER BY title DESC")</span>
+<span class="source-line-no">077</span><span id="line-77">  LiveData&lt;List&lt;Pin&gt;&gt; selectByTitleDesc();</span>
+<span class="source-line-no">078</span><span id="line-78"></span>
+<span class="source-line-no">079</span><span id="line-79">  @Query("SELECT * FROM pin WHERE title LIKE :filter ORDER BY title ASC")</span>
+<span class="source-line-no">080</span><span id="line-80">  LiveData&lt;List&lt;Pin&gt;&gt; selectWhereTitleLikeByTitleAsc(String filter);</span>
 <span class="source-line-no">081</span><span id="line-81"></span>
-<span class="source-line-no">082</span><span id="line-82">}</span>
+<span class="source-line-no">082</span><span id="line-82">  @Query("SELECT * FROM pin WHERE user_id = :userId ORDER BY created_on ASC")</span>
+<span class="source-line-no">083</span><span id="line-83">  LiveData&lt;List&lt;Pin&gt;&gt; selectByUserId(long userId);</span>
+<span class="source-line-no">084</span><span id="line-84"></span>
+<span class="source-line-no">085</span><span id="line-85"></span>
+<span class="source-line-no">086</span><span id="line-86">}</span>
 
 
 

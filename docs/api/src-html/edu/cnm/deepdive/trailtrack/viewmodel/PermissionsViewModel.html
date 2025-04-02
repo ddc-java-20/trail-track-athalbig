@@ -22,28 +22,76 @@
 <span class="source-line-no">009</span><span id="line-9">import java.util.Map;</span>
 <span class="source-line-no">010</span><span id="line-10">import javax.inject.Inject;</span>
 <span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">@HiltViewModel</span>
-<span class="source-line-no">013</span><span id="line-13">public class PermissionsViewModel extends ViewModel {</span>
-<span class="source-line-no">014</span><span id="line-14"></span>
-<span class="source-line-no">015</span><span id="line-15">  private final MutableLiveData&lt;Map&lt;String, Boolean&gt;&gt; permissionsStatus;</span>
-<span class="source-line-no">016</span><span id="line-16"></span>
-<span class="source-line-no">017</span><span id="line-17">  @Inject</span>
-<span class="source-line-no">018</span><span id="line-18">  public PermissionsViewModel() {</span>
-<span class="source-line-no">019</span><span id="line-19">    permissionsStatus = new MutableLiveData&lt;&gt;(new HashMap&lt;&gt;());</span>
-<span class="source-line-no">020</span><span id="line-20">  }</span>
-<span class="source-line-no">021</span><span id="line-21"></span>
-<span class="source-line-no">022</span><span id="line-22">  public LiveData&lt;Map&lt;String, Boolean&gt;&gt; getPermissionsStatus() {</span>
-<span class="source-line-no">023</span><span id="line-23">    return permissionsStatus;</span>
-<span class="source-line-no">024</span><span id="line-24">  }</span>
-<span class="source-line-no">025</span><span id="line-25"></span>
-<span class="source-line-no">026</span><span id="line-26">  public void updatePermissionsStatus(Map&lt;String, Boolean&gt; permissionsStatus) {</span>
-<span class="source-line-no">027</span><span id="line-27">    Map&lt;String, Boolean&gt; permissions = this.permissionsStatus.getValue();</span>
-<span class="source-line-no">028</span><span id="line-28">    //noinspection DataFlowIssue</span>
-<span class="source-line-no">029</span><span id="line-29">    permissions.putAll(permissionsStatus);</span>
-<span class="source-line-no">030</span><span id="line-30">    this.permissionsStatus.setValue(permissions);</span>
-<span class="source-line-no">031</span><span id="line-31">  }</span>
-<span class="source-line-no">032</span><span id="line-32"></span>
-<span class="source-line-no">033</span><span id="line-33">}</span>
+<span class="source-line-no">012</span><span id="line-12">/**</span>
+<span class="source-line-no">013</span><span id="line-13"> * ViewModel class for managing permissions status. This class is designed</span>
+<span class="source-line-no">014</span><span id="line-14"> * to maintain and update permissions states as a central repository for UI</span>
+<span class="source-line-no">015</span><span id="line-15"> * controllers that may need to observe or update the status of multiple</span>
+<span class="source-line-no">016</span><span id="line-16"> * permissions. It interacts with the UI layer to propagate changes and</span>
+<span class="source-line-no">017</span><span id="line-17"> * ensures that the state persists across configuration changes.</span>
+<span class="source-line-no">018</span><span id="line-18"> *</span>
+<span class="source-line-no">019</span><span id="line-19"> * This class uses dependency injection provided by Hilt and leverages</span>
+<span class="source-line-no">020</span><span id="line-20"> * LiveData to expose its state in a lifecycle-aware manner.</span>
+<span class="source-line-no">021</span><span id="line-21"> *</span>
+<span class="source-line-no">022</span><span id="line-22"> * Key responsibilities:</span>
+<span class="source-line-no">023</span><span id="line-23"> * - Maintain the status of permissions, represented as a map where key is</span>
+<span class="source-line-no">024</span><span id="line-24"> *   the permission name and value is a boolean indicating its granted status.</span>
+<span class="source-line-no">025</span><span id="line-25"> * - Provide a LiveData object to expose permissions status to observers.</span>
+<span class="source-line-no">026</span><span id="line-26"> * - Allow updates to the permission status, triggering updates to observers</span>
+<span class="source-line-no">027</span><span id="line-27"> *   when changes occur.</span>
+<span class="source-line-no">028</span><span id="line-28"> *</span>
+<span class="source-line-no">029</span><span id="line-29"> * Dependencies, lifecycle management, and architecture principles are at</span>
+<span class="source-line-no">030</span><span id="line-30"> * the core of the design of this implementation.</span>
+<span class="source-line-no">031</span><span id="line-31"> */</span>
+<span class="source-line-no">032</span><span id="line-32">@HiltViewModel</span>
+<span class="source-line-no">033</span><span id="line-33">public class PermissionsViewModel extends ViewModel {</span>
+<span class="source-line-no">034</span><span id="line-34"></span>
+<span class="source-line-no">035</span><span id="line-35">  private final MutableLiveData&lt;Map&lt;String, Boolean&gt;&gt; permissionsStatus;</span>
+<span class="source-line-no">036</span><span id="line-36"></span>
+<span class="source-line-no">037</span><span id="line-37">  /**</span>
+<span class="source-line-no">038</span><span id="line-38">   * Constructor for the PermissionsViewModel class. This constructor initializes the</span>
+<span class="source-line-no">039</span><span id="line-39">   * {@code permissionsStatus} as a {@link MutableLiveData} instance containing an empty map.</span>
+<span class="source-line-no">040</span><span id="line-40">   * The {@code permissionsStatus} is used to represent the current status of app permissions,</span>
+<span class="source-line-no">041</span><span id="line-41">   * with the permission name as the key and the granted status (true/false) as the corresponding value.</span>
+<span class="source-line-no">042</span><span id="line-42">   *</span>
+<span class="source-line-no">043</span><span id="line-43">   * This constructor is annotated with {@link Inject} to allow for dependency injection via Hilt,</span>
+<span class="source-line-no">044</span><span id="line-44">   * ensuring proper instantiation and lifecycle management within the dependency injection framework.</span>
+<span class="source-line-no">045</span><span id="line-45">   */</span>
+<span class="source-line-no">046</span><span id="line-46">  @Inject</span>
+<span class="source-line-no">047</span><span id="line-47">  public PermissionsViewModel() {</span>
+<span class="source-line-no">048</span><span id="line-48">    permissionsStatus = new MutableLiveData&lt;&gt;(new HashMap&lt;&gt;());</span>
+<span class="source-line-no">049</span><span id="line-49">  }</span>
+<span class="source-line-no">050</span><span id="line-50"></span>
+<span class="source-line-no">051</span><span id="line-51">  /**</span>
+<span class="source-line-no">052</span><span id="line-52">   * Retrieves the current permissions status, represented as a {@link LiveData} object containing a map</span>
+<span class="source-line-no">053</span><span id="line-53">   * with permission names as keys and their granted statuses (true/false) as values. This allows</span>
+<span class="source-line-no">054</span><span id="line-54">   * lifecycle-aware observers to monitor changes in the permissions status.</span>
+<span class="source-line-no">055</span><span id="line-55">   *</span>
+<span class="source-line-no">056</span><span id="line-56">   * @return a {@link LiveData} object wrapping a map where each key is a permission name</span>
+<span class="source-line-no">057</span><span id="line-57">   *         and the corresponding value is a {@code boolean} indicating whether the permission</span>
+<span class="source-line-no">058</span><span id="line-58">   *         is granted ({@code true}) or not ({@code false}).</span>
+<span class="source-line-no">059</span><span id="line-59">   */</span>
+<span class="source-line-no">060</span><span id="line-60">  public LiveData&lt;Map&lt;String, Boolean&gt;&gt; getPermissionsStatus() {</span>
+<span class="source-line-no">061</span><span id="line-61">    return permissionsStatus;</span>
+<span class="source-line-no">062</span><span id="line-62">  }</span>
+<span class="source-line-no">063</span><span id="line-63"></span>
+<span class="source-line-no">064</span><span id="line-64">  /**</span>
+<span class="source-line-no">065</span><span id="line-65">   * Updates the current permissions status by merging the provided map of permission names and</span>
+<span class="source-line-no">066</span><span id="line-66">   * their granted statuses into the existing permissions status map. The updated map is then</span>
+<span class="source-line-no">067</span><span id="line-67">   * set as the value of the {@code permissionsStatus} LiveData, allowing observers to be</span>
+<span class="source-line-no">068</span><span id="line-68">   * notified of the changes.</span>
+<span class="source-line-no">069</span><span id="line-69">   *</span>
+<span class="source-line-no">070</span><span id="line-70">   * @param permissionsStatus a map where each key is a permission name and the corresponding</span>
+<span class="source-line-no">071</span><span id="line-71">   *                          value is a {@code boolean} indicating whether the permission is</span>
+<span class="source-line-no">072</span><span id="line-72">   *                          granted ({@code true}) or not ({@code false}).</span>
+<span class="source-line-no">073</span><span id="line-73">   */</span>
+<span class="source-line-no">074</span><span id="line-74">  public void updatePermissionsStatus(Map&lt;String, Boolean&gt; permissionsStatus) {</span>
+<span class="source-line-no">075</span><span id="line-75">    Map&lt;String, Boolean&gt; permissions = this.permissionsStatus.getValue();</span>
+<span class="source-line-no">076</span><span id="line-76">    //noinspection DataFlowIssue</span>
+<span class="source-line-no">077</span><span id="line-77">    permissions.putAll(permissionsStatus);</span>
+<span class="source-line-no">078</span><span id="line-78">    this.permissionsStatus.setValue(permissions);</span>
+<span class="source-line-no">079</span><span id="line-79">  }</span>
+<span class="source-line-no">080</span><span id="line-80"></span>
+<span class="source-line-no">081</span><span id="line-81">}</span>
 
 
 

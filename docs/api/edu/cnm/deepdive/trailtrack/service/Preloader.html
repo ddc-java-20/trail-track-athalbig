@@ -91,8 +91,19 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/Preloader.html#line-20">Preloader</a></span>
+<div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/Preloader.html#line-39">Preloader</a></span>
 <span class="extends-implements">extends <a href="https://developer.android.com/reference/androidx/room/RoomDatabase.Callback.html" title="class or interface in androidx.room" class="external-link">RoomDatabase.Callback</a></span></div>
+<div class="block">The Preloader class is responsible for preloading and populating a database with
+ predefined data, such as users, tracks, and pins, during the creation of the database.
+ It extends RoomDatabase.Callback to hook into the database creation lifecycle.
+
+ This class handles the structured insertion of data:
+ - Reads predefined JSON data (from resources) for users, tracks, and pins.
+ - Inserts the data into the database using corresponding DAOs: PinDao, TrackDao, and UserDao.
+ - Maintains proper relationships between the entities (e.g., associating pins with tracks and users).
+
+ Preloading data is executed asynchronously and off the main thread using RxJava.
+ Errors during the preloading process result in a runtime exception.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -109,7 +120,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onCreate(androidx.sqlite.db.SupportSQLiteDatabase)" class="member-name-link">onCreate</a><wbr>(<a href="https://developer.android.com/reference/androidx/sqlite/db/SupportSQLiteDatabase.html" title="class or interface in androidx.sqlite.db" class="external-link">SupportSQLiteDatabase</a>&nbsp;db)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Handles the creation and initial population of the database when it is first created.</div>
+</div>
 </div>
 </div>
 </div>
@@ -133,11 +146,17 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="onCreate(androidx.sqlite.db.SupportSQLiteDatabase)">
 <h3>onCreate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/Preloader.html#line-34">onCreate</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/edu/cnm/deepdive/trailtrack/service/Preloader.html#line-80">onCreate</a></span><wbr><span class="parameters">(<a href="https://developer.android.com/reference/androidx/annotation/NonNull.html" title="class or interface in androidx.annotation" class="external-link">@NonNull</a>
  <a href="https://developer.android.com/reference/androidx/sqlite/db/SupportSQLiteDatabase.html" title="class or interface in androidx.sqlite.db" class="external-link">SupportSQLiteDatabase</a>&nbsp;db)</span></div>
+<div class="block">Handles the creation and initial population of the database when it is first created.
+ This method preloads pins and tracks data into the database using resources defined
+ in the application, associates them with a user, and establishes the necessary relationships
+ between the data entities.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://developer.android.com/reference/androidx/room/RoomDatabase.Callback.html#onCreate-androidx.sqlite.db.SupportSQLiteDatabase-" title="class or interface in androidx.room" class="external-link">onCreate</a></code>&nbsp;in class&nbsp;<code><a href="https://developer.android.com/reference/androidx/room/RoomDatabase.Callback.html" title="class or interface in androidx.room" class="external-link">RoomDatabase.Callback</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>db</code> - the <a href="https://developer.android.com/reference/androidx/sqlite/db/SupportSQLiteDatabase.html" title="class or interface in androidx.sqlite.db" class="external-link"><code>SupportSQLiteDatabase</code></a> instance representing the database being created.</dd>
 </dl>
 </section>
 </li>

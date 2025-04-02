@@ -14,59 +14,121 @@
 <pre><span class="source-line-no">001</span><span id="line-1">package edu.cnm.deepdive.trailtrack.model.entity;</span>
 <span class="source-line-no">002</span><span id="line-2"></span>
 <span class="source-line-no">003</span><span id="line-3">import androidx.annotation.NonNull;</span>
-<span class="source-line-no">004</span><span id="line-4">import androidx.room.ColumnInfo;</span>
-<span class="source-line-no">005</span><span id="line-5">import androidx.room.Entity;</span>
-<span class="source-line-no">006</span><span id="line-6">import androidx.room.ForeignKey;</span>
-<span class="source-line-no">007</span><span id="line-7">import androidx.room.Index;</span>
-<span class="source-line-no">008</span><span id="line-8">import androidx.room.PrimaryKey;</span>
-<span class="source-line-no">009</span><span id="line-9"></span>
-<span class="source-line-no">010</span><span id="line-10">@Entity(</span>
-<span class="source-line-no">011</span><span id="line-11">    tableName = "track",</span>
-<span class="source-line-no">012</span><span id="line-12">    indices = {</span>
-<span class="source-line-no">013</span><span id="line-13">        @Index({"user_id", "name"})</span>
-<span class="source-line-no">014</span><span id="line-14">    },</span>
-<span class="source-line-no">015</span><span id="line-15">    foreignKeys = {</span>
-<span class="source-line-no">016</span><span id="line-16">        @ForeignKey(entity = User.class, parentColumns = "user_id", childColumns = "user_id", onDelete = ForeignKey.CASCADE)</span>
-<span class="source-line-no">017</span><span id="line-17">    }</span>
-<span class="source-line-no">018</span><span id="line-18">)</span>
-<span class="source-line-no">019</span><span id="line-19">public class Track {</span>
-<span class="source-line-no">020</span><span id="line-20"></span>
-<span class="source-line-no">021</span><span id="line-21">  @PrimaryKey(autoGenerate = true)</span>
-<span class="source-line-no">022</span><span id="line-22">  @ColumnInfo(name = "track_id")</span>
-<span class="source-line-no">023</span><span id="line-23">  private long id;</span>
-<span class="source-line-no">024</span><span id="line-24"></span>
-<span class="source-line-no">025</span><span id="line-25">  @NonNull</span>
-<span class="source-line-no">026</span><span id="line-26">  private String name = "";</span>
-<span class="source-line-no">027</span><span id="line-27"></span>
-<span class="source-line-no">028</span><span id="line-28">  @ColumnInfo(name = "user_id", index = true)</span>
-<span class="source-line-no">029</span><span id="line-29">  private long userId;</span>
-<span class="source-line-no">030</span><span id="line-30"></span>
-<span class="source-line-no">031</span><span id="line-31">  public long getId() {</span>
-<span class="source-line-no">032</span><span id="line-32">    return id;</span>
-<span class="source-line-no">033</span><span id="line-33">  }</span>
-<span class="source-line-no">034</span><span id="line-34"></span>
-<span class="source-line-no">035</span><span id="line-35">  public void setId(long id) {</span>
-<span class="source-line-no">036</span><span id="line-36">    this.id = id;</span>
-<span class="source-line-no">037</span><span id="line-37">  }</span>
-<span class="source-line-no">038</span><span id="line-38"></span>
-<span class="source-line-no">039</span><span id="line-39">  @NonNull</span>
-<span class="source-line-no">040</span><span id="line-40">  public String getName() {</span>
-<span class="source-line-no">041</span><span id="line-41">    return name;</span>
-<span class="source-line-no">042</span><span id="line-42">  }</span>
-<span class="source-line-no">043</span><span id="line-43"></span>
-<span class="source-line-no">044</span><span id="line-44">  public void setName(@NonNull String name) {</span>
-<span class="source-line-no">045</span><span id="line-45">    this.name = name;</span>
-<span class="source-line-no">046</span><span id="line-46">  }</span>
-<span class="source-line-no">047</span><span id="line-47"></span>
-<span class="source-line-no">048</span><span id="line-48">  public long getUserId() {</span>
-<span class="source-line-no">049</span><span id="line-49">    return userId;</span>
-<span class="source-line-no">050</span><span id="line-50">  }</span>
-<span class="source-line-no">051</span><span id="line-51"></span>
-<span class="source-line-no">052</span><span id="line-52">  public void setUserId(long userId) {</span>
-<span class="source-line-no">053</span><span id="line-53">    this.userId = userId;</span>
-<span class="source-line-no">054</span><span id="line-54">  }</span>
-<span class="source-line-no">055</span><span id="line-55"></span>
-<span class="source-line-no">056</span><span id="line-56">}</span>
+<span class="source-line-no">004</span><span id="line-4">import androidx.annotation.Nullable;</span>
+<span class="source-line-no">005</span><span id="line-5">import androidx.room.ColumnInfo;</span>
+<span class="source-line-no">006</span><span id="line-6">import androidx.room.Entity;</span>
+<span class="source-line-no">007</span><span id="line-7">import androidx.room.ForeignKey;</span>
+<span class="source-line-no">008</span><span id="line-8">import androidx.room.Index;</span>
+<span class="source-line-no">009</span><span id="line-9">import androidx.room.PrimaryKey;</span>
+<span class="source-line-no">010</span><span id="line-10"></span>
+<span class="source-line-no">011</span><span id="line-11">/**</span>
+<span class="source-line-no">012</span><span id="line-12"> * Represents a track object that is mapped to a database entity.</span>
+<span class="source-line-no">013</span><span id="line-13"> * Tracks are associated with a user and include attributes such as</span>
+<span class="source-line-no">014</span><span id="line-14"> * an auto-generated primary key, a name, and a foreign key linking to the user.</span>
+<span class="source-line-no">015</span><span id="line-15"> *</span>
+<span class="source-line-no">016</span><span id="line-16"> * Annotations are used to define this entity for database purposes:</span>
+<span class="source-line-no">017</span><span id="line-17"> * - {@link Entity} specifies the database table name, indices, and foreign key constraints.</span>
+<span class="source-line-no">018</span><span id="line-18"> * - {@link PrimaryKey} and {@link ColumnInfo} define properties of table columns.</span>
+<span class="source-line-no">019</span><span id="line-19"> * - {@link ForeignKey} establishes a relationship with the {@link User} entity.</span>
+<span class="source-line-no">020</span><span id="line-20"> *</span>
+<span class="source-line-no">021</span><span id="line-21"> * The `Track` class overrides `toString` for convenient representation,</span>
+<span class="source-line-no">022</span><span id="line-22"> * and overrides `equals` and `hashCode` for consistency when comparing and hashing.</span>
+<span class="source-line-no">023</span><span id="line-23"> *</span>
+<span class="source-line-no">024</span><span id="line-24"> * Features:</span>
+<span class="source-line-no">025</span><span id="line-25"> * - Tracks are uniquely identified by their `id`.</span>
+<span class="source-line-no">026</span><span id="line-26"> * - A name must be provided and cannot be null.</span>
+<span class="source-line-no">027</span><span id="line-27"> * - Tracks are associated with a user through the `userId` foreign key.</span>
+<span class="source-line-no">028</span><span id="line-28"> */</span>
+<span class="source-line-no">029</span><span id="line-29">@Entity(</span>
+<span class="source-line-no">030</span><span id="line-30">    tableName = "track",</span>
+<span class="source-line-no">031</span><span id="line-31">    indices = {</span>
+<span class="source-line-no">032</span><span id="line-32">        @Index({"user_id", "name"})</span>
+<span class="source-line-no">033</span><span id="line-33">    },</span>
+<span class="source-line-no">034</span><span id="line-34">    foreignKeys = {</span>
+<span class="source-line-no">035</span><span id="line-35">        @ForeignKey(entity = User.class, parentColumns = "user_id", childColumns = "user_id", onDelete = ForeignKey.CASCADE)</span>
+<span class="source-line-no">036</span><span id="line-36">    }</span>
+<span class="source-line-no">037</span><span id="line-37">)</span>
+<span class="source-line-no">038</span><span id="line-38">public class Track {</span>
+<span class="source-line-no">039</span><span id="line-39"></span>
+<span class="source-line-no">040</span><span id="line-40">  /**</span>
+<span class="source-line-no">041</span><span id="line-41">   * Represents the unique identifier for a {@code Track} entity in the database.</span>
+<span class="source-line-no">042</span><span id="line-42">   * This field is marked as the primary key and is auto-generated upon insertion</span>
+<span class="source-line-no">043</span><span id="line-43">   * of a new {@code Track} record. It is mapped to the "track_id" column</span>
+<span class="source-line-no">044</span><span id="line-44">   * in the underlying SQLite table.</span>
+<span class="source-line-no">045</span><span id="line-45">   */</span>
+<span class="source-line-no">046</span><span id="line-46">  @PrimaryKey(autoGenerate = true)</span>
+<span class="source-line-no">047</span><span id="line-47">  @ColumnInfo(name = "track_id")</span>
+<span class="source-line-no">048</span><span id="line-48">  private long id;</span>
+<span class="source-line-no">049</span><span id="line-49"></span>
+<span class="source-line-no">050</span><span id="line-50">  /**</span>
+<span class="source-line-no">051</span><span id="line-51">   * Represents the name of the {@code Track} entity. This field is annotated with {@link NonNull},</span>
+<span class="source-line-no">052</span><span id="line-52">   * ensuring that it cannot be null at any time. It is initialized to an empty string by default.</span>
+<span class="source-line-no">053</span><span id="line-53">   *</span>
+<span class="source-line-no">054</span><span id="line-54">   * The `name` field serves as an identifier for the track entity's logical grouping,</span>
+<span class="source-line-no">055</span><span id="line-55">   * distinct from its unique database identifier (`id`). It must be explicitly set when</span>
+<span class="source-line-no">056</span><span id="line-56">   * creating or updating a `Track` instance.</span>
+<span class="source-line-no">057</span><span id="line-57">   */</span>
+<span class="source-line-no">058</span><span id="line-58">  @NonNull</span>
+<span class="source-line-no">059</span><span id="line-59">  private String name = "";</span>
+<span class="source-line-no">060</span><span id="line-60"></span>
+<span class="source-line-no">061</span><span id="line-61">  /**</span>
+<span class="source-line-no">062</span><span id="line-62">   * Represents a foreign key linking a {@code Track} entity to a {@code User} entity.</span>
+<span class="source-line-no">063</span><span id="line-63">   * This field is mapped to the "user_id" column in the database table and is indexed</span>
+<span class="source-line-no">064</span><span id="line-64">   * for optimized query performance. The {@code userId} field is used to establish</span>
+<span class="source-line-no">065</span><span id="line-65">   * the association between tracks and their corresponding user in the database.</span>
+<span class="source-line-no">066</span><span id="line-66">   */</span>
+<span class="source-line-no">067</span><span id="line-67">  @ColumnInfo(name = "user_id", index = true)</span>
+<span class="source-line-no">068</span><span id="line-68">  private long userId;</span>
+<span class="source-line-no">069</span><span id="line-69"></span>
+<span class="source-line-no">070</span><span id="line-70">  public long getId() {</span>
+<span class="source-line-no">071</span><span id="line-71">    return id;</span>
+<span class="source-line-no">072</span><span id="line-72">  }</span>
+<span class="source-line-no">073</span><span id="line-73"></span>
+<span class="source-line-no">074</span><span id="line-74">  public void setId(long id) {</span>
+<span class="source-line-no">075</span><span id="line-75">    this.id = id;</span>
+<span class="source-line-no">076</span><span id="line-76">  }</span>
+<span class="source-line-no">077</span><span id="line-77"></span>
+<span class="source-line-no">078</span><span id="line-78">  @NonNull</span>
+<span class="source-line-no">079</span><span id="line-79">  public String getName() {</span>
+<span class="source-line-no">080</span><span id="line-80">    return name;</span>
+<span class="source-line-no">081</span><span id="line-81">  }</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">  public void setName(@NonNull String name) {</span>
+<span class="source-line-no">084</span><span id="line-84">    this.name = name;</span>
+<span class="source-line-no">085</span><span id="line-85">  }</span>
+<span class="source-line-no">086</span><span id="line-86"></span>
+<span class="source-line-no">087</span><span id="line-87">  public long getUserId() {</span>
+<span class="source-line-no">088</span><span id="line-88">    return userId;</span>
+<span class="source-line-no">089</span><span id="line-89">  }</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">  public void setUserId(long userId) {</span>
+<span class="source-line-no">092</span><span id="line-92">    this.userId = userId;</span>
+<span class="source-line-no">093</span><span id="line-93">  }</span>
+<span class="source-line-no">094</span><span id="line-94"></span>
+<span class="source-line-no">095</span><span id="line-95">  @NonNull</span>
+<span class="source-line-no">096</span><span id="line-96">  @Override</span>
+<span class="source-line-no">097</span><span id="line-97">  public String toString() {</span>
+<span class="source-line-no">098</span><span id="line-98">    return name;</span>
+<span class="source-line-no">099</span><span id="line-99">  }</span>
+<span class="source-line-no">100</span><span id="line-100"></span>
+<span class="source-line-no">101</span><span id="line-101">  @Override</span>
+<span class="source-line-no">102</span><span id="line-102">  public int hashCode() {</span>
+<span class="source-line-no">103</span><span id="line-103">    return Long.hashCode(id);</span>
+<span class="source-line-no">104</span><span id="line-104">  }</span>
+<span class="source-line-no">105</span><span id="line-105"></span>
+<span class="source-line-no">106</span><span id="line-106">  @Override</span>
+<span class="source-line-no">107</span><span id="line-107">  public boolean equals(@Nullable Object obj) {</span>
+<span class="source-line-no">108</span><span id="line-108">    boolean result;</span>
+<span class="source-line-no">109</span><span id="line-109">    if (this == obj) {</span>
+<span class="source-line-no">110</span><span id="line-110">      result = true;</span>
+<span class="source-line-no">111</span><span id="line-111">    } else if (obj instanceof Track other) {</span>
+<span class="source-line-no">112</span><span id="line-112">      result = id !=0 &amp;&amp; id == other.id;</span>
+<span class="source-line-no">113</span><span id="line-113">    } else {</span>
+<span class="source-line-no">114</span><span id="line-114">      result = false;</span>
+<span class="source-line-no">115</span><span id="line-115">    }</span>
+<span class="source-line-no">116</span><span id="line-116">    return result;</span>
+<span class="source-line-no">117</span><span id="line-117">  }</span>
+<span class="source-line-no">118</span><span id="line-118">}</span>
 
 
 
