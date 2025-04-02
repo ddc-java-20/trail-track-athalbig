@@ -14,6 +14,22 @@ import edu.cnm.deepdive.trailtrack.model.entity.User;
 import edu.cnm.deepdive.trailtrack.service.PinDatabase.Converters;
 import java.time.Instant;
 
+/**
+ * PinDatabase is an abstract representation of the Room database implementation for the application's
+ * underlying storage. It provides access to Data Access Objects (DAOs) for database operations on
+ * entities such as {@link Pin}, {@link Track}, and {@link User}.
+ *
+ * Features:
+ * - Manages database creation and version management using Room.
+ * - Uses entity classes to structure and map the database schema.
+ * - Incorporates type converters for type transformations between database values and application values.
+ *
+ * The database is configured with the following properties:
+ * - The database schema includes {@link Pin}, {@link Track}, and {@link User} entities.
+ * - The version is managed by the {@code VERSION} constant.
+ * - Type converters are provided via the {@link Converters} class to handle custom data types such as
+ *   {@link Instant} and {@link Uri}.
+ */
 @Database(entities = {Pin.class, Track.class, User.class}, version = PinDatabase.VERSION)
 @TypeConverters(Converters.class)
 public abstract class PinDatabase extends RoomDatabase {
@@ -31,6 +47,20 @@ public abstract class PinDatabase extends RoomDatabase {
 
   public abstract TrackDao getTrackDao();
 
+  /**
+   * Provides type conversion methods for Room database to handle custom data types.
+   *
+   * This utility class is referenced via the {@code @TypeConverters(Converters.class)} annotation in
+   * classes such as {@code PinDatabase}. It is responsible for converting between custom types and
+   * primitive types that the database can store, ensuring seamless integration between the database
+   * schema and the application's object model.
+   *
+   * Methods in this class include:
+   * - Conversion of {@link Instant} objects to {@link Long} values, representing milliseconds
+   *   since the Unix epoch, and vice versa.
+   * - Conversion of {@link Uri} objects to their {@link String} representations usable by the database,
+   *   and vice versa.
+   */
   public static class Converters {
 
     @TypeConverter
@@ -53,6 +83,4 @@ public abstract class PinDatabase extends RoomDatabase {
       return (value != null) ? Uri.parse(value) : null;
     }
   }
-
-
 }

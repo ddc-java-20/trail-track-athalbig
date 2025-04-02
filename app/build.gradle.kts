@@ -16,6 +16,7 @@
 import java.io.FileInputStream
 import java.util.Locale
 import java.util.Properties
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 
 plugins {
     alias(libs.plugins.android.application)
@@ -23,7 +24,21 @@ plugins {
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.schema.parser)
     alias(libs.plugins.junit)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
+
+secrets {
+    // To add your Maps API key to this project:
+    // 1. If the secrets.properties file does not exist, create it in the same folder as the local.properties file.
+    // 2. Add this line, where YOUR_API_KEY is your API key:
+    //        MAPS_API_KEY=YOUR_API_KEY
+    propertiesFileName = "secrets.properties"
+
+    // A properties file containing default secret values. This file can be
+    // checked in version control.
+    defaultPropertiesFileName = "local.defaults.properties"
+}
+
 
 android {
 
@@ -112,13 +127,15 @@ dependencies {
     // Room annotation processor, runtime library, and ReactiveX integration
     implementation(libs.room.runtime)
     implementation(libs.activity)
+    implementation(libs.play.services.maps)
     annotationProcessor(libs.room.compiler)
     implementation(libs.room.rx.java)
 
     // Gson (Google JSON parser) library
     implementation(libs.gson)
 
-    // Google Sign-in library
+
+   // Google Sign-in library
     implementation(libs.play.auth)
 
     // Retrofit (REST client) with ReactiveX & Gson integration
@@ -132,6 +149,10 @@ dependencies {
 
     // OkHttp logging dependency
     implementation(libs.logging.interceptor)
+
+    //Maps
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 
     // Libraries for JVM-based testing.
     testImplementation(libs.junit.api)
@@ -184,7 +205,9 @@ android.applicationVariants.configureEach {
 
     val docTitle = "${project.property("appName")} ${android.defaultConfig.versionName}"
 
-    val task = project.tasks.create("generate${variantName}Javadoc", Javadoc::class.java) {
+    val task = project.tasks.register("generate${variantName}Javadoc", Javadoc::class.java) {
+
+        dependsOn(tasks.named("assemble$variantName"))
         title = docTitle
         group = "documentation"
         description = "Generates Javadoc for $simpleName build variant."
@@ -205,7 +228,7 @@ android.applicationVariants.configureEach {
 
         doFirst {
             classpath = project.files(
-                projectDir.resolve("build/intermediates/javac/$simpleName/classes"),
+                projectDir.resolve("build/intermediates/javac/$simpleName/compile${variantName}JavaWithJavac/classes"),
                 javaCompileProvider.get().classpath.files,
                 android.bootClasspath
             )
@@ -218,13 +241,12 @@ android.applicationVariants.configureEach {
             isAuthor = false
             links(
                 "https://docs.oracle.com/en/java/javase/${libs.versions.java.get()}/docs/api/",
-                // TODO Modify or add to this list for the specific libraries used.
                 "https://reactivex.io/RxJava/3.x/javadoc/",
                 "https://javadoc.io/doc/com.google.dagger/dagger/${libs.versions.hilt.get()}/",
                 "https://javadoc.io/doc/com.google.code.gson/gson/${libs.versions.gson.get()}/",
                 "https://square.github.io/retrofit/2.x/retrofit/"
             )
-            linksOffline("https://developer.android.com/reference", "$projectDir/..")
+            linksOffline("https://developer.android.com/reference", "$projectDir")
             addBooleanOption("html5", true)
             addStringOption("Xdoclint:none", "-quiet")
         }
@@ -232,9 +254,9 @@ android.applicationVariants.configureEach {
         isFailOnError = true
     }
 
-    task.dependsOn(tasks["assemble$variantName"])
-    tasks["generateApiDoc"].dependsOn(task)
+    tasks.named("generateApiDoc").dependsOn(task)
 }
+
 
 fun getLocalProperty(name: String): String? {
     return getProperty("$projectDir/local.properties", name)

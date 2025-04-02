@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e4732def9d669838d8bc7d7f47470c5f",
+    "identityHash": "93a960e9a0dcf90ed25ec473f059a174",
     "entities": [
       {
         "tableName": "pin",
@@ -77,13 +77,14 @@
         },
         "indices": [
           {
-            "name": "index_pin_title",
+            "name": "index_pin_track_id_title",
             "unique": true,
             "columnNames": [
+              "track_id",
               "title"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_pin_title` ON `${TABLE_NAME}` (`title`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_pin_track_id_title` ON `${TABLE_NAME}` (`track_id`, `title`)"
           },
           {
             "name": "index_pin_track_id",
@@ -263,7 +264,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e4732def9d669838d8bc7d7f47470c5f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93a960e9a0dcf90ed25ec473f059a174')"
     ]
   }
 }

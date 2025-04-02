@@ -21,6 +21,7 @@ room = "2.6.1"
 hilt = "2.50"
 material = "1.12.0"
 play-services-auth = "21.3.0"
+play-services-location = "21.3.0"
 
 # JavaFX plugin and library versions
 openjfx-plugin = "0.1.0"
@@ -50,6 +51,8 @@ junit-plugin = "1.9.3.0"
 android-test-runner = "1.6.2"
 junit-android = "1.4.0"
 espresso = "3.6.1"
+google-android-libraries-mapsplatform-secrets-gradle-plugin = "2.0.1"
+play-services-maps = "19.1.0"
 
 [libraries]
 
@@ -62,6 +65,7 @@ kotlin-jdk8 = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", ver
 app-compat = { group = "androidx.appcompat", name = "appcompat", version.ref = "app-compat" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraint-layout" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
 recycler-view = { group = "androidx.recyclerview", name ="recyclerview", version.ref = "recycler-view" }
 view-pager = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "view-pager" }
 
@@ -132,6 +136,7 @@ junit-android-runner = { group = "de.mannodermaus.junit5", name = "android-test-
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "play-services-maps" }
 
 [bundles]
 
@@ -151,3 +156,4 @@ openjfx = { id = "org.openjfx.javafxplugin", version.ref = "openjfx-plugin"}
 modularity = { id = "org.javamodularity.moduleplugin", version.ref = "modularity" }
 badass-jlink = { id = "org.beryx.jlink", version.ref = "badass-jlink" }
 shadow = { id = "com.github.johnrengelman.shadow", version.ref ="shadow"}
+google-android-libraries-mapsplatform-secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "google-android-libraries-mapsplatform-secrets-gradle-plugin" }

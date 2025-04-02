@@ -1,27 +1,41 @@
 package edu.cnm.deepdive.trailtrack.controller;
 
-import static android.Manifest.permission.CAMERA;
-
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.trailtrack.R;
-import edu.cnm.deepdive.trailtrack.controller.ExplanationFragment.OnDismissListener;
 import edu.cnm.deepdive.trailtrack.databinding.ActivityMainBinding;
 
+/**
+ * MainActivity serves as the primary entry point of the application and acts as the host for
+ * navigation within the app. It is annotated with @AndroidEntryPoint to enable dependency
+ * injection with Hilt. This activity is responsible for setting up and managing the application's
+ * navigation components, including the toolbar and NavController.
+ *
+ * The activity uses a custom toolbar for navigation and integrates it with the navigation
+ * architecture component using AppBarConfiguration and NavController.
+ *
+ * Lifecycle methods:
+ * - onCreate: Initializes the activity, sets up data binding, and calls the navigation setup
+ *   method to configure navigation and toolbar.
+ *
+ * Core methods:
+ * - setupNavigation: Configures the AppBar with the NavController and associates the toolbar
+ *   with the navigation graph, enabling proper navigation between screens.
+ * - onSupportNavigateUp: Handles navigation when the user taps on the up button, delegating
+ *   the action to NavigationUI.
+ *
+ * Note: The activity includes a placeholder for obtaining location permission but it is
+ * currently commented out and marked as a TODO for future implementation.
+ */
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity implements OnDismissListener {
+public class MainActivity extends AppCompatActivity {
 
-  private static final int PERMISSIONS_REQUEST_CODE = 674;
-  
+
   private ActivityMainBinding binding;
   private NavController navController;
   private AppBarConfiguration appBarConfig;
@@ -33,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements OnDismissListener
     setContentView(binding.getRoot());
     //Adding our own toolbar
     setupNavigation();
-    setupPermissions();
   }
 
   @Override
@@ -41,48 +54,25 @@ public class MainActivity extends AppCompatActivity implements OnDismissListener
     return NavigationUI.navigateUp(navController, appBarConfig);
   }
 
-  @Override
-  public void onRequestPermissionsResult(
-      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    if (requestCode == PERMISSIONS_REQUEST_CODE) {
-      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        // TODO: 2/19/25 Consider saving this information.
-      }
-    } else {
-      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-  }
-
-  @Override
-  public void onDismiss() {
-    requestPermissions(new String[]{CAMERA}, PERMISSIONS_REQUEST_CODE);
-  }
-
+  /**
+   * Configures the application's navigation components, integrating the toolbar with the app's
+   * navigation graph and setting up proper handling of navigation actions.
+   *
+   * This method sets the activity's toolbar as the support ActionBar and establishes an
+   * AppBarConfiguration that defines the top-level destinations within the app's navigation graph.
+   * It retrieves the NavController from the NavHostFragment and binds it to the ActionBar to enable
+   * navigation using the NavController.
+   *
+   * Core responsibilities:
+   * - Sets up the custom toolbar as the ActionBar for the activity.
+   * - Configures an AppBarConfiguration to manage navigation behaviors for top-level destinations.
+   * - Associates the NavController with the ActionBar to synchronize navigation actions and UI behavior.
+   */
   private void setupNavigation() {
     setSupportActionBar(binding.toolbar);
-    appBarConfig = new AppBarConfiguration.Builder(R.id.home_fragment).build();
+    appBarConfig = new AppBarConfiguration.Builder(R.id.home_fragment, R.id.pre_login_fragment, R.id.login_fragment)
+        .build();
     navController =((NavHostFragment) binding.navHostContainer.getFragment()).getNavController();
     NavigationUI.setupActionBarWithNavController(this, navController, appBarConfig);
-  }
-
-  private void setupPermissions() {
-    if (shouldRequestCameraPermission()){
-      if (shouldExplainCameraPermission()){
-        navController.navigate(HomeFragmentDirections.openExplanationFragment());
-      } else {
-          onDismiss();
-      }
-    } else {
-      // TODO: 2/19/25 Store result if appropriate.
-    }
-  }
-
-  private boolean shouldRequestCameraPermission() {
-    return ContextCompat.checkSelfPermission(this, CAMERA)
-        != PackageManager.PERMISSION_GRANTED;
-  }
-
-  private boolean shouldExplainCameraPermission() {
-    return ActivityCompat.shouldShowRequestPermissionRationale(this, CAMERA);
   }
 }

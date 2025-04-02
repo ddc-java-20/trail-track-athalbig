@@ -13,6 +13,10 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Data access object for managing operations on the Pin entity in the database.
+ * Provides methods for inserting, updating, deleting, and querying Pin records.
+ */
 @Dao
 public interface PinDao {
 

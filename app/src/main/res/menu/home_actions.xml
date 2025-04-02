@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item
+    android:id="@+id/map_fragment"
+    android:title="@string/view_map_title"
+    android:icon="@drawable/map"
+    />
+
+  <item
+ android:id="@+id/pins_fragment"
+    android:title="@string/view_pins_title"
+    android:icon="@drawable/pin"
+    />
+
+</menu>
