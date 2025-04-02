@@ -28,6 +28,7 @@
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
     <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
+<!--    <item name="colorOnSurfaceVariant">?attr/colorOnPrimary</item>-->
   </style>
 
   <style name="AppTheme.Toolbar" parent="Widget.Material3.Toolbar">

@@ -15,7 +15,14 @@ import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.trailtrack.R;
 import edu.cnm.deepdive.trailtrack.viewmodel.LoginViewModel;
 
-/** @noinspection deprecation*/
+/**
+ * A Fragment that represents the pre-login state for the application.
+ * It observes the user's Google Sign-In account status and handles navigation
+ * to appropriate fragments based on the account state.
+ *
+ * This fragment initializes by setting up a ViewModel to monitor the account
+ * and throwable states for possible sign-in errors or account changes.
+ */
 @AndroidEntryPoint
 public class PreLoginFragment extends Fragment {
 
@@ -44,6 +51,13 @@ public class PreLoginFragment extends Fragment {
     viewModel.refresh();
   }
 
+  /**
+   * Handles the user's Google Sign-In account. If the account is not null,
+   * it navigates the user to the HomeFragment.
+   *
+   * @param account the GoogleSignInAccount instance representing the user's
+   *                signed-in Google account, or null if no account is signed in
+   */
   private void handleAccount(GoogleSignInAccount account) {
     if (account != null) {
       Navigation.findNavController(root)
@@ -51,6 +65,14 @@ public class PreLoginFragment extends Fragment {
     }
   }
 
+  /**
+   * Handles throwable errors that may occur during the account refresh process.
+   * If a throwable is not null, it navigates the user to the LoginFragment to
+   * handle the error scenario.
+   *
+   * @param throwable the Throwable instance representing the error encountered,
+   *                  or null if no error occurred
+   */
   private void handleThrowable(Throwable throwable) {
     if (throwable != null) {
       Navigation.findNavController(root)

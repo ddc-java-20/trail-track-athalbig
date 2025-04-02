@@ -42,6 +42,12 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * The HomeFragment class represents the main user interface component of the application.
+ * It is responsible for handling the navigation, permissions, and menu interactions within the app.
+ * This fragment is integrated with Android Hilt for dependency injection and utilizes multiple
+ * ViewModels for state management and logic handling.
+ */
 @AndroidEntryPoint
 public class HomeFragment extends Fragment implements MenuProvider, OnDismissListener {
 
@@ -126,6 +132,21 @@ public class HomeFragment extends Fragment implements MenuProvider, OnDismissLis
     return handled;
   }
 
+  /**
+   * Sets up the app permissions workflow by determining which permissions need to be requested,
+   * collecting the permissions that are already granted, and handling the explanatory steps for
+   * permissions if necessary.
+   *
+   * The method performs the following operations:
+   * - Identifies permissions that still need to be requested based on their current status.
+   * - Updates the view model with the status of permissions that are already granted.
+   * - Checks if any of the permissions to be requested require an explanation to the user.
+   * - If explanations are required, navigates to an explanation fragment to inform the user about
+   *   the permissions. Otherwise, directly triggers the permission request process.
+   *
+   * This method interacts with the view model to maintain the state of permissions and uses
+   * navigation to guide the user through the permission flow.
+   */
   private void setupPermissions() {
     permissionsToRequest = Arrays.stream(permissionsNeeded)
         .filter(this::shouldRequestPermission)
@@ -145,10 +166,16 @@ public class HomeFragment extends Fragment implements MenuProvider, OnDismissLis
     }
   }
 
+  /**
+   * Handles the results of permission requests and updates the permissions status in the view model.
+   *
+   * @param grantResults A map containing the permissions requested and their corresponding
+   *                     grant results, where the key is the permission name, and the value is
+   *                     a boolean indicating whether the permission was granted (true) or denied (false).
+   */
   public void handleGrantResults(@NonNull Map<String, Boolean> grantResults) {
     Log.d(TAG, grantResults.toString());
     permissionsViewModel.updatePermissionsStatus(grantResults);
-
   }
 
   @Override
@@ -156,11 +183,25 @@ public class HomeFragment extends Fragment implements MenuProvider, OnDismissLis
     requestPermissionsLauncher.launch(permissionsToRequest);
   }
 
+  /**
+   * Determines whether the specified permission should be requested by checking if it is already granted.
+   *
+   * @param permission The name of the permission to check (e.g., android.permission.CAMERA).
+   * @return {@code true} if the specified permission is not granted and should be requested, {@code false} otherwise.
+   */
   private boolean shouldRequestPermission(String permission) {
     return ContextCompat.checkSelfPermission(requireContext(), permission)
         != PackageManager.PERMISSION_GRANTED;
   }
 
+  /**
+   * Checks whether an explanation should be shown to the user for the specified permission.
+   * This is typically used to determine if rationale should be provided before requesting a permission.
+   *
+   * @param permission The name of the permission to check (e.g., android.permission.CAMERA).
+   * @return {@code true} if an explanation should be shown to the user for the specified permission,
+   *         {@code false} otherwise.
+   */
   private boolean shouldExplainPermission(String permission) {
     return ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission);
   }

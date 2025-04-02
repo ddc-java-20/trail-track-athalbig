@@ -14,6 +14,28 @@ import edu.cnm.deepdive.trailtrack.R;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * ExplanationFragment is a subclass of DialogFragment that displays an alert dialog
+ * explaining the reason for requesting specific permissions. The message is dynamically
+ * constructed based on the permissions passed to the fragment.
+ *
+ * The permissions to be explained are provided as arguments to this fragment and are
+ * extracted during initialization. These permissions are then converted to corresponding
+ * string resource names, and the associated text resources are fetched and compiled
+ * into a readable explanation message for the user.
+ *
+ * A parent fragment must implement the OnDismissListener interface to handle the dismissal
+ * of the dialog. This callback ensures that the parent fragment is notified when the dialog
+ * is dismissed.
+ *
+ * Key Features:
+ * - Dynamically generates explanatory messages for permissions.
+ * - Provides an AlertDialog to present the explanation.
+ * - Notifies the parent fragment when the dialog is dismissed via a callback interface.
+ *
+ * The fragment requires the parent context to provide permission explanation string resources
+ * in the format `<permission_name>_explanation`.
+ */
 public class ExplanationFragment extends DialogFragment {
 
   private String[] permissionsToExplain;
@@ -59,6 +81,11 @@ public class ExplanationFragment extends DialogFragment {
         .create();
   }
 
+  /**
+   * Interface definition for a callback to be invoked when a dismiss event occurs.
+   *
+   * Implement this interface to handle the dismissal of a dialog or similar component.
+   */
   public interface OnDismissListener {
 
     void onDismiss();

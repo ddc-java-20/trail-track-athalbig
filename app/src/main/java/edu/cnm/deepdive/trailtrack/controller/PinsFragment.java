@@ -27,6 +27,18 @@ import edu.cnm.deepdive.trailtrack.viewmodel.LocationViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.util.List;
 
+/**
+ * The PinsFragment class represents a fragment for displaying and managing pins within an Android application.
+ * It is responsible for:
+ * - Displaying a list of pins associated with a selected track.
+ * - Handling user interactions with options to add, edit, or delete pins.
+ * - Managing UI updates and interactions through ViewModels and LiveData.
+ *
+ * This class interacts with {@link PinViewModel} to observe and update relevant data, including tracks and pins.
+ * It uses the Android Jetpack Navigation component to navigate between screens.
+ *
+ * PinsFragment implements the {@link AdapterView.OnItemSelectedListener} interface to respond to track selection changes.
+ */
 @AndroidEntryPoint
 public class PinsFragment extends Fragment implements OnItemSelectedListener {
 
@@ -69,6 +81,14 @@ public class PinsFragment extends Fragment implements OnItemSelectedListener {
         .observe(lifecycleOwner, this::handlePins);
   }
 
+  /**
+   * Updates the selection in the track selection UI component to highlight the current track.
+   * <ul>
+   *   <li>If the current track exists and the list of tracks is not null, the method determines the
+   *       index of the current track in the list.</li>
+   *   <li>It then sets the selection in the UI component bound to the track list to this index.</li>
+   * </ul>
+   */
   private void selectCurrentTrack() {
     if (track != null && tracks != null) {
       int position = tracks.indexOf(track);
@@ -76,6 +96,12 @@ public class PinsFragment extends Fragment implements OnItemSelectedListener {
     }
   }
 
+  /**
+   * Handles the display and management of a list of pins. Sets up the PinsAdapter for the RecyclerView,
+   * providing a way to handle long-click interactions on individual pins.
+   *
+   * @param pins A list of {@link Pin} objects to be displayed and managed.
+   */
   private void handlePins(List<Pin> pins) {
     PinsAdapter adapter;
     adapter = new PinsAdapter(requireContext(), pins, (v, pin, position) -> {

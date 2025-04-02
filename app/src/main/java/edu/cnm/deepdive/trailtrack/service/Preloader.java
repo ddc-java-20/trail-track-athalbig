@@ -23,6 +23,19 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+/**
+ * The Preloader class is responsible for preloading and populating a database with
+ * predefined data, such as users, tracks, and pins, during the creation of the database.
+ * It extends RoomDatabase.Callback to hook into the database creation lifecycle.
+ *
+ * This class handles the structured insertion of data:
+ * - Reads predefined JSON data (from resources) for users, tracks, and pins.
+ * - Inserts the data into the database using corresponding DAOs: PinDao, TrackDao, and UserDao.
+ * - Maintains proper relationships between the entities (e.g., associating pins with tracks and users).
+ *
+ * Preloading data is executed asynchronously and off the main thread using RxJava.
+ * Errors during the preloading process result in a runtime exception.
+ */
 public class Preloader extends RoomDatabase.Callback {
 
 
@@ -32,6 +45,20 @@ public class Preloader extends RoomDatabase.Callback {
   private final Provider<UserDao> userDaoProvider;
   private final Gson gson;
 
+  /**
+   * Constructs an instance of the {@code Preloader} class for initializing data access and
+   * serialization dependencies required for the application's operation.
+   *
+   * @param context the application context, used for access to shared application-level resources
+   *                and services.
+   * @param pinDaoProvider the provider for {@link PinDao}, enabling data access operations
+   *                       for {@code Pin} entities.
+   * @param trackDaoProvider the provider for {@link TrackDao}, enabling data access operations
+   *                         for {@code Track} entities.
+   * @param userDaoProvider the provider for {@link UserDao}, enabling data access operations
+   *                        for {@code User} entities.
+   * @param gson the Gson instance used for JSON serialization and deserialization.
+   */
   @Inject
   Preloader(@ApplicationContext Context context, Provider<PinDao> pinDaoProvider,
       Provider<TrackDao> trackDaoProvider, Provider<UserDao> userDaoProvider, Gson gson) {
@@ -42,6 +69,14 @@ public class Preloader extends RoomDatabase.Callback {
     this.gson = gson;
   }
 
+  /**
+   * Handles the creation and initial population of the database when it is first created.
+   * This method preloads pins and tracks data into the database using resources defined
+   * in the application, associates them with a user, and establishes the necessary relationships
+   * between the data entities.
+   *
+   * @param db the {@link SupportSQLiteDatabase} instance representing the database being created.
+   */
   @Override
   public void onCreate(@NonNull SupportSQLiteDatabase db) {
     super.onCreate(db);
@@ -87,6 +122,5 @@ public class Preloader extends RoomDatabase.Callback {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
   }
 }

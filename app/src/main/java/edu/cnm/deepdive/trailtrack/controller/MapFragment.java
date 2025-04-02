@@ -34,6 +34,33 @@ import edu.cnm.deepdive.trailtrack.viewmodel.PermissionsViewModel;
 import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.util.List;
 
+/**
+ * MapFragment is a Fragment subclass responsible for displaying a Google Map and interacting
+ * with map-related elements and user actions. It implements OnMapReadyCallback to manage
+ * GoogleMap initialization and OnItemSelectedListener to handle selection changes in the tracks
+ * dropdown menu. The fragment integrates multiple ViewModels and observes LiveData to synchronize
+ * UI elements with real-time data updates.
+ *
+ * Responsibilities:
+ * - Displays a Google Map using Google Maps SDK.
+ * - Manages lifecycle events of the map to ensure proper behavior during Fragment lifecycle changes.
+ * - Observes and reacts to changes in permissions, location, and pin data via injected ViewModels.
+ * - Displays and updates markers on the map based on observed pin data.
+ * - Handles user interactions such as selecting tracks and creating new pins.
+ *
+ * Integrations:
+ * - PermissionsViewModel: Monitors and updates the user's permissions, specifically location-related permissions.
+ * - LocationViewModel: Provides live updates of the user's current location and manages location services.
+ * - PinViewModel: Stores and updates information about tracks and pins, including handling current selection and displaying pin markers on the map.
+ *
+ * Key Lifecycle Handling:
+ * - Registers observers for LiveData from ViewModels to update UI elements dynamically.
+ * - Manages Google Map lifecycle by forwarding lifecycle callbacks to the map object.
+ *
+ * Implementations:
+ * - OnMapReadyCallback: Enables map setup when the map instance is ready.
+ * - OnItemSelectedListener: Handles user interactions with the track selection dropdown menu.
+ */
 @AndroidEntryPoint
 public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemSelectedListener {
 
@@ -44,6 +71,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
   private boolean currentLocationEnabled;
   private GoogleMap map;
   private List<Track> tracks;
+  private CameraUpdate cameraUpdate;
+  private Track track;
 
   @Nullable
   @Override
@@ -71,9 +100,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
     locationViewModel = provider.get(LocationViewModel.class);
     locationViewModel.getLocation()
         .observe(owner, location -> {
-          CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(
+           cameraUpdate = CameraUpdateFactory.newLatLng(
               new LatLng(location.getLatitude(), location.getLongitude()));
-          map.moveCamera(cameraUpdate);
+          centerCamera();
         });
     getLifecycle().addObserver(locationViewModel);
     permissionsViewModel = provider.get(PermissionsViewModel.class);
@@ -96,16 +125,55 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
           ArrayAdapter<Track> adapter =
               new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, tracks);
           mapBinding.tracks.setAdapter(adapter);
+          setSelectedTrack();
         });
     pinViewModel.getTrack().observe(owner, (track) -> {
-      int position = tracks.indexOf(track);
-      mapBinding.tracks.setSelection(position);
+      this.track = track;
+      setSelectedTrack();
     });
     pinViewModel
         .getPins()
         .observe(owner, this::handlePins);
   }
 
+  /**
+   * Sets the currently selected track in the UI to match the position of the {@code track}
+   * field within the {@code tracks} list. If {@code track} or {@code tracks} are {@code null},
+   * this method does nothing.
+   *
+   * The method retrieves the index of the {@code track} within the {@code tracks} list using
+   * the {@code indexOf} method. If the {@code track} exists in the list, the selection of
+   * the UI component represented by {@code mapBinding.tracks} is updated to the matching
+   * position.
+   */
+  private void setSelectedTrack() {
+    if (track != null && tracks != null) {
+      int position = tracks.indexOf(track);
+      mapBinding.tracks.setSelection(position);
+    }
+  }
+
+  /**
+   * Adjusts the camera of the map to a specified update if both the map and
+   * camera update objects are not null.
+   *
+   * This method ensures the camera's position is updated smoothly by invoking
+   * the moveCamera method on the map instance with the specified camera update.
+   * If either the map or the camera update is null, the method does nothing.
+   */
+  private void centerCamera() {
+    if (map != null && cameraUpdate != null) {
+      map.moveCamera(cameraUpdate);
+    }
+  }
+
+  /**
+   * Processes a list of pins to populate a map with markers based on each pin's location.
+   * The map is cleared initially, and for each pin in the list, a marker is created
+   * using the title and location from the pin and added to the map.
+   *
+   * @param pins a list of Pin objects to be processed, each containing a title and location data
+   */
   private void handlePins(List<Pin> pins) {
     map.clear();
     pins.forEach((pin) -> {
@@ -117,7 +185,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
         map.addMarker(options);
       }
     });
-    // TOD 4/1/25 Iterate over pins, create marker for each, and add it to map (googleMap Map field)
+    // DONE 4/1/25 Iterate over pins, create marker for each, and add it to map (googleMap Map field)
   }
 
   @Override
@@ -177,8 +245,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, OnItemS
     map = googleMap;
     if (currentLocationEnabled) {
       googleMap.setMyLocationEnabled(true);
+      centerCamera();
     }
-//    googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
   }
 
   @Override

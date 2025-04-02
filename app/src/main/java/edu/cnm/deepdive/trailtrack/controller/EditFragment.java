@@ -32,6 +32,20 @@ import edu.cnm.deepdive.trailtrack.viewmodel.PinViewModel;
 import java.io.File;
 import java.util.UUID;
 
+/**
+ * EditFragment is a BottomSheetDialogFragment that provides editing functionality for a
+ * Pin object. This class manages the interaction between the UI, ViewModels, and system
+ * resources to allow users to edit and save pin attributes.
+ *
+ * It includes the following responsibilities:
+ * - Displaying the details of a Pin object, such as title, content, and image.
+ * - Allowing the user to update the Pin's title, content, image, and location.
+ * - Handling camera permissions and initiating image capture.
+ * - Observing and interacting with LiveData from various ViewModels.
+ *
+ * This fragment utilizes data binding to bind UI elements to corresponding data processes
+ * and ViewModels for core business logic.
+ */
 @AndroidEntryPoint
 public class EditFragment extends BottomSheetDialogFragment {
 
@@ -129,6 +143,19 @@ public class EditFragment extends BottomSheetDialogFragment {
   /**
    * @noinspection DataFlowIssue
    */
+  /**
+   * Saves the current state of the pin object by updating its title, content, image, and optionally
+   * its location, and passing the updated object to the appropriate ViewModel for persistence.
+   * The method performs the following steps:
+   * 1. Extracts and trims user-provided title and content from the UI and updates the pin object.
+   * 2. Sets the associated image for the pin.
+   * 3. If a location is provided, it creates a {@code Location} object with latitude and longitude values
+   *    and assigns it to the pin.
+   * 4. Invokes the ViewModel's save method to persist the changes.
+   * 5. Closes the current dialog or view after saving.
+   *
+   * Note: The handling of created and modified timestamps is pending implementation.
+   */
   private void save() {
     pin.setTitle(binding.title
         .getText()
@@ -148,6 +175,11 @@ public class EditFragment extends BottomSheetDialogFragment {
     dismiss();
   }
 
+  /**
+   * Handles the provided URI by updating the associated image and displaying it in the UI.
+   *
+   * @param uri the URI of the image to be handled. If the URI is null, the method does nothing.
+   */
   private void handleCaptureUri(Uri uri) {
     if (uri != null) {
       this.uri = uri;
@@ -157,6 +189,18 @@ public class EditFragment extends BottomSheetDialogFragment {
     }
   }
 
+  /**
+   * Updates the UI elements with the details of the provided pin object.
+   *
+   * The method performs the following:
+   * - Assigns the input pin to the class-level pin variable.
+   * - Sets the title and content in the UI using the title and content values of the pin.
+   * - Updates the image view based on the image URI:
+   *   - If the image URI is not null, the image is displayed and made visible.
+   *   - If the image URI is null, the image view is hidden.
+   *
+   * @param pin the pin object whose details are to be displayed in the UI.
+   */
   private void handlePin(Pin pin) {
     this.pin = pin;
     binding.title.setText(pin.getTitle());
@@ -177,7 +221,20 @@ public class EditFragment extends BottomSheetDialogFragment {
     requireContext().getTheme().resolveAttribute(colorAttr, typedValue, true);
     return typedValue.data;
   }
-  
+
+  /**
+   * Initiates the process of capturing an image and storing its reference for later use.
+   *
+   * The method performs the following steps:
+   * 1. Retrieves the application context to access the file system.
+   * 2. Ensures the existence of the directory designed to store captured images.
+   * 3. Generates a unique filename for the captured image to avoid conflicts.
+   * 4. Obtains a URI for the created file using the application's FileProvider infrastructure.
+   * 5. Sets the generated URI as a pending capture URI in the ViewModel.
+   * 6. Launches the capture process using the capture launcher.
+   *
+   * The generated URI is used to save the captured image, and the ViewModel stores it for further handling.
+   */
   private void capture() {
     Context context = requireContext();
     File captureDir = new File(context.getFilesDir(), getString(R.string.capture_directory)); // Using the context, get a reference to the directory where we store captured images.
